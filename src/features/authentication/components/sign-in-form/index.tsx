@@ -1,10 +1,41 @@
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import { useAuthStore } from "@/store/auth";
+import { logIn } from "@/api/auth";
 
 export const SignInForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const setAuth = useAuthStore((state) => state.setAuth);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    logIn(email, password)
+      .then((data) => {
+        setAuth(data, data.accessToken);
+        navigate("/");
+      })
+      .catch((err) => {
+        setError(err.response?.data?.message || err.message || "Ошибка входа");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <Box
       sx={{
@@ -23,14 +54,41 @@ export const SignInForm = () => {
         <Box
           component="form"
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          onSubmit={handleSubmit}
         >
-          <TextField label="Логин" type="text" fullWidth required />
+          <TextField
+            label="Логин"
+            type="text"
+            fullWidth
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-          <TextField label="Пароль" type="password" fullWidth required />
+          <TextField
+            label="Пароль"
+            type="password"
+            fullWidth
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-          <Button variant="contained" size="large" fullWidth>
-            Войти
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            fullWidth
+            disabled={loading}
+          >
+            {loading ? "Вход..." : "Войти"}
           </Button>
+
+          {error && (
+            <Typography color="error" textAlign="center">
+              {error}
+            </Typography>
+          )}
 
           <Button
             variant="text"
