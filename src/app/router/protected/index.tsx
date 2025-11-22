@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Navigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
 import { useAuthStore } from "@/store/auth";
 
 interface ProtectedRouteProps {
@@ -7,10 +7,18 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const { user, accessToken } = useAuthStore();
 
-  if (!accessToken) {
-    return <Navigate to="/sign-in" replace />;
+  const location = useLocation();
+
+  if (!accessToken) return <Navigate to="/sign-in" replace />;
+
+  if (user?.role === "super_admin") {
+    const allowedPaths = ["/companies", "/users"];
+
+    if (!allowedPaths.includes(location.pathname)) {
+      return <Navigate to="/companies" replace />;
+    }
   }
 
   return <>{children}</>;
