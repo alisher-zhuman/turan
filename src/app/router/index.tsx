@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
+import Authentication from "@/pages/authentication";
 import { Layout } from "../layout";
-import SignIn from "@/pages/sign-in";
 
 export const ROUTER = createBrowserRouter([
   {
@@ -16,5 +16,6 @@ export const ROUTER = createBrowserRouter([
       { path: "webhooks", element: <div>Webhooks</div> },
     ],
   },
-  { path: "/sign-in", element: <SignIn /> },
+  { path: "/sign-in", element: <Authentication /> },
+  { path: "/sign-in/forgot", element: <Authentication /> },
 ]);
