@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -23,11 +24,13 @@ const Companies = () => {
   const refreshTokenMutation = useMutation({
     mutationFn: (id: number) => refreshCompanyToken(id),
     onSuccess: () => {
-      toast.success("API ключ обновлён");
       queryClient.invalidateQueries({ queryKey: ["companies"] });
+      toast.success("API ключ обновлён");
     },
-    onError: () => {
-      toast.error("Ошибка при обновлении API ключа");
+    onError: (error: AxiosError<{ message?: string }>) => {
+      toast.error(
+        error.response?.data?.message || "Ошибка при обновлении API ключа"
+      );
     },
   });
 
