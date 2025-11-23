@@ -14,7 +14,7 @@ export interface User {
   firstName: string;
   lastName: string;
   role: "super_admin" | "admin" | "user" | "controller";
-  company: Omit<Company, "users"> | null;
+  company: Omit<Company, "users" | "key"> | null;
   devices: Device[] | [];
   passwordChange: boolean;
   createdAt: string;

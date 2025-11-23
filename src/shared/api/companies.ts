@@ -9,3 +9,12 @@ export const getCompanies = async () => {
 
   return data.data;
 };
+
+export const createCompany = async (newCompany: {
+  name: string;
+  address: string;
+}) => {
+  const { data } = await api.post("/companies", newCompany);
+
+  return data;
+};

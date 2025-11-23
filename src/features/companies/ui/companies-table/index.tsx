@@ -22,20 +22,22 @@ export const CompaniesTable = ({ companies }: Props) => {
             <TableCell>ID</TableCell>
             <TableCell>Название</TableCell>
             <TableCell>Адрес</TableCell>
+            <TableCell>API Key</TableCell>
             <TableCell>Создано</TableCell>
             <TableCell align="right">Действия</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {companies.map((c) => (
-            <TableRow key={c.id}>
-              <TableCell>{c.id}</TableCell>
-              <TableCell>{c.name}</TableCell>
-              <TableCell>{c.address}</TableCell>
+          {companies.map(({ id, name, address, key, createdAt }) => (
+            <TableRow key={id}>
+              <TableCell>{id}</TableCell>
+              <TableCell>{name}</TableCell>
+              <TableCell>{address}</TableCell>
+              <TableCell>{key.key}</TableCell>
 
               <TableCell>
-                {new Date(c.createdAt).toLocaleString("ru-RU")}
+                {new Date(createdAt).toLocaleString("ru-RU")}
               </TableCell>
 
               <TableCell align="right">
