@@ -7,15 +7,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { CompaniesTable } from "@/features/companies/ui/companies-table";
 import { CompanyForm } from "@/features/companies/ui/company-form";
+import { Loader } from "@/shared/ui/loader";
+import { Modal } from "@/shared/ui/modal";
+import type { Company } from "@/features/companies/interfaces/companies";
 import {
   archiveCompany,
   getCompanies,
   refreshCompanyToken,
   unarchiveCompany,
-} from "@/shared/api/companies";
-import { Loader } from "@/shared/ui/loader";
-import { Modal } from "@/shared/ui/modal";
-import type { Company } from "@/shared/interfaces/companies";
+} from "@/features/companies/api/companies";
 
 const Companies = () => {
   const [isModalOpen, setModalOpen] = useState(false);

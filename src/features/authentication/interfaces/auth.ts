@@ -1,4 +1,4 @@
-import type { Company } from "./companies";
+import type { Company } from "@/features/companies/interfaces/companies";
 
 export interface Device {
   id: number;

@@ -6,8 +6,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
-import type { Company, CompanyPayload } from "@/shared/interfaces/companies";
-import { createCompany, editCompany } from "@/shared/api/companies";
+import type {
+  Company,
+  CompanyPayload,
+} from "@/features/companies/interfaces/companies";
+import { createCompany, editCompany } from "../../api/companies";
 
 interface Props {
   company?: Company | null;

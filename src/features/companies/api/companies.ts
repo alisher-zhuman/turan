@@ -1,5 +1,5 @@
-import { api } from ".";
-import type { CompanyPayload } from "../interfaces/companies";
+import { api } from "@/shared/api";
+import type { CompanyPayload } from "@/features/companies/interfaces/companies";
 
 export const getCompanies = async () => {
   const { data } = await api.get("/companies");
