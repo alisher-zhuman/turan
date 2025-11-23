@@ -4,18 +4,21 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import TableContainer from "@mui/material/TableContainer";
 import EditIcon from "@mui/icons-material/Edit";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import type { Company } from "@/shared/interfaces/companies";
 import { copyToClipboard } from "@/shared/utils/helpers";
 
 interface Props {
   companies: Company[];
+  onRefreshToken: (companyId: number) => void;
 }
 
-export const CompaniesTable = ({ companies }: Props) => {
+export const CompaniesTable = ({ companies, onRefreshToken }: Props) => {
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
       <Table>
@@ -24,7 +27,7 @@ export const CompaniesTable = ({ companies }: Props) => {
             <TableCell>ID</TableCell>
             <TableCell>Название</TableCell>
             <TableCell>Адрес</TableCell>
-            <TableCell>API Key</TableCell>
+            <TableCell>API ключ</TableCell>
             <TableCell>Создано</TableCell>
             <TableCell align="right">Действия</TableCell>
           </TableRow>
@@ -38,14 +41,20 @@ export const CompaniesTable = ({ companies }: Props) => {
               <TableCell>{address}</TableCell>
               <TableCell>
                 {key ? (
-                  <IconButton
-                    size="small"
-                    onClick={() => copyToClipboard(key.key)}
-                  >
-                    <ContentCopyIcon fontSize="small" />
-                  </IconButton>
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <IconButton
+                      size="small"
+                      onClick={() => copyToClipboard(key.key)}
+                    >
+                      <ContentCopyIcon fontSize="small" />
+                    </IconButton>
+
+                    <IconButton size="small" onClick={() => onRefreshToken(id)}>
+                      <RefreshIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
                 ) : (
-                  "Нету"
+                  "Нет API ключа"
                 )}
               </TableCell>
               <TableCell>
