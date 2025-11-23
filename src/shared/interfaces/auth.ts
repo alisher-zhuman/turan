@@ -1,11 +1,4 @@
-export interface Company {
-  id: number;
-  name: string;
-  address: string;
-  createdAt: string;
-  updatedAt: string;
-  isArchived: boolean;
-}
+import type { Company } from "./companies";
 
 export interface Device {
   id: number;
@@ -21,7 +14,7 @@ export interface User {
   firstName: string;
   lastName: string;
   role: "super_admin" | "admin" | "user" | "controller";
-  company: Company | null;
+  company: Omit<Company, "users"> | null;
   devices: Device[] | [];
   passwordChange: boolean;
   createdAt: string;
