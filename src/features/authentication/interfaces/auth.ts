@@ -1,4 +1,5 @@
 import type { Company } from "@/features/companies/interfaces/companies";
+import type { Role } from "@/shared/types";
 
 export interface Device {
   id: number;
@@ -13,7 +14,7 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  role: "super_admin" | "admin" | "user" | "controller";
+  role: Role;
   company: Omit<Company, "users" | "key"> | null;
   devices: Device[] | [];
   passwordChange: boolean;

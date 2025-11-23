@@ -1,3 +1,5 @@
+import type { Role } from "@/shared/types";
+
 export const SIDEBAR_LINKS = [
   {
     label: "Компании",
@@ -42,3 +44,5 @@ export const ROLE_LABELS = {
   user: "Пользователь",
   controller: "Контроллер",
 };
+
+export const ROLES: Role[] = ["super_admin", "admin", "user", "controller"];
