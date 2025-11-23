@@ -22,7 +22,6 @@ export const CompaniesTable = ({ companies }: Props) => {
             <TableCell>ID</TableCell>
             <TableCell>Название</TableCell>
             <TableCell>Адрес</TableCell>
-            <TableCell>API Key</TableCell>
             <TableCell>Создано</TableCell>
             <TableCell align="right">Действия</TableCell>
           </TableRow>
@@ -34,7 +33,6 @@ export const CompaniesTable = ({ companies }: Props) => {
               <TableCell>{c.id}</TableCell>
               <TableCell>{c.name}</TableCell>
               <TableCell>{c.address}</TableCell>
-              <TableCell>{c.apiKey || "—"}</TableCell>
 
               <TableCell>
                 {new Date(c.createdAt).toLocaleString("ru-RU")}
