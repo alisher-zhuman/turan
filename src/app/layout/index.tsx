@@ -1,18 +1,24 @@
 import { Outlet } from "react-router";
-import { Box, Toolbar } from "@mui/material";
-import { Header } from "@/shared/ui/header";
-import { Sidebar } from "@/shared/ui/sidebar";
+import { Toaster } from "react-hot-toast";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import { Header } from "@/features/layout/header";
+import { Sidebar } from "@/features/layout/sidebar";
 
 export const Layout = () => (
-  <Box sx={{ display: "flex", height: "100vh", width: "100vw" }}>
-    <Header />
+  <>
+    <Box sx={{ display: "flex", height: "100vh", width: "100vw" }}>
+      <Header />
 
-    <Sidebar />
+      <Sidebar />
 
-    <Box component="main" sx={{ flexGrow: 1, p: 3, overflow: "auto" }}>
-      <Toolbar />
+      <Box component="main" sx={{ flexGrow: 1, p: 3, overflow: "auto" }}>
+        <Toolbar />
 
-      <Outlet />
+        <Outlet />
+      </Box>
     </Box>
-  </Box>
+
+    <Toaster />
+  </>
 );
