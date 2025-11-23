@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import Box from "@mui/material/Box";
@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
+import type { Company } from "@/features/companies/interfaces/companies";
+import { getCompanies } from "@/features/companies/api/companies";
 import type { Role } from "@/shared/types";
 import { createUser } from "../../api";
 import type { CreateUserPayload } from "../../interfaces";
@@ -20,9 +22,15 @@ export const CreateUserForm = ({ onClose }: Props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [role, setRole] = useState<Role>("admin");
+  const [companyId, setCompanyId] = useState<number | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
 
   const queryClient = useQueryClient();
+
+  const { data: companies, isLoading: isCompaniesLoading } = useQuery({
+    queryKey: ["companies"],
+    queryFn: getCompanies,
+  });
 
   const mutation = useMutation({
     mutationFn: (payload: CreateUserPayload) => createUser(payload),
@@ -56,13 +64,23 @@ export const CreateUserForm = ({ onClose }: Props) => {
       validationErrors.push("Фамилия должно быть не менее 3 символов");
     }
 
+    if (!companyId) {
+      validationErrors.push("Выберите компанию");
+    }
+
     if (validationErrors.length > 0) {
       setErrors(validationErrors);
       return;
     }
 
     setErrors([]);
-    mutation.mutate({ email, firstName, lastName, role, companyId });
+    mutation.mutate({
+      email,
+      firstName,
+      lastName,
+      role,
+      companyId: companyId as number,
+    });
   };
 
   return (
@@ -112,6 +130,22 @@ export const CreateUserForm = ({ onClose }: Props) => {
       >
         <MenuItem value="admin">Админ</MenuItem>
         <MenuItem value="super_admin">Супер админ</MenuItem>
+      </TextField>
+
+      <TextField
+        select
+        label="Компания"
+        value={companyId}
+        onChange={(e) => setCompanyId(+e.target.value)}
+        fullWidth
+        required
+        disabled={isCompaniesLoading}
+      >
+        {companies.map(({ id, name }: Company) => (
+          <MenuItem key={id} value={id}>
+            {name}
+          </MenuItem>
+        ))}
       </TextField>
 
       <Button
