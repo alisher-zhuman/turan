@@ -34,7 +34,7 @@ export const CompaniesTable = ({ companies }: Props) => {
               <TableCell>{id}</TableCell>
               <TableCell>{name}</TableCell>
               <TableCell>{address}</TableCell>
-              <TableCell>{key.key}</TableCell>
+              <TableCell>{key?.key ?? "-"}</TableCell>
 
               <TableCell>
                 {new Date(createdAt).toLocaleString("ru-RU")}
