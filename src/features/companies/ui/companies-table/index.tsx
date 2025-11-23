@@ -7,7 +7,9 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import TableContainer from "@mui/material/TableContainer";
 import EditIcon from "@mui/icons-material/Edit";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import type { Company } from "@/shared/interfaces/companies";
+import { copyToClipboard } from "@/shared/utils/helpers";
 
 interface Props {
   companies: Company[];
@@ -34,12 +36,21 @@ export const CompaniesTable = ({ companies }: Props) => {
               <TableCell>{id}</TableCell>
               <TableCell>{name}</TableCell>
               <TableCell>{address}</TableCell>
-              <TableCell>{key?.key ?? "-"}</TableCell>
-
+              <TableCell>
+                {key ? (
+                  <IconButton
+                    size="small"
+                    onClick={() => copyToClipboard(key.key)}
+                  >
+                    <ContentCopyIcon fontSize="small" />
+                  </IconButton>
+                ) : (
+                  "Нету"
+                )}
+              </TableCell>
               <TableCell>
                 {new Date(createdAt).toLocaleString("ru-RU")}
               </TableCell>
-
               <TableCell align="right">
                 <IconButton color="primary">
                   <EditIcon />

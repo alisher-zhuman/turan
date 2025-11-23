@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import { createCompany } from "@/shared/api/companies";
+import toast from "react-hot-toast";
 
 interface CreateCompanyFormProps {
   onClose: () => void;
@@ -22,8 +24,9 @@ export const CreateCompanyForm = ({ onClose }: CreateCompanyFormProps) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["companies"] });
       onClose();
+      toast.success("Компания успешно создана");
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<{ message?: string }>) => {
       setErrorMessage(
         error.response?.data?.message || "Ошибка при создании компании"
       );
