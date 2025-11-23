@@ -35,3 +35,10 @@ export const SIDEBAR_LINKS = [
     roles: ["admin"],
   },
 ];
+
+export const ROLE_LABELS = {
+  super_admin: "Супер админ",
+  admin: "Админ",
+  user: "Пользователь",
+  controller: "Контроллер",
+};

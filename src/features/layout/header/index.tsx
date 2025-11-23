@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useAuthStore } from "@/features/authentication/store/auth";
+import { ROLE_LABELS } from "@/shared/utils/constants";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -21,9 +22,7 @@ export const Header = () => {
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {user && (
             <>
-              <Typography variant="body2">
-                {user.role.replace("_", " ").toUpperCase()}
-              </Typography>
+              <Typography variant="body2">{ROLE_LABELS[user.role]}</Typography>
 
               {user.role !== "super_admin" && user.company && (
                 <Typography variant="body2">{user.company.name}</Typography>

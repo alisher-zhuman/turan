@@ -42,7 +42,6 @@ const Companies = () => {
   });
 
   if (isLoading) return <Loader />;
-
   if (isError)
     return (
       <Alert severity="error" variant="filled">
