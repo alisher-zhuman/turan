@@ -33,7 +33,7 @@ export const CreateUserForm = ({ onClose }: Props) => {
 
   const { data: companies, isLoading: isCompaniesLoading } = useQuery({
     queryKey: ["companies"],
-    queryFn: getCompanies,
+    queryFn: () => getCompanies(false),
   });
 
   const mutation = useMutation({
