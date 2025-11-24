@@ -5,12 +5,12 @@ import Alert from "@mui/material/Alert";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import TablePagination from "@mui/material/TablePagination";
 import { UsersTable } from "@/features/users/ui/users-table";
 import { CreateUserForm } from "@/features/users/ui/create-user-form";
 import { getUsers } from "@/features/users/api";
 import { Loader } from "@/shared/ui/loader";
 import { Modal } from "@/shared/ui/modal";
+import { Pagination } from "@/shared/ui/pagination";
 
 const Users = () => {
   const [page, setPage] = useState(0);
@@ -65,21 +65,17 @@ const Users = () => {
           <>
             <UsersTable users={data.data} />
 
-            <TablePagination
-              component="div"
-              count={data.total}
+            <Pagination
               page={page}
-              onPageChange={(_, newPage) => setPage(newPage)}
-              rowsPerPage={limit}
-              onRowsPerPageChange={(e) => {
-                setLimit(parseInt(e.target.value, 10));
-                setPage(0);
-              }}
+              limit={limit}
+              total={data.total}
+              onPageChange={setPage}
               rowsPerPageOptions={[5, 10, 20]}
               labelRowsPerPage="Пользователей на странице:"
-              labelDisplayedRows={({ from, to, count }) =>
-                `${from}-${to} из ${count !== -1 ? count : `более чем ${to}`}`
-              }
+              onRowsPerPageChange={(newLimit) => {
+                setLimit(newLimit);
+                setPage(0);
+              }}
             />
           </>
         )}

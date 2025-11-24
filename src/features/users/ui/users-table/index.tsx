@@ -12,40 +12,38 @@ interface Props {
   users: Omit<User, "company" | "devices">[];
 }
 
-export const UsersTable = ({ users }: Props) => {
-  return (
-    <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Почта</TableCell>
-            <TableCell>Имя</TableCell>
-            <TableCell>Фамилия</TableCell>
-            <TableCell>Роль</TableCell>
-            <TableCell>Создан</TableCell>
-          </TableRow>
-        </TableHead>
+export const UsersTable = ({ users }: Props) => (
+  <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>ID</TableCell>
+          <TableCell>Почта</TableCell>
+          <TableCell>Имя</TableCell>
+          <TableCell>Фамилия</TableCell>
+          <TableCell>Роль</TableCell>
+          <TableCell>Создан</TableCell>
+        </TableRow>
+      </TableHead>
 
-        <TableBody>
-          {users.map((user) => {
-            const { id, email, firstName, lastName, role, createdAt } = user;
+      <TableBody>
+        {users.map((user) => {
+          const { id, email, firstName, lastName, role, createdAt } = user;
 
-            return (
-              <TableRow key={id}>
-                <TableCell>{id}</TableCell>
-                <TableCell>{email}</TableCell>
-                <TableCell>{firstName}</TableCell>
-                <TableCell>{lastName}</TableCell>
-                <TableCell>{ROLE_LABELS[role]}</TableCell>
-                <TableCell>
-                  {new Date(createdAt).toLocaleString("ru-RU")}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
+          return (
+            <TableRow key={id}>
+              <TableCell>{id}</TableCell>
+              <TableCell>{email}</TableCell>
+              <TableCell>{firstName}</TableCell>
+              <TableCell>{lastName}</TableCell>
+              <TableCell>{ROLE_LABELS[role]}</TableCell>
+              <TableCell>
+                {new Date(createdAt).toLocaleString("ru-RU")}
+              </TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
