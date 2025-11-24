@@ -12,3 +12,18 @@ export const createUser = async (payload: CreateUserPayload) => {
   const { data } = await api.post("/users", payload);
   return data;
 };
+
+export const editUser = async (id: number, payload: CreateUserPayload) => {
+  const { data } = await api.patch(`/users/${id}`, payload);
+  return data;
+};
+
+export const archiveUser = async (id: number) => {
+  const { data } = await api.post(`/users/archive/${id}`);
+  return data;
+};
+
+export const unarchiveUser = async (id: number) => {
+  const { data } = await api.post(`/users/unarchive/${id}`);
+  return data;
+};

@@ -95,9 +95,15 @@ const Companies = () => {
   return (
     <>
       <Box>
-        <Box mb={2} display="flex" justifyContent="flex-end" gap={2}>
+        <Box
+          mb={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          gap={2}
+        >
           <Select
-            sx={{ maxHeight: 36 }}
+            sx={{ maxHeight: 38 }}
             value={isArchived ? "archived" : "active"}
             onChange={(e) => setIsArchived(e.target.value === "archived")}
           >

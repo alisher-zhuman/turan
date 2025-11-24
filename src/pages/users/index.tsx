@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Alert from "@mui/material/Alert";
 import { UsersTable } from "@/features/users/ui/users-table";
-import { CreateUserForm } from "@/features/users/ui/create-user-form";
-import { getUsers } from "@/features/users/api";
+import { UserForm } from "@/features/users/ui/user-form";
+import { getUsers, archiveUser, unarchiveUser } from "@/features/users/api";
+import type { User } from "@/features/authentication/interfaces/auth";
 import { Loader } from "@/shared/ui/loader";
 import { Modal } from "@/shared/ui/modal";
 import { Pagination } from "@/shared/ui/pagination";
@@ -17,12 +20,17 @@ const Users = () => {
   const [limit, setLimit] = useState(10);
   const [isArchived, setIsArchived] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<Omit<
+    User,
+    "company" | "devices"
+  > | null>(null);
+
+  const queryClient = useQueryClient();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["users", page, limit, isArchived],
     queryFn: () => getUsers(page + 1, limit, isArchived),
     staleTime: 5000,
-    placeholderData: (prevData) => prevData,
   });
 
   if (isLoading) return <Loader />;
@@ -31,8 +39,37 @@ const Users = () => {
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
-  const hasUsers = data?.data?.length > 0;
+  const openEditModal = (user: Omit<User, "company" | "devices">) => {
+    setEditingUser(user);
+    setModalOpen(true);
+  };
 
+  const closeModal = () => {
+    setEditingUser(null);
+    setModalOpen(false);
+  };
+
+  const handleToggleArchive = async (userId: number, archived: boolean) => {
+    try {
+      if (archived) {
+        await unarchiveUser(userId);
+        toast.success("Пользователь разархивирован");
+      } else {
+        await archiveUser(userId);
+        toast.success("Пользователь архивирован");
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      toast.error(
+        axiosError.response?.data?.message ||
+          "Ошибка при изменении статуса пользователя"
+      );
+    }
+  };
+
+  const hasUsers = data?.data?.length > 0;
   const emptyText = isArchived
     ? "Нет архивных пользователей"
     : "Нет активных пользователей";
@@ -40,9 +77,15 @@ const Users = () => {
   return (
     <>
       <Box>
-        <Box mb={2} display="flex" justifyContent="flex-end" gap={2}>
+        <Box
+          mb={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          gap={2}
+        >
           <Select
-            sx={{ maxHeight: 36 }}
+            sx={{ maxHeight: 38 }}
             value={isArchived ? "archived" : "active"}
             onChange={(e) => setIsArchived(e.target.value === "archived")}
           >
@@ -63,7 +106,11 @@ const Users = () => {
 
         {hasUsers && (
           <>
-            <UsersTable users={data.data} />
+            <UsersTable
+              users={data.data}
+              onToggleArchive={handleToggleArchive}
+              onEdit={openEditModal}
+            />
 
             <Pagination
               page={page}
@@ -83,10 +130,12 @@ const Users = () => {
 
       <Modal
         open={isModalOpen}
-        onClose={toggleModal}
-        title="Создать пользователя"
+        onClose={closeModal}
+        title={
+          editingUser ? "Редактировать пользователя" : "Создать пользователя"
+        }
       >
-        <CreateUserForm onClose={toggleModal} />
+        <UserForm onClose={closeModal} userToEdit={editingUser} />
       </Modal>
     </>
   );

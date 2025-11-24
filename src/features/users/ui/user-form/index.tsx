@@ -9,21 +9,23 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import type { Company } from "@/features/companies/interfaces/companies";
 import { getCompanies } from "@/features/companies/api/companies";
+import type { User } from "@/features/authentication/interfaces/auth";
 import { useAuthStore } from "@/features/authentication/store/auth";
-import type { Role } from "@/shared/types";
-import { createUser } from "../../api";
-import type { CreateUserPayload } from "../../interfaces";
 import { ROLE_LABELS } from "@/shared/utils/constants";
+import type { Role } from "@/shared/types";
+import { createUser, editUser } from "../../api";
+import type { CreateUserPayload } from "../../interfaces";
 
 interface Props {
   onClose: () => void;
+  userToEdit?: Omit<User, "company" | "devices"> | null;
 }
 
-export const CreateUserForm = ({ onClose }: Props) => {
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [role, setRole] = useState<Role>("admin");
+export const UserForm = ({ onClose, userToEdit }: Props) => {
+  const [email, setEmail] = useState(userToEdit?.email || "");
+  const [firstName, setFirstName] = useState(userToEdit?.firstName || "");
+  const [lastName, setLastName] = useState(userToEdit?.lastName || "");
+  const [role, setRole] = useState<Role>(userToEdit?.role || "admin");
   const [companyId, setCompanyId] = useState<number | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
 
@@ -31,21 +33,29 @@ export const CreateUserForm = ({ onClose }: Props) => {
 
   const queryClient = useQueryClient();
 
+  const isEditing = !!userToEdit;
+
   const { data: companies, isLoading: isCompaniesLoading } = useQuery({
     queryKey: ["companies"],
     queryFn: () => getCompanies(false),
+    enabled: user?.role === "super_admin",
   });
 
   const mutation = useMutation({
-    mutationFn: (payload: CreateUserPayload) => createUser(payload),
-    onSuccess: ({ role }: { role: Role }) => {
+    mutationFn: (payload: CreateUserPayload) =>
+      isEditing ? editUser(userToEdit!.id, payload) : createUser(payload),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       onClose();
-      toast.success(`${ROLE_LABELS[role]} успешно создан`);
+      toast.success(
+        isEditing
+          ? `${ROLE_LABELS[role]} успешно обновлён`
+          : `${ROLE_LABELS[role]} успешно создан`
+      );
     },
     onError: (error: AxiosError<{ message?: string; errors?: string[] }>) => {
       const messages = error.response?.data?.errors || [
-        error.response?.data?.message || "Ошибка при создании пользователя",
+        error.response?.data?.message || "Ошибка при сохранении пользователя",
       ];
       setErrors(messages);
     },
@@ -62,10 +72,12 @@ export const CreateUserForm = ({ onClose }: Props) => {
     e.preventDefault();
     const validationErrors: string[] = [];
 
-    if (!email || email.length < 3) {
-      validationErrors.push("Email должен быть не менее 3 символов");
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      validationErrors.push("Email должен быть валидным");
+    if (!isEditing) {
+      if (!email || email.length < 3) {
+        validationErrors.push("Email должен быть не менее 3 символов");
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        validationErrors.push("Email должен быть валидным");
+      }
     }
 
     if (!firstName || firstName.length < 3) {
@@ -74,7 +86,6 @@ export const CreateUserForm = ({ onClose }: Props) => {
     if (!lastName || lastName.length < 3) {
       validationErrors.push("Фамилия должно быть не менее 3 символов");
     }
-
     if (showCompanySelect && !companyId) {
       validationErrors.push("Выберите компанию");
     }
@@ -85,8 +96,9 @@ export const CreateUserForm = ({ onClose }: Props) => {
     }
 
     setErrors([]);
+
     mutation.mutate({
-      email,
+      ...(!isEditing && { email }),
       firstName,
       lastName,
       role,
@@ -106,14 +118,16 @@ export const CreateUserForm = ({ onClose }: Props) => {
         </Alert>
       ))}
 
-      <TextField
-        label="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        fullWidth
-        required
-        type="email"
-      />
+      {!isEditing && (
+        <TextField
+          label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+          required
+          type="email"
+        />
+      )}
 
       <TextField
         label="Имя"
@@ -170,7 +184,13 @@ export const CreateUserForm = ({ onClose }: Props) => {
         color="primary"
         disabled={mutation.isPending}
       >
-        {mutation.isPending ? "Создание..." : "Создать"}
+        {mutation.isPending
+          ? isEditing
+            ? "Обновление..."
+            : "Создание..."
+          : isEditing
+          ? "Сохранить"
+          : "Создать"}
       </Button>
     </Box>
   );

@@ -9,7 +9,7 @@ export interface GetUsersResponse {
 }
 
 export interface CreateUserPayload {
-  email: string;
+  email?: string;
   firstName: string;
   lastName: string;
   role: Role;
