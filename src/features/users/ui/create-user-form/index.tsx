@@ -38,10 +38,10 @@ export const CreateUserForm = ({ onClose }: Props) => {
 
   const mutation = useMutation({
     mutationFn: (payload: CreateUserPayload) => createUser(payload),
-    onSuccess: () => {
+    onSuccess: ({ role }: { role: Role }) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       onClose();
-      toast.success("Пользователь успешно создан");
+      toast.success(`${ROLE_LABELS[role]} успешно создан`);
     },
     onError: (error: AxiosError<{ message?: string; errors?: string[] }>) => {
       const messages = error.response?.data?.errors || [
