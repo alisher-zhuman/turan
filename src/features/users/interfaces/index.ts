@@ -13,5 +13,5 @@ export interface CreateUserPayload {
   firstName: string;
   lastName: string;
   role: Role;
-  companyId: number;
+  companyId?: number;
 }

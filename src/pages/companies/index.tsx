@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import type { Company } from "@/features/companies/interfaces/companies";
 import { CompaniesTable } from "@/features/companies/ui/companies-table";
 import { CompanyForm } from "@/features/companies/ui/company-form";
 import { Loader } from "@/shared/ui/loader";
 import { Modal } from "@/shared/ui/modal";
-import type { Company } from "@/features/companies/interfaces/companies";
+
 import {
   archiveCompany,
   getCompanies,
@@ -20,12 +23,13 @@ import {
 const Companies = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<Company | null>(null);
+  const [isArchived, setIsArchived] = useState(false);
 
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["companies"],
-    queryFn: getCompanies,
+    queryKey: ["companies", isArchived],
+    queryFn: () => getCompanies(isArchived),
   });
 
   const refreshTokenMutation = useMutation({
@@ -51,12 +55,9 @@ const Companies = () => {
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
-  const handleToggleArchive = async (
-    companyId: number,
-    isArchived: boolean
-  ) => {
+  const handleToggleArchive = async (companyId: number, archived: boolean) => {
     try {
-      if (isArchived) {
+      if (archived) {
         await unarchiveCompany(companyId);
         toast.success("Компания разархивирована");
       } else {
@@ -88,7 +89,16 @@ const Companies = () => {
   return (
     <>
       <Box>
-        <Box mb={2} display="flex" justifyContent="flex-end">
+        <Box mb={2} display="flex" justifyContent="flex-end" gap={2}>
+          <Select
+            sx={{ maxHeight: 36 }}
+            value={isArchived ? "archived" : "active"}
+            onChange={(e) => setIsArchived(e.target.value === "archived")}
+          >
+            <MenuItem value="active">Активные</MenuItem>
+            <MenuItem value="archived">Архивные</MenuItem>
+          </Select>
+
           <Button onClick={toggleModal} variant="contained" color="primary">
             Создать
           </Button>

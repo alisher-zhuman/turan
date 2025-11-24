@@ -37,7 +37,6 @@ export const CompaniesTable = ({
           <TableCell>Адрес</TableCell>
           <TableCell>API ключ</TableCell>
           <TableCell>Создано</TableCell>
-          <TableCell>Статус</TableCell>
           <TableCell align="right">Действия</TableCell>
         </TableRow>
       </TableHead>
@@ -74,8 +73,6 @@ export const CompaniesTable = ({
               <TableCell>
                 {new Date(createdAt).toLocaleString("ru-RU")}
               </TableCell>
-
-              <TableCell>{isArchived ? "Архив" : "Активна"}</TableCell>
 
               <TableCell align="right">
                 <Box display="flex" justifyContent="flex-end" gap={1}>

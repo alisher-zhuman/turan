@@ -9,9 +9,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import type { Company } from "@/features/companies/interfaces/companies";
 import { getCompanies } from "@/features/companies/api/companies";
+import { useAuthStore } from "@/features/authentication/store/auth";
 import type { Role } from "@/shared/types";
 import { createUser } from "../../api";
 import type { CreateUserPayload } from "../../interfaces";
+import { ROLE_LABELS } from "@/shared/utils/constants";
 
 interface Props {
   onClose: () => void;
@@ -24,6 +26,8 @@ export const CreateUserForm = ({ onClose }: Props) => {
   const [role, setRole] = useState<Role>("admin");
   const [companyId, setCompanyId] = useState<number | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
+
+  const user = useAuthStore((state) => state.user);
 
   const queryClient = useQueryClient();
 
@@ -47,6 +51,13 @@ export const CreateUserForm = ({ onClose }: Props) => {
     },
   });
 
+  const availableRoles: Role[] =
+    user?.role === "super_admin"
+      ? ["admin", "super_admin"]
+      : ["admin", "user", "controller"];
+
+  const showCompanySelect = user?.role === "super_admin" && role === "admin";
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const validationErrors: string[] = [];
@@ -64,7 +75,7 @@ export const CreateUserForm = ({ onClose }: Props) => {
       validationErrors.push("Фамилия должно быть не менее 3 символов");
     }
 
-    if (!companyId) {
+    if (showCompanySelect && !companyId) {
       validationErrors.push("Выберите компанию");
     }
 
@@ -79,7 +90,7 @@ export const CreateUserForm = ({ onClose }: Props) => {
       firstName,
       lastName,
       role,
-      companyId: companyId as number,
+      ...(showCompanySelect ? { companyId: companyId! } : {}),
     });
   };
 
@@ -128,25 +139,30 @@ export const CreateUserForm = ({ onClose }: Props) => {
         fullWidth
         required
       >
-        <MenuItem value="admin">Админ</MenuItem>
-        <MenuItem value="super_admin">Супер админ</MenuItem>
-      </TextField>
-
-      <TextField
-        select
-        label="Компания"
-        value={companyId}
-        onChange={(e) => setCompanyId(+e.target.value)}
-        fullWidth
-        required
-        disabled={isCompaniesLoading}
-      >
-        {companies.map(({ id, name }: Company) => (
-          <MenuItem key={id} value={id}>
-            {name}
+        {availableRoles.map((r) => (
+          <MenuItem key={r} value={r}>
+            {ROLE_LABELS[r]}
           </MenuItem>
         ))}
       </TextField>
+
+      {showCompanySelect && (
+        <TextField
+          select
+          label="Компания"
+          value={companyId}
+          onChange={(e) => setCompanyId(+e.target.value)}
+          fullWidth
+          required
+          disabled={isCompaniesLoading}
+        >
+          {companies?.map(({ id, name }: Company) => (
+            <MenuItem key={id} value={id}>
+              {name}
+            </MenuItem>
+          ))}
+        </TextField>
+      )}
 
       <Button
         type="submit"

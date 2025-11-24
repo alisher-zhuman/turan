@@ -1,8 +1,11 @@
 import { api } from "@/shared/api";
 import type { CompanyPayload } from "@/features/companies/interfaces/companies";
 
-export const getCompanies = async () => {
-  const { data } = await api.get("/companies");
+export const getCompanies = async (isArchived: boolean) => {
+  const { data } = await api.get(`/companies`, {
+    params: { isArchived },
+  });
+
   return data.data;
 };
 
