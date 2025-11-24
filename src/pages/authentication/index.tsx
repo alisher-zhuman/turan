@@ -5,7 +5,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { SignInForm } from "@/features/authentication/ui/sign-in-form";
 import { ForgotForm } from "@/features/authentication/ui/forgot-form";
 
-const Authentication = () => {
+export const Authentication = () => {
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
@@ -28,5 +28,3 @@ const Authentication = () => {
     </Box>
   );
 };
-
-export default Authentication;

@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import { Suspense, lazy, type ReactNode } from "react";
 
+import { Authentication } from "@/pages/authentication";
 import { Loader } from "@/shared/ui/loader";
 import { Layout } from "../layout";
 import { ProtectedRoute } from "./protected";
@@ -12,7 +13,6 @@ const Groups = lazy(() => import("@/pages/groups"));
 const Meters = lazy(() => import("@/pages/meters"));
 const Readings = lazy(() => import("@/pages/readings"));
 const Webhooks = lazy(() => import("@/pages/webhooks"));
-const Authentication = lazy(() => import("@/pages/authentication"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 const withSuspense = (element: ReactNode) => (
@@ -37,7 +37,7 @@ export const ROUTER = createBrowserRouter([
       { path: "webhooks", element: withSuspense(<Webhooks />) },
     ],
   },
-  { path: "/sign-in", element: withSuspense(<Authentication />) },
-  { path: "/sign-in/forgot", element: withSuspense(<Authentication />) },
+  { path: "/sign-in", element: <Authentication /> },
+  { path: "/sign-in/forgot", element: <Authentication /> },
   { path: "*", element: withSuspense(<NotFound />) },
 ]);
