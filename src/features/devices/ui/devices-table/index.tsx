@@ -23,7 +23,6 @@ export const DevicesTable = ({ devices, onVerify, onDelete }: Props) => (
       <TableHead>
         <TableRow>
           <TableCell>ID</TableCell>
-          <TableCell>Пользователь</TableCell>
           <TableCell>Device ID</TableCell>
           <TableCell>Создан</TableCell>
           <TableCell align="right">Действия</TableCell>
@@ -43,14 +42,15 @@ export const DevicesTable = ({ devices, onVerify, onDelete }: Props) => (
               </TableCell>
               <TableCell align="right">
                 <Box display="flex" justifyContent="flex-end" gap={1}>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    disabled={verified}
-                    onClick={() => onVerify(id)}
-                  >
-                    {verified ? "Verified" : "Verify"}
-                  </Button>
+                  {!verified && (
+                    <Button
+                      size="small"
+                      variant="contained"
+                      onClick={() => onVerify(id)}
+                    >
+                      Подтвердить
+                    </Button>
+                  )}
 
                   <IconButton color="error" onClick={() => onDelete(id)}>
                     <DeleteIcon />

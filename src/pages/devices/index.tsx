@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import { DevicesTable } from "@/features/devices/ui/devices-table";
 import { getDevices, verifyDevice, deleteDevice } from "@/features/devices/api";
 import { Loader } from "@/shared/ui/loader";
@@ -12,6 +14,8 @@ import { Pagination } from "@/shared/ui/pagination";
 const Devices = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
+  const [verified, setVerified] = useState(false);
+  const [isArchived, setIsArchived] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -27,7 +31,21 @@ const Devices = () => {
 
   const hasDevices = data?.data?.length > 0;
 
+  let emptyText = "Устройства не найдены";
+
+  if (!isArchived && !verified) {
+    emptyText = "Нет неподтверждённых устройств";
+  } else if (!isArchived && verified) {
+    emptyText = "Нет подтверждённых устройств";
+  } else if (isArchived && !verified) {
+    emptyText = "Нет архивных неподтверждённых устройств";
+  } else if (isArchived && verified) {
+    emptyText = "Нет архивных подтверждённых устройств";
+  }
+
   const handleVerify = async (deviceId: number) => {
+    console.log(deviceId);
+
     try {
       await verifyDevice(deviceId);
       toast.success("Устройство подтверждено");
@@ -44,7 +62,7 @@ const Devices = () => {
 
   const handleDelete = async (deviceId: number) => {
     try {
-      await deleteDevice([deviceId]);
+      await deleteDevice([+deviceId]);
       toast.success("Устройство удалено");
 
       queryClient.invalidateQueries({ queryKey: ["devices"] });
@@ -58,9 +76,41 @@ const Devices = () => {
 
   return (
     <Box>
+      <Box
+        mb={2}
+        display="flex"
+        alignItems="center"
+        justifyContent="flex-end"
+        gap={2}
+      >
+        <Select
+          sx={{ maxHeight: 38 }}
+          value={isArchived ? "archived" : "active"}
+          onChange={(e) => {
+            setIsArchived(e.target.value === "archived");
+            setPage(0);
+          }}
+        >
+          <MenuItem value="active">Активные</MenuItem>
+          <MenuItem value="archived">Архивные</MenuItem>
+        </Select>
+
+        <Select
+          sx={{ maxHeight: 38 }}
+          value={verified ? "verified" : "unverified"}
+          onChange={(e) => {
+            setVerified(e.target.value === "verified");
+            setPage(0);
+          }}
+        >
+          <MenuItem value="unverified">Неподтверждённые</MenuItem>
+          <MenuItem value="verified">Подтверждённые</MenuItem>
+        </Select>
+      </Box>
+
       {!hasDevices && (
         <Alert severity="info" sx={{ mt: 2 }}>
-          Нет неподтверждённых устройств
+          {emptyText}
         </Alert>
       )}
 
