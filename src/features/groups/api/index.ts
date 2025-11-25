@@ -9,14 +9,14 @@ export const getGroups = async (page = 1, limit = 10) => {
 };
 
 export const createGroup = async (groupName: string) => {
-  const { data } = await api.post("/group/create", undefined, {
+  const { data } = await api.post("/group/create", null, {
     params: { groupName },
   });
   return data;
 };
 
 export const updateGroup = async (groupId: number, newName: string) => {
-  const { data } = await api.patch(`/group`, undefined, {
+  const { data } = await api.patch(`/group`, null, {
     params: { groupId, newName },
   });
   return data;

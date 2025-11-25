@@ -13,7 +13,7 @@ export const getDevices = async (
 };
 
 export const verifyDevice = async (deviceId: number) => {
-  const { data } = await api.patch(`/devices/verify`, undefined, {
+  const { data } = await api.patch(`/devices/verify`, null, {
     params: { deviceId },
   });
   return data;
