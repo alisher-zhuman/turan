@@ -18,7 +18,7 @@ export const DataTable = <T,>({ rows, columns, getRowId }: Props<T>) => (
     <Table>
       <TableHead>
         <TableRow>
-          {columns.map(({ id, align, header }) => (
+          {columns?.map(({ id, align, header }) => (
             <TableCell key={id} align={align ?? "left"}>
               {header}
             </TableCell>
@@ -27,7 +27,7 @@ export const DataTable = <T,>({ rows, columns, getRowId }: Props<T>) => (
       </TableHead>
 
       <TableBody>
-        {rows.map((row, index) => (
+        {rows?.map((row, index) => (
           <TableRow key={getRowId?.(row, index) ?? index}>
             {columns.map((column) => (
               <TableCell key={column.id} align={column.align ?? "left"}>
