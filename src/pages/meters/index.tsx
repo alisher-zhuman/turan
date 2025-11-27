@@ -32,6 +32,8 @@ const Meters = () => {
     setStatus,
     isArchived,
     setIsArchived,
+    valveFilter,
+    setValveFilter,
     isAdmin,
     canEdit,
     selectedIds,
@@ -99,6 +101,19 @@ const Meters = () => {
               <MenuItem value="warning">Предупреждения</MenuItem>
               <MenuItem value="error">С ошибками</MenuItem>
               <MenuItem value="all">Все статусы</MenuItem>
+            </Select>
+
+            <Select
+              sx={{ maxHeight: 38, minWidth: 160 }}
+              value={valveFilter}
+              onChange={(e) => {
+                setValveFilter(e.target.value as "all" | "open" | "closed");
+                setPage(0);
+              }}
+            >
+              <MenuItem value="all">Все клапаны</MenuItem>
+              <MenuItem value="open">Клапан открыт</MenuItem>
+              <MenuItem value="closed">Клапан закрыт</MenuItem>
             </Select>
 
             <Select

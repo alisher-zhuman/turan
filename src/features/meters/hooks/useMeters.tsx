@@ -15,10 +15,12 @@ export const useMeters = () => {
   const [limit, setLimit] = useState(10);
   const [status, setStatus] = useState<string>("normal");
   const [isArchived, setIsArchived] = useState(false);
+  const [valveFilter, setValveFilter] = useState<"all" | "open" | "closed">(
+    "all"
+  );
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const queryClient = useQueryClient();
-
   const { user } = useAuthStore();
 
   const isAdmin = user?.role === "admin";
@@ -30,10 +32,26 @@ export const useMeters = () => {
     staleTime: 5000,
   });
 
-  const meters: Meter[] = data?.data;
-  const hasMeters = meters?.length > 0;
+  const metersRaw: Meter[] = data?.data ?? [];
+  const meters: Meter[] = metersRaw.filter((m) => {
+    if (valveFilter === "all") {
+      return true;
+    }
 
+    if (valveFilter === "open") {
+      return m.valveStatus === "open";
+    }
+
+    if (valveFilter === "closed") {
+      return m.valveStatus === "closed";
+    }
+
+    return true;
+  });
+
+  const hasMeters = meters.length > 0;
   const emptyText = "Счётчики не найдены";
+  const total = data?.total;
 
   const invalidate = async () => {
     await queryClient.invalidateQueries({ queryKey: ["meters"] });
@@ -114,7 +132,7 @@ export const useMeters = () => {
 
   return {
     meters,
-    total: data?.total,
+    total,
     hasMeters,
     emptyText,
     isLoading,
@@ -130,6 +148,9 @@ export const useMeters = () => {
     isArchived,
     setIsArchived,
 
+    valveFilter,
+    setValveFilter,
+
     isAdmin,
     canEdit,
 
@@ -138,7 +159,6 @@ export const useMeters = () => {
     isIndeterminate,
     handleToggleAll,
     handleToggleOne,
-
     handleDeleteOne,
     handleDeleteSelected,
     handleCommand,
