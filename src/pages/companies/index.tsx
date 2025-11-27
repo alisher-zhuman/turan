@@ -1,49 +1,32 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import type { AxiosError } from "axios";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import type { Company } from "@/features/companies/interfaces/companies";
+import { useCompanies } from "@/features/companies/hooks/useCompanies";
 import { CompanyForm } from "@/features/companies/ui/company-form";
 import { createCompanyColumns } from "@/features/companies/columns";
-import {
-  archiveCompany,
-  getCompanies,
-  refreshCompanyToken,
-  unarchiveCompany,
-} from "@/features/companies/api/companies";
-import { Loader } from "@/shared/ui/loader";
+import type { Company } from "@/features/companies/interfaces/companies";
 import { Modal } from "@/shared/ui/modal";
 import { DataTable } from "@/shared/ui/data-table";
+import { Loader } from "@/shared/ui/loader";
 
 const Companies = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<Company | null>(null);
-  const [isArchived, setIsArchived] = useState(false);
 
-  const queryClient = useQueryClient();
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["companies", isArchived],
-    queryFn: () => getCompanies(isArchived),
-  });
-
-  const refreshTokenMutation = useMutation({
-    mutationFn: (id: number) => refreshCompanyToken(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["companies"] });
-      toast.success("API ключ обновлён");
-    },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      toast.error(
-        error.response?.data?.message || "Ошибка при обновлении API ключа"
-      );
-    },
-  });
+  const {
+    companies,
+    hasCompanies,
+    emptyText,
+    isArchived,
+    setIsArchived,
+    isLoading,
+    isError,
+    handleRefreshToken,
+    handleToggleArchive,
+  } = useCompanies();
 
   if (isLoading) {
     return <Loader />;
@@ -58,27 +41,6 @@ const Companies = () => {
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
-  const handleToggleArchive = async (companyId: number, archived: boolean) => {
-    try {
-      if (archived) {
-        await unarchiveCompany(companyId);
-        toast.success("Компания разархивирована");
-      } else {
-        await archiveCompany(companyId);
-        toast.success("Компания архивирована");
-      }
-
-      queryClient.invalidateQueries({ queryKey: ["companies"] });
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-
-      toast.error(
-        axiosError.response?.data?.message ||
-          "Ошибка при изменении статуса компании"
-      );
-    }
-  };
-
   const openEditModal = (company: Company) => {
     setEditingCompany(company);
     setModalOpen(true);
@@ -89,14 +51,8 @@ const Companies = () => {
     setModalOpen(false);
   };
 
-  const hasCompanies = data && data.length > 0;
-
-  const emptyText = isArchived
-    ? "Нет архивных компаний"
-    : "Нет активных компаний";
-
   const columns = createCompanyColumns(
-    (id) => refreshTokenMutation.mutate(id),
+    handleRefreshToken,
     handleToggleArchive,
     openEditModal
   );
@@ -132,7 +88,11 @@ const Companies = () => {
         )}
 
         {hasCompanies && (
-          <DataTable rows={data} columns={columns} getRowId={(c) => c.id} />
+          <DataTable
+            rows={companies}
+            columns={columns}
+            getRowId={(c: Company) => c.id}
+          />
         )}
       </Box>
 
