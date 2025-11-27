@@ -7,6 +7,7 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import type { Column } from "@/shared/types";
 import type { CreateMeterColumnsParams, Meter } from "../interfaces";
+import { STATUS_LABELS, VALVE_LABELS } from "../utils/constants";
 
 export const createMeterColumns = ({
   isAdmin,
@@ -65,12 +66,46 @@ export const createMeterColumns = ({
     {
       id: "valveStatus",
       header: "Клапан",
-      cell: (m) => m.valveStatus || "-",
+      cell: (m) => {
+        const label = m.valveStatus
+          ? VALVE_LABELS[m.valveStatus] || m.valveStatus
+          : "-";
+
+        const color =
+          m.valveStatus === "open"
+            ? "#2e7d32"
+            : m.valveStatus === "closed"
+            ? "#d32f2f"
+            : "inherit";
+
+        return (
+          <Box component="span" sx={{ color, fontWeight: 500 }}>
+            {label}
+          </Box>
+        );
+      },
     },
     {
       id: "status",
       header: "Статус",
-      cell: (m) => m.status,
+      cell: (m) => {
+        const label = STATUS_LABELS[m.status] || m.status || "-";
+
+        const color =
+          m.status === "normal"
+            ? "#2e7d32"
+            : m.status === "warning"
+            ? "#ed6c02"
+            : m.status === "error"
+            ? "#d32f2f"
+            : "inherit";
+
+        return (
+          <Box component="span" sx={{ color, fontWeight: 500 }}>
+            {label}
+          </Box>
+        );
+      },
     },
     {
       id: "createdAt",
@@ -79,52 +114,54 @@ export const createMeterColumns = ({
     }
   );
 
-  columns.push({
-    id: "actions",
-    header: "Действия",
-    align: "right",
-    cell: (m) => {
-      const isOpen = m.valveStatus === "open";
+  if (isAdmin || canEdit) {
+    columns.push({
+      id: "actions",
+      header: "Действия",
+      align: "right",
+      cell: (m) => {
+        const isOpen = m.valveStatus === "open";
 
-      return (
-        <Box display="flex" justifyContent="flex-end" gap={1}>
-          {isAdmin && (
-            <>
-              {!isOpen && (
-                <IconButton
-                  color="success"
-                  onClick={() => onCommand(m.id, "open")}
-                >
-                  <ToggleOnIcon />
-                </IconButton>
-              )}
+        return (
+          <Box display="flex" justifyContent="flex-end" gap={1}>
+            {isAdmin && (
+              <>
+                {!isOpen && (
+                  <IconButton
+                    color="success"
+                    onClick={() => onCommand(m.id, "open")}
+                  >
+                    <ToggleOnIcon />
+                  </IconButton>
+                )}
 
-              {isOpen && (
-                <IconButton
-                  color="warning"
-                  onClick={() => onCommand(m.id, "close")}
-                >
-                  <ToggleOffIcon />
-                </IconButton>
-              )}
-            </>
-          )}
+                {isOpen && (
+                  <IconButton
+                    color="warning"
+                    onClick={() => onCommand(m.id, "close")}
+                  >
+                    <ToggleOffIcon />
+                  </IconButton>
+                )}
+              </>
+            )}
 
-          {canEdit && (
-            <IconButton color="primary" onClick={() => onEdit(m)}>
-              <EditIcon />
-            </IconButton>
-          )}
+            {canEdit && (
+              <IconButton color="primary" onClick={() => onEdit(m)}>
+                <EditIcon />
+              </IconButton>
+            )}
 
-          {isAdmin && (
-            <IconButton color="error" onClick={() => onDeleteOne(m.id)}>
-              <DeleteIcon />
-            </IconButton>
-          )}
-        </Box>
-      );
-    },
-  });
+            {isAdmin && (
+              <IconButton color="error" onClick={() => onDeleteOne(m.id)}>
+                <DeleteIcon />
+              </IconButton>
+            )}
+          </Box>
+        );
+      },
+    });
+  }
 
   return columns;
 };
