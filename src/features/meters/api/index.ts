@@ -4,11 +4,19 @@ export const getMeters = async (
   page = 1,
   limit = 10,
   isArchived = false,
-  status = "normal"
+  status?: string
 ) => {
-  const { data } = await api.get("/meters", {
-    params: { page, limit, isArchived, status },
-  });
+  const params: Record<string, unknown> = {
+    page,
+    limit,
+    isArchived,
+  };
+
+  if (status && status !== "all") {
+    params.status = status;
+  }
+
+  const { data } = await api.get("/meters", { params });
 
   return data;
 };

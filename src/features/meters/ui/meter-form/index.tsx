@@ -1,3 +1,4 @@
+// src/features/meters/ui/meter-form.tsx
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -5,19 +6,23 @@ import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import type { Meter } from "../../interfaces";
 import { updateMeter } from "../../api";
 
 interface Props {
   meterToEdit: Meter | null;
   onClose: () => void;
+  canArchive: boolean;
 }
 
-export const MeterForm = ({ meterToEdit, onClose }: Props) => {
+export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
   const [customerID, setCustomerID] = useState<string>("");
   const [client, setClient] = useState("");
   const [address, setAddress] = useState("");
   const [descriptions, setDescriptions] = useState("");
+  const [isArchived, setIsArchived] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -31,11 +36,13 @@ export const MeterForm = ({ meterToEdit, onClose }: Props) => {
       setClient(meterToEdit.client ?? "");
       setAddress(meterToEdit.address ?? "");
       setDescriptions(meterToEdit.descriptions ?? "");
+      setIsArchived(meterToEdit.isArchived);
     } else {
       setCustomerID("");
       setClient("");
       setAddress("");
       setDescriptions("");
+      setIsArchived(false);
     }
   }, [meterToEdit]);
 
@@ -52,11 +59,10 @@ export const MeterForm = ({ meterToEdit, onClose }: Props) => {
         client: client || null,
         address: address || null,
         descriptions: descriptions || null,
-        isArchived: false,
+        isArchived: canArchive ? isArchived : meterToEdit.isArchived,
       });
 
       toast.success("Счётчик обновлён");
-
       await queryClient.invalidateQueries({ queryKey: ["meters"] });
       onClose();
     } catch (error) {
@@ -102,6 +108,18 @@ export const MeterForm = ({ meterToEdit, onClose }: Props) => {
         multiline
         minRows={2}
       />
+
+      {canArchive && (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isArchived}
+              onChange={(e) => setIsArchived(e.target.checked)}
+            />
+          }
+          label="Отправить в архив"
+        />
+      )}
 
       <Box display="flex" justifyContent="flex-end" gap={1}>
         <Button type="submit" variant="contained" disabled={loading}>

@@ -1,0 +1,146 @@
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
+import type { Meter } from "@/features/meters/interfaces";
+import { useAuthStore } from "@/features/authentication/store/auth";
+import {
+  getMeters,
+  deleteMeters,
+  sendMeterCommand,
+} from "@/features/meters/api";
+
+export const useMeters = () => {
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [status, setStatus] = useState<string>("normal");
+  const [isArchived, setIsArchived] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  const queryClient = useQueryClient();
+
+  const { user } = useAuthStore();
+
+  const isAdmin = user?.role === "admin";
+  const canEdit = user?.role === "admin" || user?.role === "controller";
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["meters", page, limit, status, isArchived],
+    queryFn: () => getMeters(page + 1, limit, isArchived, status),
+    staleTime: 5000,
+  });
+
+  const meters: Meter[] = data?.data;
+  const hasMeters = meters?.length > 0;
+
+  const emptyText = "Счётчики не найдены";
+
+  const invalidate = async () => {
+    await queryClient.invalidateQueries({ queryKey: ["meters"] });
+  };
+
+  const handleDeleteOne = async (meterId: number) => {
+    if (!isAdmin) return;
+
+    try {
+      await deleteMeters([meterId]);
+      toast.success("Счётчик удалён");
+      setSelectedIds((prev) => prev.filter((id) => id !== meterId));
+      await invalidate();
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      toast.error(
+        axiosError.response?.data?.message || "Ошибка при удалении счётчика"
+      );
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (!isAdmin || selectedIds.length === 0) return;
+
+    try {
+      await deleteMeters(selectedIds);
+      toast.success("Выбранные счётчики удалены");
+      setSelectedIds([]);
+      await invalidate();
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      toast.error(
+        axiosError.response?.data?.message ||
+          "Ошибка при удалении выбранных счётчиков"
+      );
+    }
+  };
+
+  const handleCommand = async (meterId: number, command: "open" | "close") => {
+    if (!isAdmin) return;
+
+    try {
+      await sendMeterCommand(meterId, command);
+      toast.success(
+        command === "open"
+          ? "Команда на открытие клапана отправлена"
+          : "Команда на закрытие клапана отправлена"
+      );
+      await invalidate();
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      toast.error(
+        axiosError.response?.data?.message ||
+          "Ошибка при отправке команды клапану"
+      );
+    }
+  };
+
+  const allSelected =
+    isAdmin && hasMeters && selectedIds.length === meters.length;
+  const isIndeterminate = isAdmin && selectedIds.length > 0 && !allSelected;
+
+  const handleToggleAll = (checked: boolean) => {
+    if (!isAdmin) return;
+    if (checked) {
+      setSelectedIds(meters.map((m) => m.id));
+    } else {
+      setSelectedIds([]);
+    }
+  };
+
+  const handleToggleOne = (id: number) => {
+    if (!isAdmin) return;
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  return {
+    meters,
+    total: data?.total,
+    hasMeters,
+    emptyText,
+    isLoading,
+    isError,
+
+    page,
+    limit,
+    setPage,
+    setLimit,
+
+    status,
+    setStatus,
+    isArchived,
+    setIsArchived,
+
+    isAdmin,
+    canEdit,
+
+    selectedIds,
+    allSelected,
+    isIndeterminate,
+    handleToggleAll,
+    handleToggleOne,
+
+    handleDeleteOne,
+    handleDeleteSelected,
+    handleCommand,
+  };
+};
