@@ -1,14 +1,36 @@
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
+import Checkbox from "@mui/material/Checkbox";
 import type { Column } from "@/shared/types";
-import type { Device } from "../interfaces";
+import type { CreateDeviceColumnsParams, Device } from "../interfaces";
 
-export const createDeviceColumns = (
-  onVerify: (id: number) => void,
-  onDelete: (id: number) => void
-): Column<Device>[] => [
+export const createDeviceColumns = ({
+  selectedIds,
+  allSelected,
+  isIndeterminate,
+  onToggleAll,
+  onToggleOne,
+  onVerify,
+  onDeleteOne,
+}: CreateDeviceColumnsParams): Column<Device>[] => [
+  {
+    id: "select",
+    header: (
+      <Checkbox
+        checked={allSelected}
+        indeterminate={isIndeterminate}
+        onChange={(e) => onToggleAll(e.target.checked)}
+      />
+    ),
+    cell: (d) => (
+      <Checkbox
+        checked={selectedIds.includes(d.id)}
+        onChange={() => onToggleOne(d.id)}
+      />
+    ),
+  },
   {
     id: "id",
     header: "ID",
@@ -18,6 +40,19 @@ export const createDeviceColumns = (
     id: "deviceId",
     header: "Device ID",
     cell: (d) => d.deviceId,
+  },
+  {
+    id: "user",
+    header: "Пользователь",
+    cell: (d) => {
+      const user = d.user;
+
+      if (!user) return "-";
+
+      const fullName = `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim();
+
+      return fullName || user.email || "-";
+    },
   },
   {
     id: "createdAt",
@@ -31,16 +66,12 @@ export const createDeviceColumns = (
     cell: (d) => (
       <Box display="flex" justifyContent="flex-end" gap={1}>
         {!d.verified && (
-          <Button
-            size="small"
-            variant="contained"
-            onClick={() => onVerify(d.id)}
-          >
-            Подтвердить
-          </Button>
+          <IconButton color="success" onClick={() => onVerify(d.id)}>
+            <CheckIcon />
+          </IconButton>
         )}
 
-        <IconButton color="error" onClick={() => onDelete(d.id)}>
+        <IconButton color="error" onClick={() => onDeleteOne(d.id)}>
           <DeleteIcon />
         </IconButton>
       </Box>

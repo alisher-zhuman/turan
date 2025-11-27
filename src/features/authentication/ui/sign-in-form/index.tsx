@@ -25,7 +25,13 @@ export const SignInForm = () => {
 
     logIn(email, password)
       .then((data) => {
-        setAuth(data, data.accessToken);
+        const { accessToken, ...user } = data;
+
+        setAuth({
+          user,
+          accessToken,
+        });
+
         navigate("/");
       })
       .catch((err) => {

@@ -16,20 +16,20 @@ export const Header = () => {
     navigate("/sign-in");
   };
 
+  const TITLES = user
+    ? [
+        user.role !== "super_admin" && user.company?.name,
+        `${user.firstName} ${user.lastName}`,
+        ROLE_LABELS[user.role],
+      ].filter(Boolean)
+    : [];
+
   return (
     <AppBar position="fixed" sx={{ zIndex: 1201 }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {user && (
-            <>
-              <Typography variant="body2">{ROLE_LABELS[user.role]}</Typography>
-
-              {user.role !== "super_admin" && user.company && (
-                <Typography variant="body2">{user.company.name}</Typography>
-              )}
-
-              <Typography variant="body2">{`${user.firstName} ${user.lastName}`}</Typography>
-            </>
+            <Typography variant="body2">{TITLES.join(" | ")}</Typography>
           )}
         </Box>
 
