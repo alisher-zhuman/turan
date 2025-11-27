@@ -2,13 +2,35 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
+import Checkbox from "@mui/material/Checkbox";
 import type { Column } from "@/shared/types";
-import type { Device } from "../interfaces";
+import type { CreateDeviceColumnsParams, Device } from "../interfaces";
 
-export const createDeviceColumns = (
-  onVerify: (id: number) => void,
-  onDelete: (id: number) => void
-): Column<Device>[] => [
+export const createDeviceColumns = ({
+  selectedIds,
+  allSelected,
+  isIndeterminate,
+  onToggleAll,
+  onToggleOne,
+  onVerify,
+  onDeleteOne,
+}: CreateDeviceColumnsParams): Column<Device>[] => [
+  {
+    id: "select",
+    header: (
+      <Checkbox
+        checked={allSelected}
+        indeterminate={isIndeterminate}
+        onChange={(e) => onToggleAll(e.target.checked)}
+      />
+    ),
+    cell: (d) => (
+      <Checkbox
+        checked={selectedIds.includes(d.id)}
+        onChange={() => onToggleOne(d.id)}
+      />
+    ),
+  },
   {
     id: "id",
     header: "ID",
@@ -49,7 +71,7 @@ export const createDeviceColumns = (
           </IconButton>
         )}
 
-        <IconButton color="error" onClick={() => onDelete(d.id)}>
+        <IconButton color="error" onClick={() => onDeleteOne(d.id)}>
           <DeleteIcon />
         </IconButton>
       </Box>

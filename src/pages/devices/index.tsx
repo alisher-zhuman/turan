@@ -1,30 +1,38 @@
-import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-
-import { getDevices, verifyDevice, deleteDevice } from "@/features/devices/api";
+import Button from "@mui/material/Button";
+import { useDevices } from "@/features/devices/hooks/useDevices";
 import { createDeviceColumns } from "@/features/devices/columns";
+import type { Device } from "@/features/devices/interfaces";
+import { DataTable } from "@/shared/ui/data-table";
 import { Loader } from "@/shared/ui/loader";
 import { Pagination } from "@/shared/ui/pagination";
-import { DataTable } from "@/shared/ui/data-table";
 
 const Devices = () => {
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(10);
-  const [verified, setVerified] = useState(false);
-
-  const queryClient = useQueryClient();
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["devices", page, limit, verified],
-    queryFn: () => getDevices(page + 1, limit, verified),
-    staleTime: 5000,
-  });
+  const {
+    devices,
+    total,
+    hasDevices,
+    emptyText,
+    isLoading,
+    isError,
+    page,
+    limit,
+    setPage,
+    setLimit,
+    verified,
+    setVerified,
+    selectedIds,
+    allSelected,
+    isIndeterminate,
+    handleToggleAll,
+    handleToggleOne,
+    handleVerify,
+    handleDeleteOne,
+    handleDeleteSelected,
+  } = useDevices();
 
   if (isLoading) {
     return <Loader />;
@@ -34,42 +42,15 @@ const Devices = () => {
     return <Alert severity="error">Ошибка при загрузке устройств</Alert>;
   }
 
-  const hasDevices = data?.data?.length > 0;
-
-  const emptyText = verified
-    ? "Нет подтверждённых устройств"
-    : "Нет неподтверждённых устройств";
-
-  const handleVerify = async (deviceId: number) => {
-    try {
-      await verifyDevice(deviceId);
-      toast.success("Устройство подтверждено");
-
-      queryClient.invalidateQueries({ queryKey: ["devices"] });
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message ||
-          "Ошибка при подтверждении устройства"
-      );
-    }
-  };
-
-  const handleDelete = async (deviceId: number) => {
-    try {
-      await deleteDevice([+deviceId]);
-      toast.success("Устройство удалено");
-
-      queryClient.invalidateQueries({ queryKey: ["devices"] });
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message || "Ошибка при удалении устройства"
-      );
-    }
-  };
-
-  const columns = createDeviceColumns(handleVerify, handleDelete);
+  const columns = createDeviceColumns({
+    selectedIds,
+    allSelected,
+    isIndeterminate,
+    onToggleAll: handleToggleAll,
+    onToggleOne: handleToggleOne,
+    onVerify: handleVerify,
+    onDeleteOne: handleDeleteOne,
+  });
 
   return (
     <Box>
@@ -77,7 +58,7 @@ const Devices = () => {
         mb={2}
         display="flex"
         alignItems="center"
-        justifyContent="flex-end"
+        justifyContent="space-between"
         gap={2}
       >
         <Select
@@ -91,6 +72,15 @@ const Devices = () => {
           <MenuItem value="unverified">Неподтверждённые</MenuItem>
           <MenuItem value="verified">Подтверждённые</MenuItem>
         </Select>
+
+        <Button
+          variant="outlined"
+          color="error"
+          disabled={selectedIds.length === 0}
+          onClick={handleDeleteSelected}
+        >
+          Удалить выбранные
+        </Button>
       </Box>
 
       {!hasDevices && (
@@ -102,15 +92,15 @@ const Devices = () => {
       {hasDevices && (
         <>
           <DataTable
-            rows={data.data}
+            rows={devices}
             columns={columns}
-            getRowId={(d) => d.id}
+            getRowId={(d: Device) => d.id}
           />
 
           <Pagination
             page={page}
             limit={limit}
-            total={data.total}
+            total={total}
             onPageChange={setPage}
             rowsPerPageOptions={[5, 10, 20]}
             labelRowsPerPage="Устройств на странице:"

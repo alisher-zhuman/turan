@@ -23,7 +23,7 @@ export const useReadings = () => {
     staleTime: 5000,
   });
 
-  const readings: Reading[] = data?.data;
+  const readings: Reading[] = data?.data ?? [];
   const hasReadings = readings.length > 0;
   const total = data?.total;
   const emptyText = "Показания не найдены";

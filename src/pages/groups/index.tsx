@@ -108,7 +108,7 @@ const Groups = () => {
         {hasGroups && (
           <>
             <DataTable
-              rows={data.data}
+              rows={data.data ?? []}
               columns={columns}
               getRowId={(g) => g.id}
             />
@@ -116,7 +116,7 @@ const Groups = () => {
             <Pagination
               page={page}
               limit={limit}
-              total={data.total}
+              total={data.total ?? 0}
               onPageChange={setPage}
               rowsPerPageOptions={[5, 10, 20]}
               labelRowsPerPage="Групп на странице:"

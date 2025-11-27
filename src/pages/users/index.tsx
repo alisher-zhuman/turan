@@ -113,7 +113,7 @@ const Users = () => {
         {hasUsers && (
           <>
             <DataTable
-              rows={data.data}
+              rows={data.data ?? []}
               columns={columns}
               getRowId={(user) => user.id}
             />
@@ -121,7 +121,7 @@ const Users = () => {
             <Pagination
               page={page}
               limit={limit}
-              total={data.total}
+              total={data.total ?? 0}
               onPageChange={setPage}
               rowsPerPageOptions={[5, 10, 20]}
               labelRowsPerPage="Пользователей на странице:"

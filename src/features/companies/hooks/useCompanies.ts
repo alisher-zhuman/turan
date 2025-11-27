@@ -33,7 +33,7 @@ export const useCompanies = () => {
     },
   });
 
-  const companies: Company[] = data;
+  const companies: Company[] = data ?? [];
   const hasCompanies = companies.length > 0;
 
   const emptyText = isArchived
