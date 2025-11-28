@@ -9,9 +9,7 @@ export const getReadings = async (page = 1, limit = 10) => {
 };
 
 export const deleteReadings = async (readingIds: string[]) => {
-  const { data } = await api.delete("/readings", {
-    params: { readingIds },
-  });
+  const { data } = await api.post("/readings/delete", { readingIds });
 
   return data;
 };
