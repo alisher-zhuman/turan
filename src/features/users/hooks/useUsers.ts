@@ -2,11 +2,8 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
-
 import { getUsers, archiveUser, unarchiveUser } from "@/features/users/api";
-import type { User } from "@/features/authentication/interfaces/auth";
-
-type UserRow = Omit<User, "company" | "devices">;
+import type { UserRow } from "../types";
 
 export const useUsers = () => {
   const [page, setPage] = useState(0);
