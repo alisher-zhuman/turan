@@ -7,13 +7,11 @@ import Alert from "@mui/material/Alert";
 import { useUsers } from "@/features/users/hooks/useUsers";
 import { UserForm } from "@/features/users/ui/user-form";
 import { createUserColumns } from "@/features/users/columns";
-import type { User } from "@/features/authentication/interfaces/auth";
+import type { UserRow } from "@/features/users/types";
 import { Loader } from "@/shared/ui/loader";
 import { Modal } from "@/shared/ui/modal";
 import { Pagination } from "@/shared/ui/pagination";
 import { DataTable } from "@/shared/ui/data-table";
-
-type UserRow = Omit<User, "company" | "devices">;
 
 const Users = () => {
   const [isModalOpen, setModalOpen] = useState(false);
