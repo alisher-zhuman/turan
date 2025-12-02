@@ -13,14 +13,15 @@ import {
 export const useMeters = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
-  const [status, setStatus] = useState<string>("normal");
+  const [status, setStatus] = useState<string>("all");
   const [isArchived, setIsArchived] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [valveFilter, setValveFilter] = useState<"all" | "open" | "closed">(
     "all"
   );
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const queryClient = useQueryClient();
+
   const { user } = useAuthStore();
 
   const isAdmin = user?.role === "admin";
