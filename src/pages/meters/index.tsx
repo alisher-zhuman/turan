@@ -58,6 +58,7 @@ const Meters = () => {
     handleDeleteSelected,
     handleCommand,
     handleResetFilters,
+    clearSelection,
   } = useMeters();
 
   const { groups, handleAddMetersToGroup, handleRemoveMetersFromGroup } =
@@ -148,6 +149,7 @@ const Meters = () => {
       handleRemoveMetersFromGroup(groupModalGroupId, selectedIds);
     }
 
+    clearSelection();
     closeGroupModal();
   };
 

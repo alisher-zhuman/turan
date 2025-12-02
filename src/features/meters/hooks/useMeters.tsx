@@ -139,6 +139,10 @@ export const useMeters = () => {
     setPage(0);
   };
 
+  const clearSelection = () => {
+    setSelectedIds([]);
+  };
+
   return {
     meters,
     total,
@@ -176,5 +180,6 @@ export const useMeters = () => {
     handleDeleteSelected,
     handleCommand,
     handleResetFilters,
+    clearSelection,
   };
 };
