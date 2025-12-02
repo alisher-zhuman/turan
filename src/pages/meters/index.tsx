@@ -1,14 +1,12 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import { useMeters } from "@/features/meters/hooks/useMeters";
 import { useGroups } from "@/features/groups/hooks/useGroups";
 import { createMeterColumns } from "@/features/meters/columns";
 import { MeterForm } from "@/features/meters/ui/meter-form";
 import { MeterDetails } from "@/features/meters/ui/meter-details";
+import { MetersFilters } from "@/features/meters/ui/meters-filters";
 import type { Meter } from "@/features/meters/interfaces";
 import { DataTable } from "@/shared/ui/data-table";
 import { Loader } from "@/shared/ui/loader";
@@ -64,7 +62,6 @@ const Meters = () => {
 
   const handleEdit = (meter: Meter) => {
     if (!canEdit) return;
-
     setEditingMeter(meter);
     setEditModalOpen(true);
   };
@@ -84,6 +81,26 @@ const Meters = () => {
     setDetailsOpen(false);
   };
 
+  const handleStatusChange = (value: string) => {
+    setStatus(value);
+    setPage(0);
+  };
+
+  const handleValveFilterChange = (value: "all" | "open" | "closed") => {
+    setValveFilter(value);
+    setPage(0);
+  };
+
+  const handleArchivedChange = (archived: boolean) => {
+    setIsArchived(archived);
+    setPage(0);
+  };
+
+  const handleGroupChange = (id: number | null) => {
+    setGroupId(id);
+    setPage(0);
+  };
+
   const columns = createMeterColumns({
     isAdmin,
     canEdit,
@@ -101,83 +118,20 @@ const Meters = () => {
   return (
     <>
       <Box>
-        <Box
-          mb={2}
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          gap={2}
-        >
-          <Box display="flex" gap={2}>
-            <Select
-              sx={{ maxHeight: 38, minWidth: 160 }}
-              value={status}
-              onChange={(e) => {
-                setStatus(e.target.value);
-                setPage(0);
-              }}
-            >
-              <MenuItem value="normal">Нормальные</MenuItem>
-              <MenuItem value="warning">Предупреждения</MenuItem>
-              <MenuItem value="error">С ошибками</MenuItem>
-              <MenuItem value="all">Все статусы</MenuItem>
-            </Select>
-
-            <Select
-              sx={{ maxHeight: 38, minWidth: 160 }}
-              value={valveFilter}
-              onChange={(e) => {
-                setValveFilter(e.target.value as "all" | "open" | "closed");
-                setPage(0);
-              }}
-            >
-              <MenuItem value="all">Все клапаны</MenuItem>
-              <MenuItem value="open">Клапан открыт</MenuItem>
-              <MenuItem value="closed">Клапан закрыт</MenuItem>
-            </Select>
-
-            <Select
-              sx={{ maxHeight: 38, minWidth: 160 }}
-              value={groupId ?? "all"}
-              onChange={(e) => {
-                const value = e.target.value;
-                setGroupId(value === "all" ? null : Number(value));
-                setPage(0);
-              }}
-            >
-              <MenuItem value="all">Все группы</MenuItem>
-
-              {groups.map((g) => (
-                <MenuItem key={g.id} value={g.id}>
-                  {g.name}
-                </MenuItem>
-              ))}
-            </Select>
-
-            <Select
-              sx={{ maxHeight: 38, minWidth: 160 }}
-              value={isArchived ? "archived" : "active"}
-              onChange={(e) => {
-                setIsArchived(e.target.value === "archived");
-                setPage(0);
-              }}
-            >
-              <MenuItem value="active">Активные</MenuItem>
-              <MenuItem value="archived">Архивные</MenuItem>
-            </Select>
-          </Box>
-
-          {isAdmin && (
-            <Button
-              variant="outlined"
-              color="error"
-              disabled={selectedIds.length === 0}
-              onClick={handleDeleteSelected}
-            >
-              Удалить выбранные
-            </Button>
-          )}
-        </Box>
+        <MetersFilters
+          status={status}
+          onStatusChange={handleStatusChange}
+          valveFilter={valveFilter}
+          onValveFilterChange={handleValveFilterChange}
+          isArchived={isArchived}
+          onArchivedChange={handleArchivedChange}
+          groupId={groupId}
+          onGroupChange={handleGroupChange}
+          groups={groups}
+          isAdmin={isAdmin}
+          selectedCount={selectedIds.length}
+          onDeleteSelected={handleDeleteSelected}
+        />
 
         {!hasMeters && (
           <Alert severity="info" sx={{ mt: 2 }}>
