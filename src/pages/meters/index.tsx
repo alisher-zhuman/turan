@@ -8,18 +8,19 @@ import { MeterForm } from "@/features/meters/ui/meter-form";
 import { MeterDetails } from "@/features/meters/ui/meter-details";
 import { MetersActions } from "@/features/meters/ui/meters-actions";
 import { MeterGroupModal } from "@/features/meters/ui/meter-group-modal";
+import { MetersFiltersModal } from "@/features/meters/ui/meters-filters-modal";
 import type { Meter } from "@/features/meters/interfaces";
 import { DataTable } from "@/shared/ui/data-table";
 import { Loader } from "@/shared/ui/loader";
 import { Pagination } from "@/shared/ui/pagination";
 import { Modal } from "@/shared/ui/modal";
-import { MetersFiltersModal } from "@/features/meters/ui/meters-filters-modal";
 
 const Meters = () => {
   const [editingMeter, setEditingMeter] = useState<Meter | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [detailsMeter, setDetailsMeter] = useState<Meter | null>(null);
   const [isDetailsOpen, setDetailsOpen] = useState(false);
+  const [isFiltersOpen, setFiltersOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [groupModalMode, setGroupModalMode] = useState<"add" | "remove">("add");
   const [groupModalGroupId, setGroupModalGroupId] = useState<number | null>(
@@ -117,8 +118,9 @@ const Meters = () => {
       !canManageMetersToGroups ||
       selectedIds.length === 0 ||
       groups.length === 0
-    )
+    ) {
       return;
+    }
 
     setGroupModalMode("add");
     setGroupModalGroupId(groupId ?? null);
@@ -130,8 +132,9 @@ const Meters = () => {
       !canManageMetersToGroups ||
       selectedIds.length === 0 ||
       groups.length === 0
-    )
+    ) {
       return;
+    }
 
     setGroupModalMode("remove");
     setGroupModalGroupId(groupId ?? null);
@@ -155,6 +158,7 @@ const Meters = () => {
     closeGroupModal();
   };
 
+
   const columns = createMeterColumns({
     isAdmin,
     canEdit,
@@ -176,8 +180,8 @@ const Meters = () => {
           isAdmin={isAdmin}
           canManageMetersToGroups={canManageMetersToGroups}
           selectedCount={selectedIds.length}
-          hasGroups={}
-          onOpenFilters={}
+          hasGroups={groups.length > 0}
+          onOpenFilters={() => setFiltersOpen(true)}
           onDeleteSelected={handleDeleteSelected}
           onAddSelectedToGroup={openAddToGroupModal}
           onRemoveSelectedFromGroup={openRemoveFromGroupModal}
@@ -246,7 +250,7 @@ const Meters = () => {
 
       <MetersFiltersModal
         open={isFiltersOpen}
-        onClose={toggleFiltersModal}
+        onClose={() => setFiltersOpen(false)}
         status={status}
         onStatusChange={handleStatusChange}
         valveFilter={valveFilter}
