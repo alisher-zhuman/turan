@@ -57,6 +57,7 @@ const Meters = () => {
     handleDeleteOne,
     handleDeleteSelected,
     handleCommand,
+    handleResetFilters,
   } = useMeters();
 
   const { groups, handleAddMetersToGroup, handleRemoveMetersFromGroup } =
@@ -158,7 +159,6 @@ const Meters = () => {
     closeGroupModal();
   };
 
-
   const columns = createMeterColumns({
     isAdmin,
     canEdit,
@@ -185,6 +185,7 @@ const Meters = () => {
           onDeleteSelected={handleDeleteSelected}
           onAddSelectedToGroup={openAddToGroupModal}
           onRemoveSelectedFromGroup={openRemoveFromGroupModal}
+          onResetFilters={handleResetFilters}
         />
 
         {!hasMeters && (

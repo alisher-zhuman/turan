@@ -7,6 +7,7 @@ interface Props {
   selectedCount: number;
   hasGroups: boolean;
   onOpenFilters: () => void;
+  onResetFilters: () => void;
   onDeleteSelected: () => void;
   onAddSelectedToGroup: () => void;
   onRemoveSelectedFromGroup: () => void;
@@ -18,6 +19,7 @@ export const MetersActions = ({
   selectedCount,
   hasGroups,
   onOpenFilters,
+  onResetFilters,
   onDeleteSelected,
   onAddSelectedToGroup,
   onRemoveSelectedFromGroup,
@@ -29,9 +31,15 @@ export const MetersActions = ({
     justifyContent="space-between"
     gap={2}
   >
-    <Button variant="outlined" onClick={onOpenFilters}>
-      Фильтры
-    </Button>
+    <Box display="flex" gap={1}>
+      <Button variant="outlined" onClick={onOpenFilters}>
+        Фильтры
+      </Button>
+
+      <Button variant="text" onClick={onResetFilters}>
+        Очистить фильтры
+      </Button>
+    </Box>
 
     <Box display="flex" gap={1}>
       {canManageMetersToGroups && (

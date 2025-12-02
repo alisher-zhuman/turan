@@ -10,7 +10,6 @@ import {
   removeMetersFromGroup,
 } from "@/features/groups/api";
 import type { Group } from "@/features/groups/interface";
-import { getMetersWordForm } from "../utils/helpers";
 
 interface Props {
   forFilter?: boolean;
@@ -69,18 +68,17 @@ export const useGroups = ({ forFilter = false }: Props) => {
   ) => {
     if (!isAdmin) return;
 
-    const count = meterIds.length;
-    const word = getMetersWordForm(count);
-
     try {
-      await addMetersToGroup(groupId, meterIds);
-      toast.success(`${word} добавлен${count === 1 ? "" : "ы"} в группу`);
+      const data = await addMetersToGroup(groupId, meterIds);
+
+      const message = (data as { message?: string })?.message || "";
+
+      toast.success(message);
       await invalidateMeters();
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
-        axiosError.response?.data?.message ||
-          `Ошибка при добавлении ${word.toLowerCase()} в группу`
+        axiosError.response?.data?.message || "Ошибка при добавлении в группу"
       );
     }
   };
@@ -91,18 +89,17 @@ export const useGroups = ({ forFilter = false }: Props) => {
   ) => {
     if (!isAdmin) return;
 
-    const count = meterIds.length;
-    const word = getMetersWordForm(count);
-
     try {
-      await removeMetersFromGroup(groupId, meterIds);
-      toast.success(`${word} удалён${count === 1 ? "" : "ы"} из группы`);
+      const data = await removeMetersFromGroup(groupId, meterIds);
+
+      const message = (data as { message?: string })?.message || "";
+
+      toast.success(message);
       await invalidateMeters();
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
-        axiosError.response?.data?.message ||
-          `Ошибка при удалении ${word.toLowerCase()} из группы`
+        axiosError.response?.data?.message || "Ошибка при удалении из группы"
       );
     }
   };

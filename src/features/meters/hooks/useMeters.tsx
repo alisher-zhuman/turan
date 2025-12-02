@@ -131,6 +131,14 @@ export const useMeters = () => {
     );
   };
 
+  const handleResetFilters = () => {
+    setStatus("all");
+    setValveFilter("all");
+    setIsArchived(false);
+    setGroupId(null);
+    setPage(0);
+  };
+
   return {
     meters,
     total,
@@ -167,5 +175,6 @@ export const useMeters = () => {
     handleDeleteOne,
     handleDeleteSelected,
     handleCommand,
+    handleResetFilters,
   };
 };
