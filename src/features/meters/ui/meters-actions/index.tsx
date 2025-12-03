@@ -32,11 +32,11 @@ export const MetersActions = ({
     gap={2}
   >
     <Box display="flex" gap={1}>
-      <Button variant="outlined" onClick={onOpenFilters}>
+      <Button size="small" variant="outlined" onClick={onOpenFilters}>
         Фильтры
       </Button>
 
-      <Button variant="text" onClick={onResetFilters}>
+      <Button size="small" variant="text" onClick={onResetFilters}>
         Очистить фильтры
       </Button>
     </Box>
@@ -45,6 +45,7 @@ export const MetersActions = ({
       {canManageMetersToGroups && (
         <>
           <Button
+            size="small"
             variant="outlined"
             disabled={selectedCount === 0 || !hasGroups}
             onClick={onAddSelectedToGroup}
@@ -53,6 +54,7 @@ export const MetersActions = ({
           </Button>
 
           <Button
+            size="small"
             variant="outlined"
             disabled={selectedCount === 0 || !hasGroups}
             onClick={onRemoveSelectedFromGroup}
@@ -64,6 +66,7 @@ export const MetersActions = ({
 
       {isAdmin && (
         <Button
+          size="small"
           variant="outlined"
           color="error"
           disabled={selectedCount === 0}

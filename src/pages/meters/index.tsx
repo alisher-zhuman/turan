@@ -46,6 +46,10 @@ const Meters = () => {
     setValveFilter,
     groupId,
     setGroupId,
+    customerId,
+    setCustomerId,
+    meterName,
+    setMeterName,
     isAdmin,
     canEdit,
     canManageMetersToGroups,
@@ -104,6 +108,16 @@ const Meters = () => {
 
   const handleGroupChange = (id: number | null) => {
     setGroupId(id);
+    setPage(0);
+  };
+
+  const handleCustomerIdChange = (value: string) => {
+    setCustomerId(value);
+    setPage(0);
+  };
+
+  const handleMeterNameChange = (value: string) => {
+    setMeterName(value);
     setPage(0);
   };
 
@@ -269,6 +283,10 @@ const Meters = () => {
         groupId={groupId}
         onGroupChange={handleGroupChange}
         groups={groups}
+        customerId={customerId}
+        onCustomerIdChange={handleCustomerIdChange}
+        meterName={meterName}
+        onMeterNameChange={handleMeterNameChange}
       />
     </>
   );

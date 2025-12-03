@@ -5,7 +5,9 @@ export const getMeters = async (
   limit = 10,
   isArchived = false,
   status?: string,
-  groupId?: number | null
+  groupId?: number | null,
+  customerId?: string,
+  meterName?: string
 ) => {
   const params: Record<string, unknown> = {
     page,
@@ -19,6 +21,14 @@ export const getMeters = async (
 
   if (groupId != null) {
     params.groupId = groupId;
+  }
+
+  if (customerId && customerId.trim()) {
+    params.customerID = customerId.trim();
+  }
+
+  if (meterName && meterName.trim()) {
+    params.meterName = meterName.trim();
   }
 
   const { data } = await api.get("/meters", { params });

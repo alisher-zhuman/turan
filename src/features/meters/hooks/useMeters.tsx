@@ -13,6 +13,8 @@ import {
 export const useMeters = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
+  const [meterName, setMeterName] = useState("");
+  const [customerId, setCustomerId] = useState("");
   const [status, setStatus] = useState<string>("all");
   const [isArchived, setIsArchived] = useState(false);
   const [groupId, setGroupId] = useState<number | null>(null);
@@ -33,8 +35,26 @@ export const useMeters = () => {
     user?.role === "user";
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["meters", page, limit, status, isArchived, groupId],
-    queryFn: () => getMeters(page + 1, limit, isArchived, status, groupId),
+    queryKey: [
+      "meters",
+      page,
+      limit,
+      status,
+      isArchived,
+      groupId,
+      customerId,
+      meterName,
+    ],
+    queryFn: () =>
+      getMeters(
+        page + 1,
+        limit,
+        isArchived,
+        status,
+        groupId,
+        customerId,
+        meterName
+      ),
     staleTime: 5000,
   });
 
@@ -136,6 +156,8 @@ export const useMeters = () => {
     setValveFilter("all");
     setIsArchived(false);
     setGroupId(null);
+    setCustomerId("");
+    setMeterName("");
     setPage(0);
   };
 
@@ -166,6 +188,11 @@ export const useMeters = () => {
 
     groupId,
     setGroupId,
+
+    customerId,
+    setCustomerId,
+    meterName,
+    setMeterName,
 
     isAdmin,
     canEdit,
