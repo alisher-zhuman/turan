@@ -18,6 +18,11 @@ export const editUser = async (id: number, payload: CreateUserPayload) => {
   return data;
 };
 
+export const deleteUser = async (id: number) => {
+  const { data } = await api.delete(`/users/delete/${id}`);
+  return data;
+};
+
 export const archiveUser = async (id: number) => {
   const { data } = await api.post(`/users/archive/${id}`);
   return data;
