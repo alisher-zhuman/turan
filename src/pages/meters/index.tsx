@@ -24,7 +24,7 @@ const Meters = () => {
   const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [groupModalMode, setGroupModalMode] = useState<"add" | "remove">("add");
   const [groupModalGroupId, setGroupModalGroupId] = useState<number | null>(
-    null
+    null,
   );
 
   const {
@@ -170,6 +170,7 @@ const Meters = () => {
   const columns = createMeterColumns({
     isAdmin,
     canEdit,
+    canManageMetersToGroups,
     selectedIds,
     allSelected,
     isIndeterminate,

@@ -5,6 +5,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import { useUsers } from "@/features/users/hooks/useUsers";
+import { useAuthStore } from "@/features/authentication/store/auth";
 import { UserForm } from "@/features/users/ui/user-form";
 import { createUserColumns } from "@/features/users/columns";
 import type { UserRow } from "@/features/users/types";
@@ -16,6 +17,8 @@ import { DataTable } from "@/shared/ui/data-table";
 const Users = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<UserRow | null>(null);
+
+  const { user } = useAuthStore();
 
   const {
     users,
@@ -31,6 +34,7 @@ const Users = () => {
     isArchived,
     setIsArchived,
     handleToggleArchive,
+    handleDeleteUser,
   } = useUsers();
 
   if (isLoading) {
@@ -52,7 +56,14 @@ const Users = () => {
     setModalOpen(false);
   };
 
-  const columns = createUserColumns(handleToggleArchive, openEditModal);
+  const canDelete = user?.role === "admin" || user?.role === "super_admin";
+
+  const columns = createUserColumns(
+    handleToggleArchive,
+    openEditModal,
+    canDelete,
+    handleDeleteUser,
+  );
 
   return (
     <>

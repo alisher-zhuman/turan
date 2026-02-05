@@ -44,7 +44,7 @@ export const createReadingColumns = ({
     {
       id: "meterName",
       header: "Счётчик",
-      cell: (r) => r.meter?.[0]?.name ?? "-",
+      cell: (r) => r.meter.name,
     },
     {
       id: "value",
@@ -59,15 +59,15 @@ export const createReadingColumns = ({
           r.valveState === "open"
             ? "Открыт"
             : r.valveState === "closed"
-            ? "Закрыт"
-            : r.valveState || "-";
+              ? "Закрыт"
+              : r.valveState || "-";
 
         const color =
           r.valveState === "open"
             ? "#2e7d32"
             : r.valveState === "closed"
-            ? "#d32f2f"
-            : "inherit";
+              ? "#d32f2f"
+              : "inherit";
 
         return (
           <Box component="span" sx={{ color, fontWeight: 500 }}>
@@ -86,7 +86,7 @@ export const createReadingColumns = ({
       id: "readingAt",
       header: "Время показания",
       cell: (r) => new Date(r.readingAt).toLocaleString("ru-RU"),
-    }
+    },
   );
 
   if (isAdmin) {

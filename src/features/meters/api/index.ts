@@ -46,7 +46,7 @@ export const deleteMeters = async (meterIds: number[]) => {
 
 export const updateMeter = async (params: {
   meterId: number;
-  customerID?: number | null;
+  customerID?: string | null;
   client?: string | null;
   address?: string | null;
   descriptions?: string | null;

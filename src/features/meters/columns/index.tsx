@@ -13,6 +13,7 @@ import { STATUS_LABELS, VALVE_LABELS } from "../utils/constants";
 export const createMeterColumns = ({
   isAdmin,
   canEdit,
+  canManageMetersToGroups,
   selectedIds,
   allSelected,
   isIndeterminate,
@@ -25,7 +26,7 @@ export const createMeterColumns = ({
 }: CreateMeterColumnsParams): Column<Meter>[] => {
   const columns: Column<Meter>[] = [];
 
-  if (isAdmin) {
+  if (canManageMetersToGroups) {
     columns.push({
       id: "select",
       header: (
@@ -72,8 +73,8 @@ export const createMeterColumns = ({
           m.valveStatus === "open"
             ? "#2e7d32"
             : m.valveStatus === "closed"
-            ? "#d32f2f"
-            : "inherit";
+              ? "#d32f2f"
+              : "inherit";
 
         return (
           <Box component="span" sx={{ color, fontWeight: 500 }}>
@@ -92,10 +93,10 @@ export const createMeterColumns = ({
           m.status === "normal"
             ? "#2e7d32"
             : m.status === "warning"
-            ? "#ed6c02"
-            : m.status === "error"
-            ? "#d32f2f"
-            : "inherit";
+              ? "#ed6c02"
+              : m.status === "error"
+                ? "#d32f2f"
+                : "inherit";
 
         return (
           <Box component="span" sx={{ color, fontWeight: 500 }}>
@@ -108,7 +109,7 @@ export const createMeterColumns = ({
       id: "lastReading",
       header: "Последнее показание",
       cell: (m) => m.lastReading ?? "-",
-    }
+    },
   );
 
   if (isAdmin || canEdit) {

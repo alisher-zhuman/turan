@@ -25,6 +25,11 @@ export const useGroups = ({ forFilter = false }: Props) => {
 
   const isAdmin = user?.role === "admin";
 
+  const canManageMetersToGroups =
+    user?.role === "admin" ||
+    user?.role === "controller" ||
+    user?.role === "user";
+
   const { data, isLoading, isError } = useQuery({
     queryKey: forFilter
       ? ["groups", "all-for-filter"]
@@ -57,16 +62,16 @@ export const useGroups = ({ forFilter = false }: Props) => {
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
-        axiosError.response?.data?.message || "Ошибка при удалении группы"
+        axiosError.response?.data?.message || "Ошибка при удалении группы",
       );
     }
   };
 
   const handleAddMetersToGroup = async (
     groupId: number,
-    meterIds: number[]
+    meterIds: number[],
   ) => {
-    if (!isAdmin) return;
+    if (!canManageMetersToGroups) return;
 
     try {
       const data = await addMetersToGroup(groupId, meterIds);
@@ -78,16 +83,16 @@ export const useGroups = ({ forFilter = false }: Props) => {
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
-        axiosError.response?.data?.message || "Ошибка при добавлении в группу"
+        axiosError.response?.data?.message || "Ошибка при добавлении в группу",
       );
     }
   };
 
   const handleRemoveMetersFromGroup = async (
     groupId: number,
-    meterIds: number[]
+    meterIds: number[],
   ) => {
-    if (!isAdmin) return;
+    if (!canManageMetersToGroups) return;
 
     try {
       const data = await removeMetersFromGroup(groupId, meterIds);
@@ -99,7 +104,7 @@ export const useGroups = ({ forFilter = false }: Props) => {
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
-        axiosError.response?.data?.message || "Ошибка при удалении из группы"
+        axiosError.response?.data?.message || "Ошибка при удалении из группы",
       );
     }
   };

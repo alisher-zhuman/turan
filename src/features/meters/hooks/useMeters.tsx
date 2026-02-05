@@ -20,7 +20,7 @@ export const useMeters = () => {
   const [groupId, setGroupId] = useState<number | null>(null);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [valveFilter, setValveFilter] = useState<"all" | "open" | "closed">(
-    "all"
+    "all",
   );
 
   const queryClient = useQueryClient();
@@ -53,7 +53,7 @@ export const useMeters = () => {
         status,
         groupId,
         customerId,
-        meterName
+        meterName,
       ),
     staleTime: 5000,
   });
@@ -91,7 +91,7 @@ export const useMeters = () => {
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
-        axiosError.response?.data?.message || "Ошибка при удалении счётчика"
+        axiosError.response?.data?.message || "Ошибка при удалении счётчика",
       );
     }
   };
@@ -108,7 +108,7 @@ export const useMeters = () => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
-          "Ошибка при удалении выбранных счётчиков"
+          "Ошибка при удалении выбранных счётчиков",
       );
     }
   };
@@ -121,33 +121,36 @@ export const useMeters = () => {
       toast.success(
         command === "open"
           ? "Команда на открытие клапана отправлена"
-          : "Команда на закрытие клапана отправлена"
+          : "Команда на закрытие клапана отправлена",
       );
       await invalidate();
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
-          "Ошибка при отправке команды клапану"
+          "Ошибка при отправке команды клапану",
       );
     }
   };
 
   const allSelected =
-    isAdmin && hasMeters && selectedIds.length === meters.length;
-  const isIndeterminate = isAdmin && selectedIds.length > 0 && !allSelected;
+    canManageMetersToGroups &&
+    hasMeters &&
+    selectedIds.length === meters.length;
+  const isIndeterminate =
+    canManageMetersToGroups && selectedIds.length > 0 && !allSelected;
 
   const handleToggleAll = (checked: boolean) => {
-    if (!isAdmin) return;
+    if (!canManageMetersToGroups) return;
 
     setSelectedIds(checked ? meters.map((m) => m.id) : []);
   };
 
   const handleToggleOne = (id: number) => {
-    if (!isAdmin) return;
+    if (!canManageMetersToGroups) return;
 
     setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 

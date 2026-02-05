@@ -15,6 +15,6 @@ export interface Reading {
   value: string;
   valveState: "open" | "closed";
   batteryStatus: number;
-  meter: Meter[];
+  meter: Meter;
   readingAt: string;
 }

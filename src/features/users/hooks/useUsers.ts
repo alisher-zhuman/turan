@@ -2,7 +2,12 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
-import { getUsers, archiveUser, unarchiveUser } from "@/features/users/api";
+import {
+  getUsers,
+  archiveUser,
+  unarchiveUser,
+  deleteUser,
+} from "@/features/users/api";
 import type { UserRow } from "../types";
 
 export const useUsers = () => {
@@ -45,7 +50,21 @@ export const useUsers = () => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
-          "Ошибка при изменении статуса пользователя"
+          "Ошибка при изменении статуса пользователя",
+      );
+    }
+  };
+
+  const handleDeleteUser = async (userId: number) => {
+    try {
+      await deleteUser(userId);
+      toast.success("Пользователь удален");
+      await invalidate();
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      toast.error(
+        axiosError.response?.data?.message ||
+          "Ошибка при удалении пользователя",
       );
     }
   };
@@ -67,5 +86,6 @@ export const useUsers = () => {
     setIsArchived,
 
     handleToggleArchive,
+    handleDeleteUser,
   };
 };

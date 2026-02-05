@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
-  const [customerID, setCustomerID] = useState<number | null>(null);
+  const [customerID, setCustomerID] = useState<string>("");
   const [client, setClient] = useState("");
   const [address, setAddress] = useState("");
   const [descriptions, setDescriptions] = useState("");
@@ -30,9 +30,7 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
 
   useEffect(() => {
     if (meterToEdit) {
-      setCustomerID(
-        meterToEdit.customerID !== null ? +meterToEdit.customerID : null
-      );
+      setCustomerID(meterToEdit.customerID ?? "");
       setClient(meterToEdit.client ?? "");
       setAddress(meterToEdit.address ?? "");
       setDescriptions(meterToEdit.descriptions ?? "");
@@ -43,6 +41,7 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
       setAddress("");
       setDescriptions("");
       setIsArchived(false);
+      setCustomerID("");
     }
   }, [meterToEdit]);
 
@@ -53,9 +52,14 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
     try {
       setLoading(true);
 
+      const normalizedCustomerID =
+        customerID && customerID.trim().length > 0
+          ? customerID.trim()
+          : null;
+
       await updateMeter({
         meterId: meterToEdit.id,
-        customerID,
+        customerID: normalizedCustomerID,
         client,
         address,
         descriptions,
@@ -85,9 +89,8 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
     >
       <TextField
         label="ID Клиента"
-        type="number"
         value={customerID}
-        onChange={(e) => setCustomerID(+e.target.value)}
+        onChange={(e) => setCustomerID(e.target.value)}
       />
 
       <TextField

@@ -3,13 +3,16 @@ import IconButton from "@mui/material/IconButton";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { ROLE_LABELS } from "@/shared/utils/constants";
 import type { Column } from "@/shared/types";
 import type { UserRow } from "../types";
 
 export const createUserColumns = (
   onToggleArchive: (userId: number, isArchived: boolean) => void,
-  onEdit: (user: UserRow) => void
+  onEdit: (user: UserRow) => void,
+  canDelete: boolean,
+  onDelete: (userId: number) => void,
 ): Column<UserRow>[] => [
   {
     id: "id",
@@ -40,6 +43,20 @@ export const createUserColumns = (
     cell: (user) => ROLE_LABELS[user.role],
   },
   {
+    id: "createdAt",
+    header: "Дата создания",
+    cell: (user) => {
+      const date = new Date(user.createdAt);
+      return date.toLocaleString("ru-RU", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    },
+  },
+  {
     id: "actions",
     header: "Действия",
     align: "right",
@@ -55,6 +72,12 @@ export const createUserColumns = (
         <IconButton color="primary" onClick={() => onEdit(user)}>
           <EditIcon />
         </IconButton>
+
+        {canDelete && (
+          <IconButton color="error" onClick={() => onDelete(user.id)}>
+            <DeleteIcon />
+          </IconButton>
+        )}
       </Box>
     ),
   },
