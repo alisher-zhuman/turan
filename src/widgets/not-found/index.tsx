@@ -45,12 +45,8 @@ export const NotFoundWidget = () => {
         {seconds > 1 ? "ы" : ""}.
       </Typography>
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => navigate("/")}
-      >
-        Вернуться домой
+      <Button variant="contained" color="primary" onClick={() => navigate(-1)}>
+        Вернуться назад
       </Button>
     </Box>
   );
