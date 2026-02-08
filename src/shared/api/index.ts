@@ -26,6 +26,7 @@ api.interceptors.response.use(
       isLoggingOut = true;
 
       const { logout } = useAuthStore.getState();
+      
       logout();
     }
 

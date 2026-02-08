@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SpeedIcon from "@mui/icons-material/Speed";
 import BarChartIcon from "@mui/icons-material/BarChart";
@@ -13,6 +12,7 @@ import ShieldIcon from "@mui/icons-material/Shield";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import PersonIcon from "@mui/icons-material/Person";
+import toast from "react-hot-toast";
 import { SIDEBAR_LINKS } from "../constants";
 
 export const getAllowedPathsByRole = (role: string): string[] => {

@@ -25,11 +25,11 @@ export const Pagination = ({
     page={page}
     onPageChange={(_, newPage) => onPageChange(newPage)}
     rowsPerPage={limit}
+    rowsPerPageOptions={rowsPerPageOptions}
+    labelRowsPerPage={labelRowsPerPage}
     onRowsPerPageChange={(e) =>
       onRowsPerPageChange(parseInt(e.target.value, 10))
     }
-    rowsPerPageOptions={rowsPerPageOptions}
-    labelRowsPerPage={labelRowsPerPage}
     labelDisplayedRows={({ from, to, count }) =>
       `${from}-${to} из ${count !== -1 ? count : `более чем ${to}`}`
     }
