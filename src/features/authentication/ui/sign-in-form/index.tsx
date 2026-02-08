@@ -98,9 +98,8 @@ export const SignInForm = () => {
 
           <Button
             variant="text"
-            fullWidth
             href="/sign-in/forgot"
-            sx={{ mt: 1 }}
+            sx={{ mt: 1, width: "fit-content", margin: "auto" }}
           >
             Забыли пароль?
           </Button>
