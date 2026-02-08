@@ -12,4 +12,22 @@ export default defineConfig({
       "@features": path.resolve(__dirname, "src/features"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "react-vendor": ["react", "react-dom"],
+          "mui-vendor": [
+            "@mui/material",
+            "@emotion/react",
+            "@emotion/styled",
+            "@popperjs/core",
+          ],
+          "router-vendor": ["react-router"],
+          "query-vendor": ["@tanstack/react-query"],
+          "http-vendor": ["axios"],
+        },
+      },
+    },
+  },
 });
