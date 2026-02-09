@@ -9,11 +9,11 @@ import { MeterDetails } from "@/features/meters/ui/meter-details";
 import { MetersActions } from "@/features/meters/ui/meters-actions";
 import { MeterGroupModal } from "@/features/meters/ui/meter-group-modal";
 import { MetersFiltersModal } from "@/features/meters/ui/meters-filters-modal";
-import type { Meter } from "@/entities/meters";
 import { DataTable } from "@/shared/ui/data-table";
 import { Loader } from "@/shared/ui/loader";
 import { Pagination } from "@/shared/ui/pagination";
 import { Modal } from "@/shared/ui/modal";
+import type { Meter } from "@/shared/types";
 
 export const MetersWidget = () => {
   const [editingMeter, setEditingMeter] = useState<Meter | null>(null);
@@ -22,9 +22,7 @@ export const MetersWidget = () => {
   const [isDetailsOpen, setDetailsOpen] = useState(false);
   const [isFiltersOpen, setFiltersOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
-  const [groupModalMode, setGroupModalMode] = useState<"add" | "remove">(
-    "add",
-  );
+  const [groupModalMode, setGroupModalMode] = useState<"add" | "remove">("add");
   const [groupModalGroupId, setGroupModalGroupId] = useState<number | null>(
     null,
   );

@@ -1,4 +1,4 @@
-import type { User } from "@/entities/users";
+import type { User } from "@/shared/types";
 
 export interface AuthSession {
   user: User;

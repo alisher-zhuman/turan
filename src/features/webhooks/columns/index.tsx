@@ -2,10 +2,10 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { Column } from "@/shared/types";
-import type { Webhook } from "../interfaces";
+import type { Webhook } from "@/entities/webhooks";
 
 export const createWebhookColumns = (
-  onDelete: (id: number) => void
+  onDelete: (id: number) => void,
 ): Column<Webhook>[] => [
   {
     id: "id",

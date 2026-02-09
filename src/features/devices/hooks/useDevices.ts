@@ -2,12 +2,8 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
-import {
-  deleteDevice,
-  getDevices,
-  verifyDevice,
-  type Device,
-} from "@/entities/devices";
+import { deleteDevice, getDevices, verifyDevice } from "@/entities/devices";
+import type { Device } from "@/shared/types";
 
 export const useDevices = () => {
   const [page, setPage] = useState(0);

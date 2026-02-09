@@ -7,16 +7,11 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
-import { getCompanies, type Company } from "@/entities/companies";
+import { getCompanies } from "@/entities/companies";
 import { useAuthStore } from "@/features/authentication/store/auth";
 
-import type { Role } from "@/shared/types";
-import {
-  createUser,
-  editUser,
-  type CreateUserPayload,
-  type User,
-} from "@/entities/users";
+import type { Company, Role, User } from "@/shared/types";
+import { createUser, editUser, type CreateUserPayload } from "@/entities/users";
 import { ROLE, ROLE_LABELS } from "@/shared/utils/constants/roles";
 import {
   availableUserRolesFor,

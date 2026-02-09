@@ -7,10 +7,10 @@ import MenuItem from "@mui/material/MenuItem";
 import { useCompanies } from "@/features/companies/hooks/useCompanies";
 import { CompanyForm } from "@/features/companies/ui/company-form";
 import { createCompanyColumns } from "@/features/companies/columns";
-import type { Company } from "@/entities/companies";
 import { Modal } from "@/shared/ui/modal";
 import { DataTable } from "@/shared/ui/data-table";
 import { Loader } from "@/shared/ui/loader";
+import type { Company } from "@/shared/types";
 
 export const CompaniesWidget = () => {
   const [isModalOpen, setModalOpen] = useState(false);

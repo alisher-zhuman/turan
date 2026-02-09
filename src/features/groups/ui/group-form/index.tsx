@@ -5,8 +5,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import type { AxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
-import type { Group } from "../../interface";
-import { createGroup, updateGroup } from "../../api";
+import { createGroup, updateGroup, type Group } from "@/entities/groups";
 
 interface Props {
   groupToEdit: Group | null;
@@ -51,7 +50,7 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
-        axiosError.response?.data?.message || "Ошибка при сохранении группы"
+        axiosError.response?.data?.message || "Ошибка при сохранении группы",
       );
     } finally {
       setLoading(false);

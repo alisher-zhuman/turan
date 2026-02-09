@@ -1,4 +1,4 @@
-import type { Meter } from "@/entities/meters";
+import type { Meter } from "@/shared/types";
 
 export interface Reading {
   id: string;

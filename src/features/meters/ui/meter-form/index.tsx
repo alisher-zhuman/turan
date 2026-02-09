@@ -8,7 +8,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { updateMeter, type Meter } from "@/entities/meters";
+import { updateMeter } from "@/entities/meters";
+import type { Meter } from "@/shared/types";
 
 interface Props {
   meterToEdit: Meter | null;

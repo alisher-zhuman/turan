@@ -5,14 +5,13 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import type { Column } from "@/shared/types";
+import type { Column, Company } from "@/shared/types";
 import { copyToClipboard } from "@/shared/utils/helpers";
-import type { Company } from "@/entities/companies";
 
 export const createCompanyColumns = (
   onRefreshToken: (id: number) => void,
   onToggleArchive: (id: number, isArchived: boolean) => void,
-  onEdit: (company: Company) => void
+  onEdit: (company: Company) => void,
 ): Column<Company>[] => [
   {
     id: "id",

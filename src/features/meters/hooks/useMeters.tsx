@@ -3,17 +3,13 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import { useAuthStore } from "@/features/authentication/store/auth";
-import {
-  deleteMeters,
-  getMeters,
-  sendMeterCommand,
-  type Meter,
-} from "@/entities/meters";
+import { deleteMeters, getMeters, sendMeterCommand } from "@/entities/meters";
 import {
   canEditMeters,
   canManageMetersToGroups as canManageMetersToGroupsRole,
   hasRoleAdmin,
 } from "@/shared/utils/helpers/roles";
+import type { Meter } from "@/shared/types";
 
 export const useMeters = () => {
   const [page, setPage] = useState(0);

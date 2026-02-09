@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
-import type { Company } from "@/entities/companies";
 import {
   archiveCompany,
   getCompanies,
   refreshCompanyToken,
   unarchiveCompany,
 } from "@/entities/companies";
+import type { Company } from "@/shared/types";
 
 export const useCompanies = () => {
   const [isArchived, setIsArchived] = useState(false);
@@ -28,7 +28,7 @@ export const useCompanies = () => {
     },
     onError: (error: AxiosError<{ message?: string }>) => {
       toast.error(
-        error.response?.data?.message || "Ошибка при обновлении API ключа"
+        error.response?.data?.message || "Ошибка при обновлении API ключа",
       );
     },
   });
@@ -60,7 +60,7 @@ export const useCompanies = () => {
 
       toast.error(
         axiosError.response?.data?.message ||
-          "Ошибка при изменении статуса компании"
+          "Ошибка при изменении статуса компании",
       );
     }
   };

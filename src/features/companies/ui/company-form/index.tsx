@@ -10,9 +10,9 @@ import Alert from "@mui/material/Alert";
 import {
   createCompany,
   editCompany,
-  type Company,
   type CompanyPayload,
 } from "@/entities/companies";
+import type { Company } from "@/shared/types";
 
 interface Props {
   company?: Company | null;

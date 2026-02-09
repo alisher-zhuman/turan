@@ -5,10 +5,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useDevices } from "@/features/devices/hooks/useDevices";
 import { createDeviceColumns } from "@/features/devices/columns";
-import type { Device } from "@/entities/devices";
 import { DataTable } from "@/shared/ui/data-table";
 import { Loader } from "@/shared/ui/loader";
 import { Pagination } from "@/shared/ui/pagination";
+import type { Device } from "@/shared/types";
 
 export const DevicesWidget = () => {
   const {

@@ -1,5 +1,5 @@
 import { api } from "@/shared/api";
-import type { CreateUserPayload } from "@/shared/types";
+import type { CreateUserPayload } from "../model/types";
 
 export const getUsers = async (page = 1, limit = 10, isArchived = false) => {
   const { data } = await api.get("/users", {

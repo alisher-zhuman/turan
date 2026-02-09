@@ -3,12 +3,12 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { Column } from "@/shared/types";
-import type { Group } from "../interface";
+import type { Group } from "@/entities/groups";
 
 export const createGroupColumns = (
   onEdit: (group: Group) => void,
   onDelete: (id: number) => void,
-  isAdmin: boolean
+  isAdmin: boolean,
 ): Column<Group>[] => {
   const columns: Column<Group>[] = [
     {

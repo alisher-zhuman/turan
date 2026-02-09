@@ -5,7 +5,7 @@ import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { createWebhook } from "../../api";
+import { createWebhook } from "@/entities/webhooks";
 
 interface Props {
   onClose: () => void;
@@ -35,7 +35,7 @@ export const WebhookForm = ({ onClose }: Props) => {
     } catch (error) {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
-        axiosError.response?.data?.message || "Ошибка при создании вебхука"
+        axiosError.response?.data?.message || "Ошибка при создании вебхука",
       );
     } finally {
       setLoading(false);
