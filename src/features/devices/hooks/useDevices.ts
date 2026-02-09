@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
@@ -78,6 +78,10 @@ export const useDevices = () => {
 
   const allSelected = hasDevices && selectedIds.length === devices.length;
   const isIndeterminate = selectedIds.length > 0 && !allSelected;
+
+  useEffect(() => {
+    setSelectedIds([]);
+  }, [page, limit, verified]);
 
   const handleToggleAll = (checked: boolean) => {
     if (checked) {

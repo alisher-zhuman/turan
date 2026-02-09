@@ -21,7 +21,7 @@ import {
 
 interface Props {
   onClose: () => void;
-  userToEdit?: Omit<User, "company" | "devices"> | null;
+  userToEdit?: Omit<User, "devices"> | null;
 }
 
 export const UserForm = ({ onClose, userToEdit }: Props) => {
@@ -29,7 +29,9 @@ export const UserForm = ({ onClose, userToEdit }: Props) => {
   const [firstName, setFirstName] = useState(userToEdit?.firstName || "");
   const [lastName, setLastName] = useState(userToEdit?.lastName || "");
   const [role, setRole] = useState<Role>(userToEdit?.role || ROLE.ADMIN);
-  const [companyId, setCompanyId] = useState<number | null>(null);
+  const [companyId, setCompanyId] = useState<number | null>(
+    userToEdit?.company?.id ?? null,
+  );
   const [errors, setErrors] = useState<string[]>([]);
 
   const user = useAuthStore((state) => state.user);
@@ -164,7 +166,7 @@ export const UserForm = ({ onClose, userToEdit }: Props) => {
         <TextField
           select
           label="Компания"
-          value={companyId}
+          value={companyId ?? ""}
           onChange={(e) => setCompanyId(+e.target.value)}
           fullWidth
           required

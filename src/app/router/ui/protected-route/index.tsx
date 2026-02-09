@@ -29,7 +29,12 @@ export const ProtectedRoute = ({ children }: Props) => {
     return <Navigate to={`/${ROUTES.SIGN_IN}`} replace />;
   }
 
-  if (!allowedPaths.includes(location.pathname)) {
+  const isAllowed = allowedPaths.some(
+    (path) =>
+      location.pathname === path || location.pathname.startsWith(`${path}/`),
+  );
+
+  if (!isAllowed) {
     return <Navigate to={firstAllowed} replace />;
   }
 

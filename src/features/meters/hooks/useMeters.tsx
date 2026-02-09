@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
@@ -137,6 +137,19 @@ export const useMeters = () => {
     selectedIds.length === meters.length;
   const isIndeterminate =
     canManageMetersToGroups && selectedIds.length > 0 && !allSelected;
+
+  useEffect(() => {
+    setSelectedIds([]);
+  }, [
+    page,
+    limit,
+    status,
+    isArchived,
+    groupId,
+    customerId,
+    meterName,
+    valveFilter,
+  ]);
 
   const handleToggleAll = (checked: boolean) => {
     if (!canManageMetersToGroups) return;

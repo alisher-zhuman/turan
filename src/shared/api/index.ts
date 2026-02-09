@@ -26,8 +26,12 @@ api.interceptors.response.use(
       isLoggingOut = true;
 
       const { logout } = useAuthStore.getState();
-      
-      logout();
+
+      try {
+        logout();
+      } finally {
+        isLoggingOut = false;
+      }
     }
 
     return Promise.reject(error);
