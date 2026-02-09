@@ -2,8 +2,6 @@ import type { SidebarLink } from "@/shared/types";
 import { ROUTES } from "./routes";
 import { ROLE } from "./roles";
 
-export const AUTH_STORAGE_KEY = "turan_auth";
-
 export const SIDEBAR_LINKS: SidebarLink[] = [
   {
     label: "Компании",
@@ -41,3 +39,5 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     roles: [ROLE.ADMIN],
   },
 ];
+
+export const AUTH_STORAGE_KEY = "turan_auth";

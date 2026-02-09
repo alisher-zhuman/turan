@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useUsers } from "@/features/users/hooks/useUsers";
-import { useAuthStore } from "@/shared/stores/auth";
+import { useAuthStore } from "@/shared/stores";
 import { UserForm } from "@/features/users/ui/user-form";
 import { createUserColumns } from "@/features/users/columns";
 import type { UserRow } from "@/entities/users";
@@ -14,7 +14,7 @@ import { Loader } from "@/shared/ui/loader";
 import { Modal } from "@/shared/ui/modal";
 import { Pagination } from "@/shared/ui/pagination";
 import { DataTable } from "@/shared/ui/data-table";
-import { canDeleteUsers } from "@/shared/utils/helpers/roles";
+import { canDeleteUsers } from "@/shared/helpers";
 
 export const UsersWidget = () => {
   const [isModalOpen, setModalOpen] = useState(false);

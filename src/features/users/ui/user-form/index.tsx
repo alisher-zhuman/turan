@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import { getCompanies } from "@/entities/companies";
-import { useAuthStore } from "@/shared/stores/auth";
+import { useAuthStore } from "@/shared/stores";
 
 import type { Company, Role } from "@/shared/types";
 import {
@@ -17,12 +17,12 @@ import {
   type CreateUserPayload,
   type UserRow,
 } from "@/entities/users";
-import { ROLE, ROLE_LABELS } from "@/shared/utils/constants/roles";
+import { ROLE, ROLE_LABELS } from "@/shared/constants";
 import {
   availableUserRolesFor,
   canSelectCompanyForRole,
   hasRoleSuperAdmin,
-} from "@/shared/utils/helpers/roles";
+} from "@/shared/helpers";
 
 interface Props {
   onClose: () => void;

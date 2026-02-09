@@ -4,7 +4,7 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { ROLE_LABELS } from "@/shared/utils/constants/roles";
+import { ROLE_LABELS } from "@/shared/constants";
 import type { Column } from "@/shared/types";
 import type { UserRow } from "@/entities/users";
 

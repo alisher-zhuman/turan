@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { ROLE } from "../utils/constants/roles";
+import type { ROLE } from "../constants";
 
 export type Role = (typeof ROLE)[keyof typeof ROLE];
 

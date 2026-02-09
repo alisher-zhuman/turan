@@ -10,8 +10,7 @@ import ShieldIcon from "@mui/icons-material/Shield";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import PersonIcon from "@mui/icons-material/Person";
-import { ROUTES } from "@/shared/utils/constants/routes";
-import { ROLE } from "@/shared/utils/constants/roles";
+import { ROLE, ROUTES } from "@/shared/constants";
 import type { Role } from "@/shared/types";
 
 export const getSidebarIcon = (to: string) => {

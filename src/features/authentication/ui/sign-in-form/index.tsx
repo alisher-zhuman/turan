@@ -5,9 +5,9 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { useAuthStore } from "@/shared/stores/auth";
+import { useAuthStore } from "@/shared/stores";
 import { logIn } from "@/entities/authentication";
-import { ROUTES } from "@/shared/utils/constants/routes";
+import { ROUTES } from "@/shared/constants";
 
 export const SignInForm = () => {
   const [email, setEmail] = useState("");

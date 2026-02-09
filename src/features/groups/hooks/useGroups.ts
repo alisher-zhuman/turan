@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
-import { useAuthStore } from "@/shared/stores/auth";
+import { useAuthStore } from "@/shared/stores";
 import {
   addMetersToGroup,
   deleteGroup,
@@ -13,7 +13,7 @@ import {
 import {
   canManageMetersToGroups as canManageMetersToGroupsRole,
   hasRoleAdmin,
-} from "@/shared/utils/helpers/roles";
+} from "@/shared/helpers";
 
 interface Props {
   forFilter?: boolean;

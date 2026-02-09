@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router";
-import { useAuthStore } from "@/shared/stores/auth";
-import { ROUTES } from "@/shared/utils/constants/routes";
-import { getAllowedPathsByRole } from "@/shared/utils/helpers";
+import { useAuthStore } from "@/shared/stores";
+import { ROUTES } from "@/shared/constants";
+import { getAllowedPathsByRole } from "@/shared/helpers";
 
 interface Props {
   children: ReactNode;

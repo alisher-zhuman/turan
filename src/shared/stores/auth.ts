@@ -1,6 +1,6 @@
-import type { AuthSession, AuthState } from "@/shared/types";
-import { AUTH_STORAGE_KEY } from "@/shared/utils/constants";
 import { create } from "zustand";
+import { AUTH_STORAGE_KEY } from "@/shared/constants";
+import type { AuthSession, AuthState } from "@/shared/types";
 
 export const useAuthStore = create<AuthState>((set) => {
   const stored = localStorage.getItem(AUTH_STORAGE_KEY);
