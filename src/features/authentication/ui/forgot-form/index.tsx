@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { sendForgotRequest } from "@/features/authentication/api/auth";
+import { sendForgotRequest } from "@/entities/authentication";
 
 export const ForgotForm = () => {
   const [email, setEmail] = useState("");

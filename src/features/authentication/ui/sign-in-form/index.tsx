@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { useAuthStore } from "@/features/authentication/store/auth";
-import { logIn } from "@/features/authentication/api/auth";
+import { logIn } from "@/entities/authentication";
 import { ROUTES } from "@/shared/utils/constants/routes";
 
 export const SignInForm = () => {

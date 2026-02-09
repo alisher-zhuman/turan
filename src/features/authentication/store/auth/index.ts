@@ -1,8 +1,5 @@
 import { create } from "zustand";
-import type {
-  AuthSession,
-  AuthState,
-} from "@/features/authentication/interfaces/auth";
+import type { AuthSession, AuthState } from "@/entities/authentication";
 import type { User } from "@/shared/types";
 import { AUTH_STORAGE_KEY } from "../../utils/constants";
 
