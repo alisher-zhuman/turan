@@ -1,4 +1,4 @@
-import type { Company } from "@/features/companies/interfaces/companies";
+import type { Company } from "@/entities/companies";
 import type { Role } from "@/shared/types";
 
 export interface Device {

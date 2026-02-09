@@ -7,8 +7,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
-import type { Company } from "@/features/companies/interfaces/companies";
-import { getCompanies } from "@/features/companies/api/companies";
+import { getCompanies, type Company } from "@/entities/companies";
 import type { User } from "@/features/authentication/interfaces/auth";
 import { useAuthStore } from "@/features/authentication/store/auth";
 

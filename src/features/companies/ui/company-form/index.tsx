@@ -6,11 +6,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
-import type {
-  Company,
-  CompanyPayload,
-} from "@/features/companies/interfaces/companies";
-import { createCompany, editCompany } from "../../api/companies";
+
+import {
+  createCompany,
+  editCompany,
+  type Company,
+  type CompanyPayload,
+} from "@/entities/companies";
 
 interface Props {
   company?: Company | null;
@@ -33,12 +35,12 @@ export const CompanyForm = ({ company, onClose }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["companies"] });
       onClose();
       toast.success(
-        isEditing ? "Компания успешно обновлена" : "Компания успешно создана"
+        isEditing ? "Компания успешно обновлена" : "Компания успешно создана",
       );
     },
     onError: (error: AxiosError<{ message?: string }>) => {
       setErrorMessage(
-        error.response?.data?.message || "Ошибка при сохранении компании"
+        error.response?.data?.message || "Ошибка при сохранении компании",
       );
     },
   });
@@ -60,8 +62,8 @@ export const CompanyForm = ({ company, onClose }: Props) => {
       ? "Обновление..."
       : "Создание..."
     : isEditing
-    ? "Сохранить"
-    : "Создать";
+      ? "Сохранить"
+      : "Создать";
 
   return (
     <Box

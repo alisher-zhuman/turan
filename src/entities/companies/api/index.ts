@@ -1,5 +1,5 @@
 import { api } from "@/shared/api";
-import type { CompanyPayload } from "@/entities/companies";
+import type { CompanyPayload } from "@/entities/companies/model/types";
 
 export const getCompanies = async (isArchived: boolean) => {
   const { data } = await api.get(`/companies`, {
@@ -16,14 +16,9 @@ export const createCompany = async (newCompany: CompanyPayload) => {
 
 export const editCompany = async (
   companyId: number,
-  payload: CompanyPayload
+  payload: CompanyPayload,
 ) => {
   const { data } = await api.patch(`/companies/${companyId}`, payload);
-  return data;
-};
-
-export const refreshCompanyToken = async (companyId: number) => {
-  const { data } = await api.post("/companies/token/refresh", { companyId });
   return data;
 };
 
@@ -34,5 +29,10 @@ export const archiveCompany = async (id: number) => {
 
 export const unarchiveCompany = async (id: number) => {
   const { data } = await api.post(`/companies/unarchive/${id}`);
+  return data;
+};
+
+export const refreshCompanyToken = async (companyId: number) => {
+  const { data } = await api.post("/companies/token/refresh", { companyId });
   return data;
 };

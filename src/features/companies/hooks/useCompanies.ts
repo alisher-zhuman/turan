@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
-import type { Company } from "@/features/companies/interfaces/companies";
+import type { Company } from "@/entities/companies";
 import {
   archiveCompany,
   getCompanies,
   refreshCompanyToken,
   unarchiveCompany,
-} from "@/features/companies/api/companies";
+} from "@/entities/companies";
 
 export const useCompanies = () => {
   const [isArchived, setIsArchived] = useState(false);
