@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router";
 import { lazy } from "react";
 
 import { Authentication } from "@/pages/authentication";
+import { ROUTES } from "@/shared/utils/constants/routes";
 import { ProtectedRoute } from "./ui/protected-route";
 import { WithSuspense } from "./ui/with-suspense";
 import { Layout } from "../layout";
@@ -32,8 +33,8 @@ const NotFound = lazy(() =>
 );
 
 export const ROUTER = createBrowserRouter([
-  { path: "/sign-in", element: <Authentication /> },
-  { path: "/sign-in/forgot", element: <Authentication /> },
+  { path: `/${ROUTES.SIGN_IN}`, element: <Authentication /> },
+  { path: `/${ROUTES.FORGOT}`, element: <Authentication /> },
   {
     path: "*",
     element: (
@@ -51,7 +52,7 @@ export const ROUTER = createBrowserRouter([
     ),
     children: [
       {
-        path: "companies",
+        path: ROUTES.COMPANIES,
         element: (
           <WithSuspense>
             <Companies />
@@ -59,7 +60,7 @@ export const ROUTER = createBrowserRouter([
         ),
       },
       {
-        path: "users",
+        path: ROUTES.USERS,
         element: (
           <WithSuspense>
             <Users />
@@ -67,7 +68,7 @@ export const ROUTER = createBrowserRouter([
         ),
       },
       {
-        path: "devices",
+        path: ROUTES.DEVICES,
         element: (
           <WithSuspense>
             <Devices />
@@ -75,7 +76,7 @@ export const ROUTER = createBrowserRouter([
         ),
       },
       {
-        path: "groups",
+        path: ROUTES.GROUPS,
         element: (
           <WithSuspense>
             <Groups />
@@ -83,7 +84,7 @@ export const ROUTER = createBrowserRouter([
         ),
       },
       {
-        path: "meters",
+        path: ROUTES.METERS,
         element: (
           <WithSuspense>
             <Meters />
@@ -91,7 +92,7 @@ export const ROUTER = createBrowserRouter([
         ),
       },
       {
-        path: "readings",
+        path: ROUTES.READINGS,
         element: (
           <WithSuspense>
             <Readings />
@@ -99,7 +100,7 @@ export const ROUTER = createBrowserRouter([
         ),
       },
       {
-        path: "webhooks",
+        path: ROUTES.WEBHOOKS,
         element: (
           <WithSuspense>
             <Webhooks />

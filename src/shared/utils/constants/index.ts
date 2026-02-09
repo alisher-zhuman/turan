@@ -1,40 +1,41 @@
 import type { SidebarLink } from "@/shared/types";
 import { ROLE } from "./roles";
+import { ROUTES } from "./routes";
 
 export const SIDEBAR_LINKS: SidebarLink[] = [
   {
     label: "Компании",
-    to: "/companies",
+    to: `/${ROUTES.COMPANIES}`,
     roles: [ROLE.SUPER_ADMIN],
   },
   {
     label: "Пользователи",
-    to: "/users",
+    to: `/${ROUTES.USERS}`,
     roles: [ROLE.SUPER_ADMIN, ROLE.ADMIN],
   },
   {
     label: "Устройства",
-    to: "/devices",
+    to: `/${ROUTES.DEVICES}`,
     roles: [ROLE.ADMIN],
   },
   {
     label: "Группы",
-    to: "/groups",
+    to: `/${ROUTES.GROUPS}`,
     roles: [ROLE.ADMIN, ROLE.USER, ROLE.CONTROLLER],
   },
   {
     label: "Счётчики",
-    to: "/meters",
+    to: `/${ROUTES.METERS}`,
     roles: [ROLE.ADMIN, ROLE.USER, ROLE.CONTROLLER],
   },
   {
     label: "Показания",
-    to: "/readings",
+    to: `/${ROUTES.READINGS}`,
     roles: [ROLE.ADMIN, ROLE.USER, ROLE.CONTROLLER],
   },
   {
     label: "Вебхуки",
-    to: "/webhooks",
+    to: `/${ROUTES.WEBHOOKS}`,
     roles: [ROLE.ADMIN],
   },
 ];

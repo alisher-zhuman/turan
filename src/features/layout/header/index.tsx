@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useAuthStore } from "@/features/authentication/store/auth";
 import { hasRoleSuperAdmin } from "@/shared/utils/helpers/roles";
 import { ROLE_LABELS } from "@/shared/utils/constants/roles";
+import { ROUTES } from "@/shared/utils/constants/routes";
 
 export const Header = () => {
   const { user, logout } = useAuthStore();
@@ -15,7 +16,7 @@ export const Header = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/sign-in");
+    navigate(`/${ROUTES.SIGN_IN}`);
   };
 
   const TITLES = user
@@ -39,7 +40,7 @@ export const Header = () => {
           {!user && (
             <Button
               component={Link}
-              to="/sign-in"
+              to={`/${ROUTES.SIGN_IN}`}
               color="inherit"
               sx={{ ":hover": { background: "inherit" } }}
             >
@@ -52,7 +53,7 @@ export const Header = () => {
               {user.passwordChange && (
                 <Button
                   component={Link}
-                  to="/sign-in/forgot"
+                  to={`/${ROUTES.FORGOT}`}
                   color="inherit"
                   sx={{ ":hover": { background: "inherit" } }}
                 >

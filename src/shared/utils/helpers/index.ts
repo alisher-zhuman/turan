@@ -1,7 +1,5 @@
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import SpeedIcon from "@mui/icons-material/Speed";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import SensorsIcon from "@mui/icons-material/Sensors";
 import GroupsIcon from "@mui/icons-material/Groups";
 import BusinessIcon from "@mui/icons-material/Business";
 import DevicesOtherIcon from "@mui/icons-material/DevicesOther";
@@ -15,6 +13,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import toast from "react-hot-toast";
 import type { Role } from "@/shared/types";
 import { SIDEBAR_LINKS } from "../constants";
+import { ROUTES } from "../constants/routes";
 import { ROLE } from "../constants/roles";
 
 export const getAllowedPathsByRole = (role: Role): string[] => {
@@ -29,24 +28,20 @@ export const copyToClipboard = (value: string | undefined) => {
 
 export const getSidebarIcon = (to: string) => {
   switch (true) {
-    case to.startsWith("/dashboard"):
-      return DashboardIcon;
-    case to.startsWith("/meters"):
+    case to.startsWith(`/${ROUTES.METERS}`):
       return SpeedIcon;
-    case to.startsWith("/readings"):
+    case to.startsWith(`/${ROUTES.READINGS}`):
       return BarChartIcon;
-    case to.startsWith("/devices"):
+    case to.startsWith(`/${ROUTES.DEVICES}`):
       return DevicesOtherIcon;
-    case to.startsWith("/groups"):
+    case to.startsWith(`/${ROUTES.GROUPS}`):
       return GroupsIcon;
-    case to.startsWith("/companies"):
+    case to.startsWith(`/${ROUTES.COMPANIES}`):
       return BusinessIcon;
-    case to.startsWith("/users"):
+    case to.startsWith(`/${ROUTES.USERS}`):
       return PeopleIcon;
-    case to.startsWith("/webhooks"):
+    case to.startsWith(`/${ROUTES.WEBHOOKS}`):
       return WebhookIcon;
-    case to.startsWith("/sensors"):
-      return SensorsIcon;
     default:
       return HelpOutlineIcon;
   }

@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { useAuthStore } from "@/features/authentication/store/auth";
 import { logIn } from "@/features/authentication/api/auth";
+import { ROUTES } from "@/shared/utils/constants/routes";
 
 export const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -98,7 +99,7 @@ export const SignInForm = () => {
 
           <Button
             variant="text"
-            href="/sign-in/forgot"
+            href={`/${ROUTES.FORGOT}`}
             sx={{ mt: 1, width: "fit-content", margin: "auto" }}
           >
             Забыли пароль?
