@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import toast from "react-hot-toast";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -26,7 +26,7 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
     }
   }, [groupToEdit]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!name.trim()) {

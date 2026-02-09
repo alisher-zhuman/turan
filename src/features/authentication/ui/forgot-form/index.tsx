@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -12,7 +12,7 @@ export const ForgotForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -26,7 +26,7 @@ export const ForgotForm = () => {
         setError(
           err.response?.data?.message ||
             err.message ||
-            "Ошибка при восстановлении"
+            "Ошибка при восстановлении",
         );
       })
       .finally(() => {

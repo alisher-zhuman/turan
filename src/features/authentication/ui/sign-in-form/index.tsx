@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { logIn } from "@/entities/authentication";
+import { signIn } from "@/entities/authentication";
 import { useAuthStore } from "@/shared/stores";
 import { ROUTES } from "@/shared/constants";
 
@@ -19,12 +19,12 @@ export const SignInForm = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    logIn(email, password)
+    signIn(email, password)
       .then((data) => {
         const { accessToken, ...user } = data;
 

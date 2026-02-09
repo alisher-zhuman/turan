@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
@@ -75,7 +75,7 @@ export const UserForm = ({ onClose, userToEdit }: Props) => {
 
   const showCompanySelect = canSelectCompanyForRole(user?.role, role);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const validationErrors: string[] = [];
 

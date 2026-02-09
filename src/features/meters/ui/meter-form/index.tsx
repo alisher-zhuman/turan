@@ -1,5 +1,5 @@
 // src/features/meters/ui/meter-form.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
@@ -44,7 +44,7 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
     }
   }, [meterToEdit]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!meterToEdit) return;
 
