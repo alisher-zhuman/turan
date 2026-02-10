@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import type { AxiosError } from "axios";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGroup, updateGroup, type Group } from "@/entities/groups";
 import { GroupFormSchema } from "../../model/schema";
 import type { GroupFormValues } from "../../model/types";
@@ -23,7 +23,7 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<GroupFormValues>({
     resolver: zodResolver(GroupFormSchema),
     defaultValues: {
@@ -37,25 +37,30 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
     });
   }, [groupToEdit, reset]);
 
-  const onSubmit = async (values: GroupFormValues) => {
-    try {
-      const name = values.name.trim();
-      if (groupToEdit) {
-        await updateGroup(groupToEdit.id, name);
-        toast.success("Группа обновлена");
-      } else {
-        await createGroup(name);
-        toast.success("Группа создана");
-      }
-
-      await queryClient.invalidateQueries({ queryKey: ["groups"] });
+  const mutation = useMutation({
+    mutationFn: ({
+      groupId,
+      name,
+    }: {
+      groupId?: number;
+      name: string;
+    }) => (groupId ? updateGroup(groupId, name) : createGroup(name)),
+    onSuccess: (_, variables) => {
+      toast.success(variables.groupId ? "Группа обновлена" : "Группа создана");
+      queryClient.invalidateQueries({ queryKey: ["groups"] });
       onClose();
-    } catch (error) {
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message || "Ошибка при сохранении группы",
       );
-    }
+    },
+  });
+
+  const onSubmit = (values: GroupFormValues) => {
+    const name = values.name.trim();
+    mutation.mutate({ groupId: groupToEdit?.id, name });
   };
 
   return (
@@ -75,7 +80,11 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
       />
 
       <Box display="flex" justifyContent="flex-end" gap={1}>
-        <Button type="submit" variant="contained" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={mutation.isPending}
+        >
           {groupToEdit ? "Сохранить" : "Создать"}
         </Button>
       </Box>

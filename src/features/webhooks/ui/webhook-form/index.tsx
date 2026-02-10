@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
@@ -16,8 +15,6 @@ interface Props {
 }
 
 export const WebhookForm = ({ onClose }: Props) => {
-  const [loading, setLoading] = useState(false);
-
   const queryClient = useQueryClient();
 
   const {
@@ -31,22 +28,23 @@ export const WebhookForm = ({ onClose }: Props) => {
     },
   });
 
-  const onSubmit = async (values: WebhookFormValues) => {
-    try {
-      setLoading(true);
-      await createWebhook(values.url.trim());
+  const mutation = useMutation({
+    mutationFn: (url: string) => createWebhook(url),
+    onSuccess: () => {
       toast.success("Вебхук создан");
-
-      await queryClient.invalidateQueries({ queryKey: ["webhooks"] });
+      queryClient.invalidateQueries({ queryKey: ["webhooks"] });
       onClose();
-    } catch (error) {
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message || "Ошибка при создании вебхука",
       );
-    } finally {
-      setLoading(false);
-    }
+    },
+  });
+
+  const onSubmit = (values: WebhookFormValues) => {
+    mutation.mutate(values.url.trim());
   };
 
   return (
@@ -66,7 +64,7 @@ export const WebhookForm = ({ onClose }: Props) => {
       />
 
       <Box display="flex" justifyContent="flex-end" gap={1}>
-        <Button type="submit" variant="contained" disabled={loading}>
+        <Button type="submit" variant="contained" disabled={mutation.isPending}>
           Создать
         </Button>
       </Box>

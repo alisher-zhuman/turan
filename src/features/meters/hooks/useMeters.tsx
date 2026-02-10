@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import {
@@ -78,61 +78,71 @@ export const useMeters = () => {
   const emptyText = "Счётчики не найдены";
   const total = data?.total ?? 0;
 
-  const invalidate = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["meters"] });
-  };
+  const invalidate = () =>
+    queryClient.invalidateQueries({ queryKey: ["meters"] });
 
-  const handleDeleteOne = async (meterId: number) => {
-    if (!isAdmin) return;
-
-    try {
-      await deleteMeters([meterId]);
-      toast.success("Счётчик удалён");
-      setSelectedIds((prev) => prev.filter((id) => id !== meterId));
-      await invalidate();
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message || "Ошибка при удалении счётчика",
+  const deleteMutation = useMutation({
+    mutationFn: (meterIds: number[]) => deleteMeters(meterIds),
+    onSuccess: (_, meterIds) => {
+      toast.success(
+        meterIds.length === 1
+          ? "Счётчик удалён"
+          : "Выбранные счётчики удалены",
       );
-    }
-  };
-
-  const handleDeleteSelected = async () => {
-    if (!isAdmin || selectedIds.length === 0) return;
-
-    try {
-      await deleteMeters(selectedIds);
-      toast.success("Выбранные счётчики удалены");
-      setSelectedIds([]);
-      await invalidate();
-    } catch (error) {
+      setSelectedIds((prev) =>
+        prev.filter((id) => !meterIds.includes(id)),
+      );
+      void invalidate();
+    },
+    onError: (error, meterIds) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
-          "Ошибка при удалении выбранных счётчиков",
+          (meterIds.length === 1
+            ? "Ошибка при удалении счётчика"
+            : "Ошибка при удалении выбранных счётчиков"),
       );
-    }
-  };
+    },
+  });
 
-  const handleCommand = async (meterId: number, command: "open" | "close") => {
-    if (!isAdmin) return;
-
-    try {
-      await sendMeterCommand(meterId, command);
+  const commandMutation = useMutation({
+    mutationFn: ({
+      meterId,
+      command,
+    }: {
+      meterId: number;
+      command: "open" | "close";
+    }) => sendMeterCommand(meterId, command),
+    onSuccess: (_, { command }) => {
       toast.success(
         command === "open"
           ? "Команда на открытие клапана отправлена"
           : "Команда на закрытие клапана отправлена",
       );
-      await invalidate();
-    } catch (error) {
+      void invalidate();
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
           "Ошибка при отправке команды клапану",
       );
-    }
+    },
+  });
+
+  const handleDeleteOne = (meterId: number) => {
+    if (!isAdmin) return;
+    deleteMutation.mutate([meterId]);
+  };
+
+  const handleDeleteSelected = () => {
+    if (!isAdmin || selectedIds.length === 0) return;
+    deleteMutation.mutate(selectedIds);
+  };
+
+  const handleCommand = (meterId: number, command: "open" | "close") => {
+    if (!isAdmin) return;
+    commandMutation.mutate({ meterId, command });
   };
 
   const allSelected =

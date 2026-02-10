@@ -33,6 +33,29 @@ export const useCompanies = () => {
     },
   });
 
+  const toggleArchiveMutation = useMutation({
+    mutationFn: ({
+      companyId,
+      archived,
+    }: {
+      companyId: number;
+      archived: boolean;
+    }) =>
+      archived ? unarchiveCompany(companyId) : archiveCompany(companyId),
+    onSuccess: (_, { archived }) => {
+      toast.success(
+        archived ? "Компания разархивирована" : "Компания архивирована",
+      );
+      queryClient.invalidateQueries({ queryKey: ["companies"] });
+    },
+    onError: (error: AxiosError<{ message?: string }>) => {
+      toast.error(
+        error.response?.data?.message ||
+          "Ошибка при изменении статуса компании",
+      );
+    },
+  });
+
   const companies: Company[] = data ?? [];
   const hasCompanies = companies.length > 0;
 
@@ -44,25 +67,8 @@ export const useCompanies = () => {
     refreshTokenMutation.mutate(companyId);
   };
 
-  const handleToggleArchive = async (companyId: number, archived: boolean) => {
-    try {
-      if (archived) {
-        await unarchiveCompany(companyId);
-        toast.success("Компания разархивирована");
-      } else {
-        await archiveCompany(companyId);
-        toast.success("Компания архивирована");
-      }
-
-      queryClient.invalidateQueries({ queryKey: ["companies"] });
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-
-      toast.error(
-        axiosError.response?.data?.message ||
-          "Ошибка при изменении статуса компании",
-      );
-    }
+  const handleToggleArchive = (companyId: number, archived: boolean) => {
+    toggleArchiveMutation.mutate({ companyId, archived });
   };
 
   return {

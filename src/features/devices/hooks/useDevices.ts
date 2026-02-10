@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import { deleteDevice, getDevices, verifyDevice, type Device } from "@/entities/devices";
@@ -26,53 +26,59 @@ export const useDevices = () => {
     ? "Нет подтверждённых устройств"
     : "Нет неподтверждённых устройств";
 
-  const invalidate = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["devices"] });
-  };
+  const invalidate = () =>
+    queryClient.invalidateQueries({ queryKey: ["devices"] });
 
-  const handleVerify = async (deviceId: number) => {
-    try {
-      await verifyDevice(deviceId);
+  const verifyMutation = useMutation({
+    mutationFn: (deviceId: number) => verifyDevice(deviceId),
+    onSuccess: () => {
       toast.success("Устройство подтверждено");
-      await invalidate();
-    } catch (error) {
+      void invalidate();
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
           "Ошибка при подтверждении устройства",
       );
-    }
-  };
+    },
+  });
 
-  const handleDeleteOne = async (deviceId: number) => {
-    try {
-      await deleteDevice([deviceId]);
-      toast.success("Устройство удалено");
-      setSelectedIds((prev) => prev.filter((id) => id !== deviceId));
-      await invalidate();
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message || "Ошибка при удалении устройства",
+  const deleteMutation = useMutation({
+    mutationFn: (deviceIds: number[]) => deleteDevice(deviceIds),
+    onSuccess: (_, deviceIds) => {
+      toast.success(
+        deviceIds.length === 1
+          ? "Устройство удалено"
+          : "Выбранные устройства удалены",
       );
-    }
-  };
-
-  const handleDeleteSelected = async () => {
-    if (selectedIds.length === 0) return;
-
-    try {
-      await deleteDevice(selectedIds);
-      toast.success("Выбранные устройства удалены");
-      setSelectedIds([]);
-      await invalidate();
-    } catch (error) {
+      setSelectedIds((prev) =>
+        prev.filter((id) => !deviceIds.includes(id)),
+      );
+      void invalidate();
+    },
+    onError: (error, deviceIds) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
-          "Ошибка при удалении выбранных устройств",
+          (deviceIds.length === 1
+            ? "Ошибка при удалении устройства"
+            : "Ошибка при удалении выбранных устройств"),
       );
-    }
+    },
+  });
+
+  const handleVerify = (deviceId: number) => {
+    verifyMutation.mutate(deviceId);
+  };
+
+  const handleDeleteOne = (deviceId: number) => {
+    deleteMutation.mutate([deviceId]);
+  };
+
+  const handleDeleteSelected = () => {
+    if (selectedIds.length === 0) return;
+    deleteMutation.mutate(selectedIds);
   };
 
   const allSelected = hasDevices && selectedIds.length === devices.length;

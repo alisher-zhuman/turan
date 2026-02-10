@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -14,7 +14,6 @@ import { SignInFormSchema } from "../../model/schema";
 import type { SignInFormValues } from "../../model/types";
 
 export const SignInForm = () => {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -33,27 +32,34 @@ export const SignInForm = () => {
     },
   });
 
-  const onSubmit = (values: SignInFormValues) => {
-    setLoading(true);
-    setError("");
+  const mutation = useMutation({
+    mutationFn: ({ email, password }: SignInFormValues) =>
+      signIn(email, password),
+    onMutate: () => {
+      setError("");
+    },
+    onSuccess: (data) => {
+      const { accessToken, ...user } = data;
 
-    signIn(values.email, values.password)
-      .then((data) => {
-        const { accessToken, ...user } = data;
-
-        setAuth({
-          user,
-          accessToken,
-        });
-
-        navigate("/");
-      })
-      .catch((err) => {
-        setError(err.response?.data?.message || err.message || "Ошибка входа");
-      })
-      .finally(() => {
-        setLoading(false);
+      setAuth({
+        user,
+        accessToken,
       });
+
+      navigate("/");
+    },
+    onError: (err: unknown) => {
+      const errorMessage =
+        (err as { response?: { data?: { message?: string } }; message?: string })
+          ?.response?.data?.message ||
+        (err as { message?: string })?.message ||
+        "Ошибка входа";
+      setError(errorMessage);
+    },
+  });
+
+  const onSubmit = (values: SignInFormValues) => {
+    mutation.mutate(values);
   };
 
   return (
@@ -101,9 +107,9 @@ export const SignInForm = () => {
             variant="contained"
             size="large"
             fullWidth
-            disabled={loading}
+            disabled={mutation.isPending}
           >
-            {loading ? "Вход..." : "Войти"}
+            {mutation.isPending ? "Вход..." : "Войти"}
           </Button>
 
           {error && (

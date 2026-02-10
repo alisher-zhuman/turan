@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import { useAuthStore } from "@/shared/stores";
@@ -44,69 +44,84 @@ export const useGroups = ({ forFilter = false }: Props) => {
   const hasGroups = groups.length > 0;
   const emptyText = "Группы не найдены";
 
-  const invalidateGroups = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["groups"] });
-  };
+  const invalidateGroups = () =>
+    queryClient.invalidateQueries({ queryKey: ["groups"] });
 
-  const invalidateMeters = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["meters"] });
-  };
+  const invalidateMeters = () =>
+    queryClient.invalidateQueries({ queryKey: ["meters"] });
 
-  const handleDelete = async (groupId: number) => {
-    if (!isAdmin) return;
-
-    try {
-      await deleteGroup(groupId);
+  const deleteMutation = useMutation({
+    mutationFn: (groupId: number) => deleteGroup(groupId),
+    onSuccess: () => {
       toast.success("Группа удалена");
-      await invalidateGroups();
-    } catch (error) {
+      void invalidateGroups();
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message || "Ошибка при удалении группы",
       );
-    }
-  };
+    },
+  });
 
-  const handleAddMetersToGroup = async (
-    groupId: number,
-    meterIds: number[],
-  ) => {
-    if (!canManageMetersToGroups) return;
-
-    try {
-      const data = await addMetersToGroup(groupId, meterIds);
-
+  const addMetersMutation = useMutation({
+    mutationFn: ({
+      groupId,
+      meterIds,
+    }: {
+      groupId: number;
+      meterIds: number[];
+    }) => addMetersToGroup(groupId, meterIds),
+    onSuccess: (data) => {
       const message = (data as { message?: string })?.message || "";
-
       toast.success(message);
-      await invalidateMeters();
-    } catch (error) {
+      void invalidateMeters();
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message || "Ошибка при добавлении в группу",
       );
-    }
-  };
+    },
+  });
 
-  const handleRemoveMetersFromGroup = async (
-    groupId: number,
-    meterIds: number[],
-  ) => {
-    if (!canManageMetersToGroups) return;
-
-    try {
-      const data = await removeMetersFromGroup(groupId, meterIds);
-
+  const removeMetersMutation = useMutation({
+    mutationFn: ({
+      groupId,
+      meterIds,
+    }: {
+      groupId: number;
+      meterIds: number[];
+    }) => removeMetersFromGroup(groupId, meterIds),
+    onSuccess: (data) => {
       const message = (data as { message?: string })?.message || "";
-
       toast.success(message);
-      await invalidateMeters();
-    } catch (error) {
+      void invalidateMeters();
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message || "Ошибка при удалении из группы",
       );
-    }
+    },
+  });
+
+  const handleDelete = (groupId: number) => {
+    if (!isAdmin) return;
+    deleteMutation.mutate(groupId);
+  };
+
+  const handleAddMetersToGroup = (groupId: number, meterIds: number[]) => {
+    if (!canManageMetersToGroups) return;
+    addMetersMutation.mutate({ groupId, meterIds });
+  };
+
+  const handleRemoveMetersFromGroup = (
+    groupId: number,
+    meterIds: number[],
+  ) => {
+    if (!canManageMetersToGroups) return;
+    removeMetersMutation.mutate({ groupId, meterIds });
   };
 
   return {

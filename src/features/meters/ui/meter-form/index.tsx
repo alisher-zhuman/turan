@@ -1,8 +1,8 @@
 // src/features/meters/ui/meter-form.tsx
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
@@ -21,8 +21,6 @@ interface Props {
 }
 
 export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
-  const [loading, setLoading] = useState(false);
-
   const queryClient = useQueryClient();
 
   const {
@@ -51,37 +49,44 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
     });
   }, [meterToEdit, reset]);
 
-  const onSubmit = async (values: MeterFormValues) => {
-    if (!meterToEdit) return;
-
-    try {
-      setLoading(true);
-
-      const normalizedCustomerID =
-        values.customerID && values.customerID.trim().length > 0
-          ? values.customerID.trim()
-          : null;
-
-      await updateMeter({
-        meterId: meterToEdit.id,
-        customerID: normalizedCustomerID,
-        client: values.client ?? "",
-        address: values.address ?? "",
-        descriptions: values.descriptions ?? "",
-        isArchived: canArchive ? values.isArchived : meterToEdit.isArchived,
-      });
-
+  const mutation = useMutation({
+    mutationFn: (payload: {
+      meterId: number;
+      customerID: string | null;
+      client: string | null;
+      address: string | null;
+      descriptions: string | null;
+      isArchived: boolean;
+    }) => updateMeter(payload),
+    onSuccess: () => {
       toast.success("Счётчик обновлён");
-      await queryClient.invalidateQueries({ queryKey: ["meters"] });
+      queryClient.invalidateQueries({ queryKey: ["meters"] });
       onClose();
-    } catch (error) {
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message || "Ошибка при сохранении счётчика",
       );
-    } finally {
-      setLoading(false);
-    }
+    },
+  });
+
+  const onSubmit = (values: MeterFormValues) => {
+    if (!meterToEdit) return;
+
+    const normalizedCustomerID =
+      values.customerID && values.customerID.trim().length > 0
+        ? values.customerID.trim()
+        : null;
+
+    mutation.mutate({
+      meterId: meterToEdit.id,
+      customerID: normalizedCustomerID,
+      client: values.client ?? "",
+      address: values.address ?? "",
+      descriptions: values.descriptions ?? "",
+      isArchived: canArchive ? values.isArchived : meterToEdit.isArchived,
+    });
   };
 
   return (
@@ -133,7 +138,11 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
       )}
 
       <Box display="flex" justifyContent="flex-end" gap={1}>
-        <Button type="submit" variant="contained" disabled={loading}>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={mutation.isPending}
+        >
           Сохранить
         </Button>
       </Box>

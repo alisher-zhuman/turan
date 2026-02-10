@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,7 +11,6 @@ import { ForgotFormSchema } from "../../model/schema";
 import type { ForgotFormValues } from "../../model/types";
 
 export const ForgotForm = () => {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -26,25 +25,27 @@ export const ForgotForm = () => {
     },
   });
 
-  const onSubmit = (values: ForgotFormValues) => {
-    setLoading(true);
-    setError("");
-    setSuccess("");
+  const mutation = useMutation({
+    mutationFn: ({ email }: ForgotFormValues) => sendForgotRequest(email),
+    onMutate: () => {
+      setError("");
+      setSuccess("");
+    },
+    onSuccess: () => {
+      setSuccess("Инструкция для восстановления отправлена на почту.");
+    },
+    onError: (err: unknown) => {
+      const errorMessage =
+        (err as { response?: { data?: { message?: string } }; message?: string })
+          ?.response?.data?.message ||
+        (err as { message?: string })?.message ||
+        "Ошибка при восстановлении";
+      setError(errorMessage);
+    },
+  });
 
-    sendForgotRequest(values.email)
-      .then(() => {
-        setSuccess("Инструкция для восстановления отправлена на почту.");
-      })
-      .catch((err) => {
-        setError(
-          err.response?.data?.message ||
-            err.message ||
-            "Ошибка при восстановлении",
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  const onSubmit = (values: ForgotFormValues) => {
+    mutation.mutate(values);
   };
 
   return (
@@ -82,9 +83,9 @@ export const ForgotForm = () => {
             variant="contained"
             size="large"
             fullWidth
-            disabled={loading}
+            disabled={mutation.isPending}
           >
-            {loading ? "Отправка..." : "Отправить"}
+            {mutation.isPending ? "Отправка..." : "Отправить"}
           </Button>
 
           {error && (

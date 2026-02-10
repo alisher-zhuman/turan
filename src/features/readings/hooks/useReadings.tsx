@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import { deleteReadings, getReadings, type Reading } from "@/entities/readings";
@@ -28,41 +28,39 @@ export const useReadings = () => {
   const total = data?.total ?? 0;
   const emptyText = "Показания не найдены";
 
-  const invalidate = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["readings"] });
-  };
+  const invalidate = () =>
+    queryClient.invalidateQueries({ queryKey: ["readings"] });
 
-  const handleDeleteOne = async (id: string) => {
-    if (!isAdmin) return;
-
-    try {
-      await deleteReadings([id]);
-      toast.success("Показание удалено");
-      setSelectedIds((prev) => prev.filter((x) => x !== id));
-      await invalidate();
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message || "Ошибка при удалении показания",
+  const deleteMutation = useMutation({
+    mutationFn: (ids: string[]) => deleteReadings(ids),
+    onSuccess: (_, ids) => {
+      toast.success(
+        ids.length === 1
+          ? "Показание удалено"
+          : "Выбранные показания удалены",
       );
-    }
-  };
-
-  const handleDeleteSelected = async () => {
-    if (!isAdmin || selectedIds.length === 0) return;
-
-    try {
-      await deleteReadings(selectedIds);
-      toast.success("Выбранные показания удалены");
-      setSelectedIds([]);
-      await invalidate();
-    } catch (error) {
+      setSelectedIds((prev) => prev.filter((x) => !ids.includes(x)));
+      void invalidate();
+    },
+    onError: (error, ids) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
-          "Ошибка при удалении выбранных показаний",
+          (ids.length === 1
+            ? "Ошибка при удалении показания"
+            : "Ошибка при удалении выбранных показаний"),
       );
-    }
+    },
+  });
+
+  const handleDeleteOne = (id: string) => {
+    if (!isAdmin) return;
+    deleteMutation.mutate([id]);
+  };
+
+  const handleDeleteSelected = () => {
+    if (!isAdmin || selectedIds.length === 0) return;
+    deleteMutation.mutate(selectedIds);
   };
 
   const allSelected =

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import {
@@ -31,42 +31,53 @@ export const useUsers = () => {
     ? "Нет архивных пользователей"
     : "Нет активных пользователей";
 
-  const invalidate = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["users"] });
-  };
+  const invalidate = () =>
+    queryClient.invalidateQueries({ queryKey: ["users"] });
 
-  const handleToggleArchive = async (userId: number, archived: boolean) => {
-    try {
-      if (archived) {
-        await unarchiveUser(userId);
-        toast.success("Пользователь разархивирован");
-      } else {
-        await archiveUser(userId);
-        toast.success("Пользователь архивирован");
-      }
-
-      await invalidate();
-    } catch (error) {
+  const toggleArchiveMutation = useMutation({
+    mutationFn: ({
+      userId,
+      archived,
+    }: {
+      userId: number;
+      archived: boolean;
+    }) => (archived ? unarchiveUser(userId) : archiveUser(userId)),
+    onSuccess: (_, { archived }) => {
+      toast.success(
+        archived ? "Пользователь разархивирован" : "Пользователь архивирован",
+      );
+      void invalidate();
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
           "Ошибка при изменении статуса пользователя",
       );
-    }
-  };
+    },
+  });
 
-  const handleDeleteUser = async (userId: number) => {
-    try {
-      await deleteUser(userId);
+  const deleteUserMutation = useMutation({
+    mutationFn: (userId: number) => deleteUser(userId),
+    onSuccess: () => {
       toast.success("Пользователь удален");
-      await invalidate();
-    } catch (error) {
+      void invalidate();
+    },
+    onError: (error) => {
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
           "Ошибка при удалении пользователя",
       );
-    }
+    },
+  });
+
+  const handleToggleArchive = (userId: number, archived: boolean) => {
+    toggleArchiveMutation.mutate({ userId, archived });
+  };
+
+  const handleDeleteUser = (userId: number) => {
+    deleteUserMutation.mutate(userId);
   };
 
   return {
