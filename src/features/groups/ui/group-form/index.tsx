@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import type { AxiosError } from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGroup, updateGroup, type Group } from "@/entities/groups";
+import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { GroupFormSchema } from "../../model/schema";
 import type { GroupFormValues } from "../../model/types";
@@ -18,8 +17,6 @@ interface Props {
 }
 
 export const GroupForm = ({ groupToEdit, onClose }: Props) => {
-  const queryClient = useQueryClient();
-
   const {
     register,
     handleSubmit,
@@ -38,7 +35,7 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
     });
   }, [groupToEdit, reset]);
 
-  const mutation = useMutation({
+  const mutation = useToastMutation({
     mutationFn: ({
       groupId,
       name,
@@ -46,16 +43,13 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
       groupId?: number;
       name: string;
     }) => (groupId ? updateGroup(groupId, name) : createGroup(name)),
-    onSuccess: (_, variables) => {
-      toast.success(variables.groupId ? "Группа обновлена" : "Группа создана");
-      queryClient.invalidateQueries({ queryKey: ["groups"] });
+    invalidateKeys: [["groups"]],
+    successMessage: (_, variables) =>
+      variables.groupId ? "Группа обновлена" : "Группа создана",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message || "Ошибка при сохранении группы",
+    onSuccess: () => {
       onClose();
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message || "Ошибка при сохранении группы",
-      );
     },
   });
 

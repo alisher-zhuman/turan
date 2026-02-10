@@ -1,12 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { createWebhook } from "@/entities/webhooks";
+import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { WebhookFormSchema } from "../../model/schema";
 import type { WebhookFormValues } from "../../model/types";
@@ -16,8 +15,6 @@ interface Props {
 }
 
 export const WebhookForm = ({ onClose }: Props) => {
-  const queryClient = useQueryClient();
-
   const {
     register,
     handleSubmit,
@@ -29,18 +26,14 @@ export const WebhookForm = ({ onClose }: Props) => {
     },
   });
 
-  const mutation = useMutation({
+  const mutation = useToastMutation({
     mutationFn: (url: string) => createWebhook(url),
+    invalidateKeys: [["webhooks"]],
+    successMessage: "Вебхук создан",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message || "Ошибка при создании вебхука",
     onSuccess: () => {
-      toast.success("Вебхук создан");
-      queryClient.invalidateQueries({ queryKey: ["webhooks"] });
       onClose();
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message || "Ошибка при создании вебхука",
-      );
     },
   });
 

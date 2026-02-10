@@ -1,17 +1,15 @@
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { deleteReadings, getReadings, type Reading } from "@/entities/readings";
 import { useAuthStore } from "@/shared/stores";
 import { hasRoleAdmin } from "@/shared/helpers";
+import { useToastMutation } from "@/shared/hooks";
 
 export const useReadings = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-
-  const queryClient = useQueryClient();
 
   const user = useAuthStore((state) => state.user);
 
@@ -28,28 +26,20 @@ export const useReadings = () => {
   const total = data?.total ?? 0;
   const emptyText = "Показания не найдены";
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ["readings"] });
-
-  const deleteMutation = useMutation({
+  const deleteMutation = useToastMutation({
     mutationFn: (ids: string[]) => deleteReadings(ids),
+    invalidateKeys: [["readings"]],
+    successMessage: (_, ids) =>
+      ids.length === 1
+        ? "Показание удалено"
+        : "Выбранные показания удалены",
+    errorMessage: (error: AxiosError<{ message?: string }>, ids) =>
+      error.response?.data?.message ||
+      (ids.length === 1
+        ? "Ошибка при удалении показания"
+        : "Ошибка при удалении выбранных показаний"),
     onSuccess: (_, ids) => {
-      toast.success(
-        ids.length === 1
-          ? "Показание удалено"
-          : "Выбранные показания удалены",
-      );
       setSelectedIds((prev) => prev.filter((x) => !ids.includes(x)));
-      void invalidate();
-    },
-    onError: (error, ids) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message ||
-          (ids.length === 1
-            ? "Ошибка при удалении показания"
-            : "Ошибка при удалении выбранных показаний"),
-      );
     },
   });
 

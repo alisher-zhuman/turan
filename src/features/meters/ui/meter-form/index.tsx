@@ -2,8 +2,6 @@
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -11,6 +9,7 @@ import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { updateMeter, type Meter } from "@/entities/meters";
+import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { MeterFormSchema } from "../../model/schema";
 import type { MeterFormValues } from "../../model/types";
@@ -22,8 +21,6 @@ interface Props {
 }
 
 export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
-  const queryClient = useQueryClient();
-
   const {
     register,
     handleSubmit,
@@ -50,7 +47,7 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
     });
   }, [meterToEdit, reset]);
 
-  const mutation = useMutation({
+  const mutation = useToastMutation({
     mutationFn: (payload: {
       meterId: number;
       customerID: string | null;
@@ -59,16 +56,12 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
       descriptions: string | null;
       isArchived: boolean;
     }) => updateMeter(payload),
+    invalidateKeys: [["meters"]],
+    successMessage: "Счётчик обновлён",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message || "Ошибка при сохранении счётчика",
     onSuccess: () => {
-      toast.success("Счётчик обновлён");
-      queryClient.invalidateQueries({ queryKey: ["meters"] });
       onClose();
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message || "Ошибка при сохранении счётчика",
-      );
     },
   });
 

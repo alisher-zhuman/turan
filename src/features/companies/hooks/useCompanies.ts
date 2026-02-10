@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import {
   archiveCompany,
@@ -9,31 +8,25 @@ import {
   unarchiveCompany,
   type Company,
 } from "@/entities/companies";
+import { useToastMutation } from "@/shared/hooks";
 
 export const useCompanies = () => {
   const [isArchived, setIsArchived] = useState(false);
-
-  const queryClient = useQueryClient();
 
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: ["companies", isArchived],
     queryFn: () => getCompanies(isArchived),
   });
 
-  const refreshTokenMutation = useMutation({
+  const refreshTokenMutation = useToastMutation({
     mutationFn: (id: number) => refreshCompanyToken(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["companies"] });
-      toast.success("API ключ обновлён");
-    },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      toast.error(
-        error.response?.data?.message || "Ошибка при обновлении API ключа",
-      );
-    },
+    invalidateKeys: [["companies"]],
+    successMessage: "API ключ обновлён",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message || "Ошибка при обновлении API ключа",
   });
 
-  const toggleArchiveMutation = useMutation({
+  const toggleArchiveMutation = useToastMutation({
     mutationFn: ({
       companyId,
       archived,
@@ -42,18 +35,12 @@ export const useCompanies = () => {
       archived: boolean;
     }) =>
       archived ? unarchiveCompany(companyId) : archiveCompany(companyId),
-    onSuccess: (_, { archived }) => {
-      toast.success(
-        archived ? "Компания разархивирована" : "Компания архивирована",
-      );
-      queryClient.invalidateQueries({ queryKey: ["companies"] });
-    },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      toast.error(
-        error.response?.data?.message ||
-          "Ошибка при изменении статуса компании",
-      );
-    },
+    invalidateKeys: [["companies"]],
+    successMessage: (_, { archived }) =>
+      archived ? "Компания разархивирована" : "Компания архивирована",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message ||
+      "Ошибка при изменении статуса компании",
   });
 
   const companies: Company[] = data ?? [];

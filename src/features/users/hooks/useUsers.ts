@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import {
   archiveUser,
@@ -9,13 +8,12 @@ import {
   unarchiveUser,
   type UserRow,
 } from "@/entities/users";
+import { useToastMutation } from "@/shared/hooks";
 
 export const useUsers = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [isArchived, setIsArchived] = useState(false);
-
-  const queryClient = useQueryClient();
 
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: ["users", page, limit, isArchived],
@@ -31,10 +29,7 @@ export const useUsers = () => {
     ? "Нет архивных пользователей"
     : "Нет активных пользователей";
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ["users"] });
-
-  const toggleArchiveMutation = useMutation({
+  const toggleArchiveMutation = useToastMutation({
     mutationFn: ({
       userId,
       archived,
@@ -42,34 +37,20 @@ export const useUsers = () => {
       userId: number;
       archived: boolean;
     }) => (archived ? unarchiveUser(userId) : archiveUser(userId)),
-    onSuccess: (_, { archived }) => {
-      toast.success(
-        archived ? "Пользователь разархивирован" : "Пользователь архивирован",
-      );
-      void invalidate();
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message ||
-          "Ошибка при изменении статуса пользователя",
-      );
-    },
+    invalidateKeys: [["users"]],
+    successMessage: (_, { archived }) =>
+      archived ? "Пользователь разархивирован" : "Пользователь архивирован",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message ||
+      "Ошибка при изменении статуса пользователя",
   });
 
-  const deleteUserMutation = useMutation({
+  const deleteUserMutation = useToastMutation({
     mutationFn: (userId: number) => deleteUser(userId),
-    onSuccess: () => {
-      toast.success("Пользователь удален");
-      void invalidate();
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message ||
-          "Ошибка при удалении пользователя",
-      );
-    },
+    invalidateKeys: [["users"]],
+    successMessage: "Пользователь удален",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message || "Ошибка при удалении пользователя",
   });
 
   const handleToggleArchive = (userId: number, archived: boolean) => {

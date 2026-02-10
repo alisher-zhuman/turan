@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { getCompanies, type Company } from "@/entities/companies";
 import { useAuthStore } from "@/shared/stores";
+import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import type { Role } from "@/shared/types";
 import {
@@ -34,8 +35,6 @@ interface Props {
 
 export const UserForm = ({ onClose, userToEdit }: Props) => {
   const user = useAuthStore((state) => state.user);
-
-  const queryClient = useQueryClient();
 
   const isEditing = !!userToEdit;
 
@@ -80,24 +79,24 @@ export const UserForm = ({ onClose, userToEdit }: Props) => {
     enabled: hasRoleSuperAdmin(user?.role),
   });
 
-  const mutation = useMutation({
+  const mutation = useToastMutation({
     mutationFn: (payload: CreateUserPayload) =>
       isEditing ? editUser(userToEdit!.id, payload) : createUser(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      onClose();
-      const role = watchedRole ?? ROLE.ADMIN;
-      toast.success(
-        isEditing
-          ? `${ROLE_LABELS[role]} успешно обновлён`
-          : `${ROLE_LABELS[role]} успешно создан`,
-      );
+    invalidateKeys: [["users"]],
+    successMessage: (_, variables) => {
+      const role = variables.role ?? ROLE.ADMIN;
+      return isEditing
+        ? `${ROLE_LABELS[role]} успешно обновлён`
+        : `${ROLE_LABELS[role]} успешно создан`;
     },
     onError: (error: AxiosError<{ message?: string; errors?: string[] }>) => {
       const messages = error.response?.data?.errors || [
         error.response?.data?.message || "Ошибка при сохранении пользователя",
       ];
       messages.forEach((message) => toast.error(message));
+    },
+    onSuccess: () => {
+      onClose();
     },
   });
 

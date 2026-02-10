@@ -1,11 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { deleteWebhook, getWebhooks, type Webhook } from "@/entities/webhooks";
+import { useToastMutation } from "@/shared/hooks";
 
 export const useWebhooks = () => {
-  const queryClient = useQueryClient();
-
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: ["webhooks"],
     queryFn: () => getWebhooks(),
@@ -16,21 +14,12 @@ export const useWebhooks = () => {
   const hasWebhooks = webhooks.length > 0;
   const emptyText = "Вебхуки не найдены";
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ["webhooks"] });
-
-  const deleteMutation = useMutation({
+  const deleteMutation = useToastMutation({
     mutationFn: (id: number) => deleteWebhook(id),
-    onSuccess: () => {
-      toast.success("Вебхук удалён");
-      void invalidate();
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message || "Ошибка при удалении вебхука",
-      );
-    },
+    invalidateKeys: [["webhooks"]],
+    successMessage: "Вебхук удалён",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message || "Ошибка при удалении вебхука",
   });
 
   const handleDelete = (id: number) => {

@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import { deleteDevice, getDevices, verifyDevice, type Device } from "@/entities/devices";
+import {
+  deleteDevice,
+  getDevices,
+  verifyDevice,
+  type Device,
+} from "@/entities/devices";
+import { useToastMutation } from "@/shared/hooks";
 
 export const useDevices = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [verified, setVerified] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-  const queryClient = useQueryClient();
 
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: ["devices", page, limit, verified],
@@ -26,45 +29,28 @@ export const useDevices = () => {
     ? "Нет подтверждённых устройств"
     : "Нет неподтверждённых устройств";
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ["devices"] });
-
-  const verifyMutation = useMutation({
+  const verifyMutation = useToastMutation({
     mutationFn: (deviceId: number) => verifyDevice(deviceId),
-    onSuccess: () => {
-      toast.success("Устройство подтверждено");
-      void invalidate();
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message ||
-          "Ошибка при подтверждении устройства",
-      );
-    },
+    invalidateKeys: [["devices"]],
+    successMessage: "Устройство подтверждено",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message || "Ошибка при подтверждении устройства",
   });
 
-  const deleteMutation = useMutation({
+  const deleteMutation = useToastMutation({
     mutationFn: (deviceIds: number[]) => deleteDevice(deviceIds),
+    invalidateKeys: [["devices"]],
+    successMessage: (_, deviceIds) =>
+      deviceIds.length === 1
+        ? "Устройство удалено"
+        : "Выбранные устройства удалены",
+    errorMessage: (error: AxiosError<{ message?: string }>, deviceIds) =>
+      error.response?.data?.message ||
+      (deviceIds.length === 1
+        ? "Ошибка при удалении устройства"
+        : "Ошибка при удалении выбранных устройств"),
     onSuccess: (_, deviceIds) => {
-      toast.success(
-        deviceIds.length === 1
-          ? "Устройство удалено"
-          : "Выбранные устройства удалены",
-      );
-      setSelectedIds((prev) =>
-        prev.filter((id) => !deviceIds.includes(id)),
-      );
-      void invalidate();
-    },
-    onError: (error, deviceIds) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message ||
-          (deviceIds.length === 1
-            ? "Ошибка при удалении устройства"
-            : "Ошибка при удалении выбранных устройств"),
-      );
+      setSelectedIds((prev) => prev.filter((id) => !deviceIds.includes(id)));
     },
   });
 

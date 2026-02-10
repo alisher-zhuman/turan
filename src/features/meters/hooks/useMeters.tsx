@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import {
   deleteMeters,
@@ -8,6 +7,7 @@ import {
   sendMeterCommand,
   type Meter,
 } from "@/entities/meters";
+import { useToastMutation } from "@/shared/hooks";
 import {
   canEditMeters,
   canManageMetersToGroups as canManageMetersToGroupsRole,
@@ -27,8 +27,6 @@ export const useMeters = () => {
   const [valveFilter, setValveFilter] = useState<"all" | "open" | "closed">(
     "all",
   );
-
-  const queryClient = useQueryClient();
 
   const user = useAuthStore((state) => state.user);
 
@@ -78,34 +76,24 @@ export const useMeters = () => {
   const emptyText = "Счётчики не найдены";
   const total = data?.total ?? 0;
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ["meters"] });
-
-  const deleteMutation = useMutation({
+  const deleteMutation = useToastMutation({
     mutationFn: (meterIds: number[]) => deleteMeters(meterIds),
+    invalidateKeys: [["meters"]],
+    successMessage: (_, meterIds) =>
+      meterIds.length === 1
+        ? "Счётчик удалён"
+        : "Выбранные счётчики удалены",
+    errorMessage: (error: AxiosError<{ message?: string }>, meterIds) =>
+      error.response?.data?.message ||
+      (meterIds.length === 1
+        ? "Ошибка при удалении счётчика"
+        : "Ошибка при удалении выбранных счётчиков"),
     onSuccess: (_, meterIds) => {
-      toast.success(
-        meterIds.length === 1
-          ? "Счётчик удалён"
-          : "Выбранные счётчики удалены",
-      );
-      setSelectedIds((prev) =>
-        prev.filter((id) => !meterIds.includes(id)),
-      );
-      void invalidate();
-    },
-    onError: (error, meterIds) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message ||
-          (meterIds.length === 1
-            ? "Ошибка при удалении счётчика"
-            : "Ошибка при удалении выбранных счётчиков"),
-      );
+      setSelectedIds((prev) => prev.filter((id) => !meterIds.includes(id)));
     },
   });
 
-  const commandMutation = useMutation({
+  const commandMutation = useToastMutation({
     mutationFn: ({
       meterId,
       command,
@@ -113,21 +101,14 @@ export const useMeters = () => {
       meterId: number;
       command: "open" | "close";
     }) => sendMeterCommand(meterId, command),
-    onSuccess: (_, { command }) => {
-      toast.success(
-        command === "open"
-          ? "Команда на открытие клапана отправлена"
-          : "Команда на закрытие клапана отправлена",
-      );
-      void invalidate();
-    },
-    onError: (error) => {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      toast.error(
-        axiosError.response?.data?.message ||
-          "Ошибка при отправке команды клапану",
-      );
-    },
+    invalidateKeys: [["meters"]],
+    successMessage: (_, { command }) =>
+      command === "open"
+        ? "Команда на открытие клапана отправлена"
+        : "Команда на закрытие клапана отправлена",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message ||
+      "Ошибка при отправке команды клапану",
   });
 
   const handleDeleteOne = (meterId: number) => {

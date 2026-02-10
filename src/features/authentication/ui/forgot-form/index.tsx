@@ -1,13 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { sendForgotRequest } from "@/entities/authentication";
+import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { ForgotFormSchema } from "../../model/schema";
 import type { ForgotFormValues } from "../../model/types";
@@ -24,19 +23,14 @@ export const ForgotForm = () => {
     },
   });
 
-  const mutation = useMutation({
+  const mutation = useToastMutation({
     mutationFn: ({ email }: ForgotFormValues) => sendForgotRequest(email),
-    onSuccess: () => {
-      toast.success("Инструкция для восстановления отправлена на почту.");
-    },
-    onError: (err: unknown) => {
-      const errorMessage =
-        (err as { response?: { data?: { message?: string } }; message?: string })
-          ?.response?.data?.message ||
-        (err as { message?: string })?.message ||
-        "Ошибка при восстановлении";
-      toast.error(errorMessage);
-    },
+    successMessage: "Инструкция для восстановления отправлена на почту.",
+    errorMessage: (err: unknown) =>
+      (err as { response?: { data?: { message?: string } }; message?: string })
+        ?.response?.data?.message ||
+      (err as { message?: string })?.message ||
+      "Ошибка при восстановлении",
   });
 
   const onSubmit = (values: ForgotFormValues) => {

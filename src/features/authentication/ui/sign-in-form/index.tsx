@@ -1,8 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { signIn } from "@/entities/authentication";
 import { useAuthStore } from "@/shared/stores";
+import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { ROUTES } from "@/shared/constants";
 import { SignInFormSchema } from "../../model/schema";
@@ -32,7 +31,7 @@ export const SignInForm = () => {
     },
   });
 
-  const mutation = useMutation({
+  const mutation = useToastMutation({
     mutationFn: ({ email, password }: SignInFormValues) =>
       signIn(email, password),
     onSuccess: (data) => {
@@ -45,14 +44,11 @@ export const SignInForm = () => {
 
       navigate("/");
     },
-    onError: (err: unknown) => {
-      const errorMessage =
-        (err as { response?: { data?: { message?: string } }; message?: string })
-          ?.response?.data?.message ||
-        (err as { message?: string })?.message ||
-        "Ошибка входа";
-      toast.error(errorMessage);
-    },
+    errorMessage: (err: unknown) =>
+      (err as { response?: { data?: { message?: string } }; message?: string })
+        ?.response?.data?.message ||
+      (err as { message?: string })?.message ||
+      "Ошибка входа",
   });
 
   const onSubmit = (values: SignInFormValues) => {

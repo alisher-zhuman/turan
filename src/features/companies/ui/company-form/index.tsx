@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,6 +11,7 @@ import {
   type Company,
   type CompanyPayload,
 } from "@/entities/companies";
+import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { CompanyFormSchema } from "../../model/schema";
 import type { CompanyFormValues } from "../../model/types";
@@ -23,8 +22,6 @@ interface Props {
 }
 
 export const CompanyForm = ({ company, onClose }: Props) => {
-  const queryClient = useQueryClient();
-
   const isEditing = !!company;
 
   const {
@@ -47,20 +44,17 @@ export const CompanyForm = ({ company, onClose }: Props) => {
     });
   }, [company, reset]);
 
-  const mutation = useMutation({
+  const mutation = useToastMutation({
     mutationFn: (payload: CompanyPayload) =>
       isEditing ? editCompany(company!.id, payload) : createCompany(payload),
+    invalidateKeys: [["companies"]],
+    successMessage: isEditing
+      ? "Компания успешно обновлена"
+      : "Компания успешно создана",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      error.response?.data?.message || "Ошибка при сохранении компании",
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["companies"] });
       onClose();
-      toast.success(
-        isEditing ? "Компания успешно обновлена" : "Компания успешно создана",
-      );
-    },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      toast.error(
-        error.response?.data?.message || "Ошибка при сохранении компании",
-      );
     },
   });
 
