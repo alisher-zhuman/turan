@@ -1,12 +1,13 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
+import { GroupActionResponseSchema, GroupsResponseSchema } from "./schema";
 
 export const getGroups = async (page = 1, limit = 10) => {
   const { data } = await api.get(API_ROUTES.GROUPS, {
     params: { page, limit },
   });
 
-  return data;
+  return GroupsResponseSchema.parse(data);
 };
 
 export const createGroup = async (groupName: string) => {
@@ -34,7 +35,7 @@ export const addMetersToGroup = async (groupId: number, meterIds: number[]) => {
     meterIds,
   });
 
-  return data;
+  return GroupActionResponseSchema.parse(data) as typeof data;
 };
 
 export const removeMetersFromGroup = async (
@@ -46,5 +47,5 @@ export const removeMetersFromGroup = async (
     meterIds,
   });
 
-  return data;
+  return GroupActionResponseSchema.parse(data) as typeof data;
 };

@@ -1,5 +1,6 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
+import { MetersResponseSchema } from "./schema";
 
 export const getMeters = async (
   page = 1,
@@ -34,7 +35,7 @@ export const getMeters = async (
 
   const { data } = await api.get(API_ROUTES.METERS, { params });
 
-  return data;
+  return MetersResponseSchema.parse(data);
 };
 
 export const deleteMeters = async (meterIds: number[]) => {
@@ -73,10 +74,10 @@ export const sendMeterCommand = async (
     `${API_ROUTES.METERS_COMMAND}/${meterId}`,
     null,
     {
-    params: {
-      meterId,
-      command,
-    },
+      params: {
+        meterId,
+        command,
+      },
     },
   );
 

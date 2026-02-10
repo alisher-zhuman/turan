@@ -1,11 +1,12 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
+import { DevicesResponseSchema } from "./schema";
 
 export const getDevices = async (page = 1, limit = 10, verified = false) => {
   const { data } = await api.get(API_ROUTES.DEVICES, {
     params: { page, limit, verified, isArchived: false },
   });
-  return data;
+  return DevicesResponseSchema.parse(data);
 };
 
 export const verifyDevice = async (deviceId: number) => {

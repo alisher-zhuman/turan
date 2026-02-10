@@ -1,13 +1,14 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
 import type { CompanyPayload } from "../model/types";
+import { CompaniesResponseSchema } from "./schema";
 
 export const getCompanies = async (isArchived: boolean) => {
   const { data } = await api.get(API_ROUTES.COMPANIES, {
     params: { isArchived },
   });
 
-  return data.data;
+  return CompaniesResponseSchema.parse(data.data);
 };
 
 export const createCompany = async (newCompany: CompanyPayload) => {
