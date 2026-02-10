@@ -12,34 +12,29 @@ export const getCompanies = async (isArchived: boolean) => {
 };
 
 export const createCompany = async (newCompany: CompanyPayload) => {
-  const { data } = await api.post(API_ROUTES.COMPANIES, newCompany);
-  return data;
+  await api.post(API_ROUTES.COMPANIES, newCompany);
 };
 
 export const editCompany = async (
   companyId: number,
   payload: CompanyPayload,
 ) => {
-  const { data } = await api.patch(
+  await api.patch(
     `${API_ROUTES.COMPANIES}/${companyId}`,
     payload,
   );
-  return data;
 };
 
 export const archiveCompany = async (id: number) => {
-  const { data } = await api.post(`${API_ROUTES.COMPANIES_ARCHIVE}/${id}`);
-  return data;
+  await api.post(`${API_ROUTES.COMPANIES_ARCHIVE}/${id}`);
 };
 
 export const unarchiveCompany = async (id: number) => {
-  const { data } = await api.post(`${API_ROUTES.COMPANIES_UNARCHIVE}/${id}`);
-  return data;
+  await api.post(`${API_ROUTES.COMPANIES_UNARCHIVE}/${id}`);
 };
 
 export const refreshCompanyToken = async (companyId: number) => {
-  const { data } = await api.post(API_ROUTES.COMPANIES_TOKEN_REFRESH, {
+  await api.post(API_ROUTES.COMPANIES_TOKEN_REFRESH, {
     companyId,
   });
-  return data;
 };

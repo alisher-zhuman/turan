@@ -8,13 +8,11 @@ export const getWebhooks = async () => {
 };
 
 export const createWebhook = async (url: string) => {
-  const { data } = await api.post(API_ROUTES.WEBHOOKS, undefined, {
+  await api.post(API_ROUTES.WEBHOOKS, undefined, {
     params: { url },
   });
-  return data;
 };
 
 export const deleteWebhook = async (id: number) => {
-  const { data } = await api.delete(`${API_ROUTES.WEBHOOKS}/${id}`);
-  return data;
+  await api.delete(`${API_ROUTES.WEBHOOKS}/${id}`);
 };

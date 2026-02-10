@@ -11,26 +11,21 @@ export const getUsers = async (page = 1, limit = 10, isArchived = false) => {
 };
 
 export const createUser = async (payload: CreateUserPayload) => {
-  const { data } = await api.post(API_ROUTES.USERS, payload);
-  return data;
+  await api.post(API_ROUTES.USERS, payload);
 };
 
 export const editUser = async (id: number, payload: CreateUserPayload) => {
-  const { data } = await api.patch(`${API_ROUTES.USERS}/${id}`, payload);
-  return data;
+  await api.patch(`${API_ROUTES.USERS}/${id}`, payload);
 };
 
 export const deleteUser = async (id: number) => {
-  const { data } = await api.delete(`${API_ROUTES.USERS_DELETE}/${id}`);
-  return data;
+  await api.delete(`${API_ROUTES.USERS_DELETE}/${id}`);
 };
 
 export const archiveUser = async (id: number) => {
-  const { data } = await api.post(`${API_ROUTES.USERS_ARCHIVE}/${id}`);
-  return data;
+  await api.post(`${API_ROUTES.USERS_ARCHIVE}/${id}`);
 };
 
 export const unarchiveUser = async (id: number) => {
-  const { data } = await api.post(`${API_ROUTES.USERS_UNARCHIVE}/${id}`);
-  return data;
+  await api.post(`${API_ROUTES.USERS_UNARCHIVE}/${id}`);
 };

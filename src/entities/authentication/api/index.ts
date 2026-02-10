@@ -11,6 +11,5 @@ export const signIn = async (email: string, password: string) => {
 };
 
 export const sendForgotRequest = async (email: string) => {
-  const { data } = await api.post(API_ROUTES.USERS_PASSWORD_FORGOT, { email });
-  return data;
+  await api.post(API_ROUTES.USERS_PASSWORD_FORGOT, { email });
 };

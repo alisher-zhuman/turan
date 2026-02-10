@@ -11,22 +11,19 @@ export const getGroups = async (page = 1, limit = 10) => {
 };
 
 export const createGroup = async (groupName: string) => {
-  const { data } = await api.post(API_ROUTES.GROUPS_CREATE, null, {
+  await api.post(API_ROUTES.GROUPS_CREATE, null, {
     params: { groupName },
   });
-  return data;
 };
 
 export const updateGroup = async (groupId: number, newName: string) => {
-  const { data } = await api.patch(API_ROUTES.GROUPS, null, {
+  await api.patch(API_ROUTES.GROUPS, null, {
     params: { groupId, newName },
   });
-  return data;
 };
 
 export const deleteGroup = async (groupId: number) => {
-  const { data } = await api.delete(`${API_ROUTES.GROUPS}/${groupId}`);
-  return data;
+  await api.delete(`${API_ROUTES.GROUPS}/${groupId}`);
 };
 
 export const addMetersToGroup = async (groupId: number, meterIds: number[]) => {

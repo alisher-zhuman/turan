@@ -10,15 +10,13 @@ export const getDevices = async (page = 1, limit = 10, verified = false) => {
 };
 
 export const verifyDevice = async (deviceId: number) => {
-  const { data } = await api.patch(API_ROUTES.DEVICES_VERIFY, null, {
+  await api.patch(API_ROUTES.DEVICES_VERIFY, null, {
     params: { deviceId },
   });
-  return data;
 };
 
 export const deleteDevice = async (deviceIds: number[]) => {
-  const { data } = await api.delete(API_ROUTES.DEVICES_REMOVE, {
+  await api.delete(API_ROUTES.DEVICES_REMOVE, {
     data: { deviceIds },
   });
-  return data;
 };

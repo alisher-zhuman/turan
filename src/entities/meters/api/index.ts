@@ -39,11 +39,9 @@ export const getMeters = async (
 };
 
 export const deleteMeters = async (meterIds: number[]) => {
-  const { data } = await api.delete(API_ROUTES.METERS, {
+  await api.delete(API_ROUTES.METERS, {
     data: { meterIds },
   });
-
-  return data;
 };
 
 export const updateMeter = async (params: {
@@ -56,30 +54,26 @@ export const updateMeter = async (params: {
 }) => {
   const { meterId, ...rest } = params;
 
-  const { data } = await api.patch(`${API_ROUTES.METERS}/${meterId}`, null, {
+  await api.patch(`${API_ROUTES.METERS}/${meterId}`, null, {
     params: {
       meterId,
       ...rest,
     },
   });
-
-  return data;
 };
 
 export const sendMeterCommand = async (
   meterId: number,
   command: "open" | "close",
 ) => {
-  const { data } = await api.patch(
+  await api.patch(
     `${API_ROUTES.METERS_COMMAND}/${meterId}`,
     null,
     {
-      params: {
-        meterId,
-        command,
-      },
+    params: {
+      meterId,
+      command,
+    },
     },
   );
-
-  return data;
 };
