@@ -112,10 +112,7 @@ export const UsersWidget = () => {
               onPageChange={setPage}
               rowsPerPageOptions={[5, 10, 20]}
               labelRowsPerPage="Пользователей на странице:"
-              onRowsPerPageChange={(newLimit) => {
-                setLimit(newLimit);
-                setPage(0);
-              }}
+              onLimitChange={setLimit}
             />
           </>
         )}

@@ -7,13 +7,16 @@ import {
   verifyDevice,
   type Device,
 } from "@/entities/devices";
-import { useSelection, useToastMutation } from "@/shared/hooks";
+import { usePagination, useSelection, useToastMutation } from "@/shared/hooks";
 import { getApiErrorMessage } from "@/shared/helpers";
 
 export const useDevices = () => {
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(10);
   const [verified, setVerified] = useState(false);
+
+  const { page, limit, setPage, setLimit } = usePagination({
+    resetKey: verified ? "verified" : "unverified",
+  });
+
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: ["devices", page, limit, verified],
     queryFn: () => getDevices(page + 1, limit, verified),

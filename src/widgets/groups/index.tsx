@@ -96,10 +96,7 @@ export const GroupsWidget = () => {
               onPageChange={setPage}
               rowsPerPageOptions={[5, 10, 20]}
               labelRowsPerPage="Групп на странице:"
-              onRowsPerPageChange={(newLimit) => {
-                setLimit(newLimit);
-                setPage(0);
-              }}
+              onLimitChange={setLimit}
             />
           </>
         )}

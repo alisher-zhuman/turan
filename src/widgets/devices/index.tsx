@@ -103,10 +103,7 @@ export const DevicesWidget = () => {
             onPageChange={setPage}
             rowsPerPageOptions={[5, 10, 20]}
             labelRowsPerPage="Устройств на странице:"
-            onRowsPerPageChange={(newLimit) => {
-              setLimit(newLimit);
-              setPage(0);
-            }}
+            onLimitChange={setLimit}
           />
         </>
       )}

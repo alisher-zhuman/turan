@@ -234,10 +234,7 @@ export const MetersWidget = () => {
               onPageChange={setPage}
               rowsPerPageOptions={[5, 10, 20]}
               labelRowsPerPage="Счётчиков на странице:"
-              onRowsPerPageChange={(newLimit) => {
-                setLimit(newLimit);
-                setPage(0);
-              }}
+              onLimitChange={setLimit}
             />
           </>
         )}
