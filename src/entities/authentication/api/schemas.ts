@@ -1,19 +1,5 @@
 import { z } from "zod";
-import { ROLE } from "@/shared/constants";
-
-const RoleSchema = z.enum([
-  ROLE.SUPER_ADMIN,
-  ROLE.ADMIN,
-  ROLE.USER,
-  ROLE.CONTROLLER,
-]);
-
-const AuthCompanySchema = z
-  .object({
-    id: z.number(),
-    name: z.string(),
-  })
-  .passthrough();
+import { IdNameSchema, RoleSchema } from "@/shared/validation";
 
 export const SignInResponseSchema = z
   .object({
@@ -24,6 +10,6 @@ export const SignInResponseSchema = z
     lastName: z.string(),
     role: RoleSchema,
     passwordChange: z.boolean(),
-    company: AuthCompanySchema.nullable(),
+    company: IdNameSchema.nullable(),
   })
   .passthrough();

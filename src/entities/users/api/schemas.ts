@@ -1,19 +1,5 @@
 import { z } from "zod";
-import { ROLE } from "@/shared/constants";
-
-const RoleSchema = z.enum([
-  ROLE.SUPER_ADMIN,
-  ROLE.ADMIN,
-  ROLE.USER,
-  ROLE.CONTROLLER,
-]);
-
-const UserCompanySchema = z
-  .object({
-    id: z.number(),
-    name: z.string(),
-  })
-  .passthrough();
+import { IdNameSchema, RoleSchema } from "@/shared/validation";
 
 const UserRowSchema = z
   .object({
@@ -22,7 +8,7 @@ const UserRowSchema = z
     firstName: z.string(),
     lastName: z.string(),
     role: RoleSchema,
-    company: UserCompanySchema.nullable(),
+    company: IdNameSchema.nullable(),
     createdAt: z.string(),
     isArchived: z.boolean(),
   })
