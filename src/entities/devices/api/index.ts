@@ -1,6 +1,6 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
-import { DevicesResponseSchema } from "./schemas";
+import { DevicesResponseSchema } from "../model/schemas";
 
 export const getDevices = async (page = 1, limit = 10, verified = false) => {
   const { data } = await api.get(API_ROUTES.DEVICES, {

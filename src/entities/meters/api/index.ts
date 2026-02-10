@@ -1,6 +1,6 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
-import { MetersResponseSchema } from "./schemas";
+import { MetersResponseSchema } from "../model/schemas";
 
 export const getMeters = async (
   page = 1,

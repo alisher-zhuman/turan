@@ -1,20 +1,10 @@
+import type { z } from "zod";
 import type { Role } from "@/shared/types";
+import { UsersResponseSchema } from "./schemas";
 
-interface UserCompany {
-  id: number;
-  name: string;
-}
+export type UsersResponse = z.infer<typeof UsersResponseSchema>;
 
-export interface UserRow {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-  role: Role;
-  company: UserCompany | null;
-  createdAt: string;
-  isArchived: boolean;
-}
+export type UserRow = UsersResponse["data"][number];
 
 export interface CreateUserPayload {
   email?: string;

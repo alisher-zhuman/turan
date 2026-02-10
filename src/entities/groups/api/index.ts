@@ -1,6 +1,6 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
-import { GroupActionResponseSchema, GroupsResponseSchema } from "./schemas";
+import { GroupActionResponseSchema, GroupsResponseSchema } from "../model/schemas";
 
 export const getGroups = async (page = 1, limit = 10) => {
   const { data } = await api.get(API_ROUTES.GROUPS, {
