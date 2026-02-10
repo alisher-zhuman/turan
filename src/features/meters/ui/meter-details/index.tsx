@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import type { Meter } from "@/shared/types";
+import { formatDateTime } from "@/shared/helpers";
 import { Field } from "../field";
 import { STATUS_LABELS, VALVE_LABELS } from "../../utils/constants";
 
@@ -35,7 +36,7 @@ export const MeterDetails = ({ meter }: Props) => (
       label="Изменение клапана"
       value={
         meter.valveStatusChange
-          ? new Date(meter.valveStatusChange).toLocaleString("ru-RU")
+          ? formatDateTime(meter.valveStatusChange)
           : null
       }
     />
@@ -47,11 +48,11 @@ export const MeterDetails = ({ meter }: Props) => (
     <Field label="В архиве" value={meter.isArchived ? "Да" : "Нет"} />
     <Field
       label="Создан"
-      value={new Date(meter.createdAt).toLocaleString("ru-RU")}
+      value={formatDateTime(meter.createdAt)}
     />
     <Field
       label="Обновлён"
-      value={new Date(meter.updatedAt).toLocaleString("ru-RU")}
+      value={formatDateTime(meter.updatedAt)}
     />
   </Box>
 );

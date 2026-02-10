@@ -3,6 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { Webhook } from "@/entities/webhooks";
 import type { Column } from "@/shared/types";
+import { formatDateTime } from "@/shared/helpers";
 
 export const createWebhookColumns = (
   onDelete: (id: number) => void,
@@ -20,7 +21,7 @@ export const createWebhookColumns = (
   {
     id: "createdAt",
     header: "Создано",
-    cell: (w) => new Date(w.createdAt).toLocaleString("ru-RU"),
+    cell: (w) => formatDateTime(w.createdAt),
   },
   {
     id: "actions",

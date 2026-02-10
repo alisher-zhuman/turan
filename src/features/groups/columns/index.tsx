@@ -4,6 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { Group } from "@/entities/groups";
 import type { Column } from "@/shared/types";
+import { formatDateTime } from "@/shared/helpers";
 
 export const createGroupColumns = (
   onEdit: (group: Group) => void,
@@ -21,11 +22,11 @@ export const createGroupColumns = (
       header: "Название",
       cell: (g) => g.name,
     },
-    {
-      id: "createdAt",
-      header: "Создано",
-      cell: (g) => new Date(g.createdAt).toLocaleString("ru-RU"),
-    },
+  {
+    id: "createdAt",
+    header: "Создано",
+    cell: (g) => formatDateTime(g.createdAt),
+  },
   ];
 
   if (isAdmin) {

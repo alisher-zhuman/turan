@@ -6,6 +6,7 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import type { Column, Company } from "@/shared/types";
+import { formatDateTime } from "@/shared/helpers";
 import { copyToClipboard } from "../utils/helpers";
 
 export const createCompanyColumns = (
@@ -49,7 +50,7 @@ export const createCompanyColumns = (
   {
     id: "createdAt",
     header: "Создано",
-    cell: (c) => new Date(c.createdAt).toLocaleString("ru-RU"),
+    cell: (c) => formatDateTime(c.createdAt),
   },
   {
     id: "actions",

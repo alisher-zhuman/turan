@@ -4,6 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { Reading } from "@/entities/readings";
 import type { Column } from "@/shared/types";
+import { formatDateTime } from "@/shared/helpers";
 import type { CreateReadingColumnsParams } from "../types";
 
 export const createReadingColumns = ({
@@ -86,7 +87,7 @@ export const createReadingColumns = ({
     {
       id: "readingAt",
       header: "Время показания",
-      cell: (r) => new Date(r.readingAt).toLocaleString("ru-RU"),
+      cell: (r) => formatDateTime(r.readingAt),
     },
   );
 

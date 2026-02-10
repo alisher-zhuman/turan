@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import Checkbox from "@mui/material/Checkbox";
 import type { Column, Device } from "@/shared/types";
+import { formatDateTime } from "@/shared/helpers";
 import type { CreateDeviceColumnsParams } from "../types";
 
 export const createDeviceColumns = ({
@@ -57,7 +58,7 @@ export const createDeviceColumns = ({
   {
     id: "createdAt",
     header: "Создан",
-    cell: (d) => new Date(d.createdAt).toLocaleString("ru-RU"),
+    cell: (d) => formatDateTime(d.createdAt),
   },
   {
     id: "actions",

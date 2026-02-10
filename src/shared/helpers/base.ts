@@ -4,3 +4,14 @@ import { SIDEBAR_LINKS } from "../constants";
 export const getAllowedPathsByRole = (role: Role): string[] => {
   return SIDEBAR_LINKS.filter((l) => l.roles.includes(role)).map((l) => l.to);
 };
+
+export const formatDateTime = (
+  value: string | number | Date,
+  options?: Intl.DateTimeFormatOptions,
+) => {
+  const date = value instanceof Date ? value : new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "-";
+
+  return date.toLocaleString("ru-RU", options);
+};

@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ROLE_LABELS } from "@/shared/constants";
 import type { Column } from "@/shared/types";
+import { formatDateTime } from "@/shared/helpers";
 import type { UserRow } from "@/entities/users";
 
 export const createUserColumns = (
@@ -46,8 +47,7 @@ export const createUserColumns = (
     id: "createdAt",
     header: "Дата создания",
     cell: (user) => {
-      const date = new Date(user.createdAt);
-      return date.toLocaleString("ru-RU", {
+      return formatDateTime(user.createdAt, {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
