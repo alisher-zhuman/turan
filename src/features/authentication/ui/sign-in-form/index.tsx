@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { signIn } from "@/entities/authentication";
 import { useAuthStore } from "@/shared/stores";
+import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { ROUTES } from "@/shared/constants";
 import { SignInFormSchema } from "../../model/schema";
 import type { SignInFormValues } from "../../model/types";
@@ -78,18 +79,7 @@ export const SignInForm = () => {
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Box
-            component="fieldset"
-            disabled={mutation.isPending}
-            sx={{
-              border: "none",
-              p: 0,
-              m: 0,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-            }}
-          >
+          <FormFieldset disabled={mutation.isPending}>
             <TextField
               label="Логин"
               type="text"
@@ -109,7 +99,7 @@ export const SignInForm = () => {
               error={!!errors.password}
               helperText={errors.password?.message}
             />
-          </Box>
+          </FormFieldset>
 
           <Button
             type="submit"

@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { getCompanies, type Company } from "@/entities/companies";
 import { useAuthStore } from "@/shared/stores";
+import { FormFieldset } from "@/shared/ui/form-fieldset";
 import type { Role } from "@/shared/types";
 import {
   createUser,
@@ -120,18 +121,7 @@ export const UserForm = ({ onClose, userToEdit }: Props) => {
       onSubmit={handleSubmit(onSubmit)}
       sx={{ display: "flex", flexDirection: "column", gap: 2 }}
     >
-      <Box
-        component="fieldset"
-        disabled={mutation.isPending}
-        sx={{
-          border: "none",
-          p: 0,
-          m: 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
+      <FormFieldset disabled={mutation.isPending}>
         {!isEditing && (
           <TextField
             label="Email"
@@ -198,11 +188,11 @@ export const UserForm = ({ onClose, userToEdit }: Props) => {
                   )
                 }
                 fullWidth
-                required
-                disabled={isCompaniesLoading || mutation.isPending}
-                error={!!errors.companyId}
-                helperText={errors.companyId?.message}
-              >
+              required
+              disabled={isCompaniesLoading || mutation.isPending}
+              error={!!errors.companyId}
+              helperText={errors.companyId?.message}
+            >
                 {companies?.map(({ id, name }: Company) => (
                   <MenuItem key={id} value={id}>
                     {name}
@@ -212,7 +202,7 @@ export const UserForm = ({ onClose, userToEdit }: Props) => {
             )}
           />
         )}
-      </Box>
+      </FormFieldset>
 
       <Button
         type="submit"

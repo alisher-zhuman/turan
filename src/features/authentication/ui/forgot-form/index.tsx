@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { sendForgotRequest } from "@/entities/authentication";
+import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { ForgotFormSchema } from "../../model/schema";
 import type { ForgotFormValues } from "../../model/types";
 
@@ -62,18 +63,7 @@ export const ForgotForm = () => {
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Box
-            component="fieldset"
-            disabled={mutation.isPending}
-            sx={{
-              border: "none",
-              p: 0,
-              m: 0,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-            }}
-          >
+          <FormFieldset disabled={mutation.isPending}>
             <TextField
               label="Email"
               type="email"
@@ -83,7 +73,7 @@ export const ForgotForm = () => {
               error={!!errors.email}
               helperText={errors.email?.message}
             />
-          </Box>
+          </FormFieldset>
 
           <Button
             type="submit"

@@ -13,6 +13,7 @@ import {
   type Company,
   type CompanyPayload,
 } from "@/entities/companies";
+import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { CompanyFormSchema } from "../../model/schema";
 import type { CompanyFormValues } from "../../model/types";
 
@@ -84,18 +85,7 @@ export const CompanyForm = ({ company, onClose }: Props) => {
       onSubmit={handleSubmit(onSubmit)}
       sx={{ display: "flex", flexDirection: "column", gap: 2 }}
     >
-      <Box
-        component="fieldset"
-        disabled={mutation.isPending}
-        sx={{
-          border: "none",
-          p: 0,
-          m: 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
+      <FormFieldset disabled={mutation.isPending}>
         <TextField
           label="Название компании"
           {...register("name")}
@@ -113,7 +103,7 @@ export const CompanyForm = ({ company, onClose }: Props) => {
           error={!!errors.address}
           helperText={errors.address?.message}
         />
-      </Box>
+      </FormFieldset>
 
       <Button
         type="submit"

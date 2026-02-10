@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { updateMeter, type Meter } from "@/entities/meters";
+import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { MeterFormSchema } from "../../model/schema";
 import type { MeterFormValues } from "../../model/types";
 
@@ -97,18 +98,7 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
       flexDirection="column"
       gap={2}
     >
-      <Box
-        component="fieldset"
-        disabled={mutation.isPending}
-        sx={{
-          border: "none",
-          p: 0,
-          m: 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
+      <FormFieldset disabled={mutation.isPending}>
         <TextField
           label="ID Клиента"
           {...register("customerID")}
@@ -148,7 +138,7 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
             label="Отправить в архив"
           />
         )}
-      </Box>
+      </FormFieldset>
 
       <Box display="flex" justifyContent="flex-end" gap={1}>
         <Button

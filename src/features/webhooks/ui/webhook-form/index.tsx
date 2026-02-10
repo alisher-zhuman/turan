@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { createWebhook } from "@/entities/webhooks";
+import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { WebhookFormSchema } from "../../model/schema";
 import type { WebhookFormValues } from "../../model/types";
 
@@ -55,18 +56,7 @@ export const WebhookForm = ({ onClose }: Props) => {
       flexDirection="column"
       gap={2}
     >
-      <Box
-        component="fieldset"
-        disabled={mutation.isPending}
-        sx={{
-          border: "none",
-          p: 0,
-          m: 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
+      <FormFieldset disabled={mutation.isPending}>
         <TextField
           label="URL вебхука"
           {...register("url")}
@@ -74,7 +64,7 @@ export const WebhookForm = ({ onClose }: Props) => {
           error={!!errors.url}
           helperText={errors.url?.message}
         />
-      </Box>
+      </FormFieldset>
 
       <Box display="flex" justifyContent="flex-end" gap={1}>
         <Button type="submit" variant="contained" disabled={mutation.isPending}>

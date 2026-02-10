@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import type { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGroup, updateGroup, type Group } from "@/entities/groups";
+import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { GroupFormSchema } from "../../model/schema";
 import type { GroupFormValues } from "../../model/types";
 
@@ -71,18 +72,7 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
       flexDirection="column"
       gap={2}
     >
-      <Box
-        component="fieldset"
-        disabled={mutation.isPending}
-        sx={{
-          border: "none",
-          p: 0,
-          m: 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
+      <FormFieldset disabled={mutation.isPending}>
         <TextField
           label="Название группы"
           {...register("name")}
@@ -90,7 +80,7 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
           error={!!errors.name}
           helperText={errors.name?.message}
         />
-      </Box>
+      </FormFieldset>
 
       <Box display="flex" justifyContent="flex-end" gap={1}>
         <Button
