@@ -2,7 +2,6 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import LinearProgress from "@mui/material/LinearProgress";
 import { createGroupColumns, GroupForm, useGroups } from "@/features/groups";
 import type { Group } from "@/entities/groups";
 import { Loader } from "@/shared/ui/loader";
@@ -21,7 +20,6 @@ export const GroupsWidget = () => {
     emptyText,
     isLoading,
     isError,
-    isFetching,
     page,
     limit,
     setPage,
@@ -76,8 +74,6 @@ export const GroupsWidget = () => {
             </Button>
           )}
         </Box>
-
-        {isFetching && !isLoading && <LinearProgress sx={{ mb: 2 }} />}
 
         {!hasGroups && (
           <Alert severity="info" sx={{ mt: 2 }}>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import LinearProgress from "@mui/material/LinearProgress";
 
 import {
   createWebhookColumns,
@@ -23,7 +22,6 @@ export const WebhooksWidget = () => {
     emptyText,
     isLoading,
     isError,
-    isFetching,
     handleDelete,
   } = useWebhooks();
 
@@ -53,8 +51,6 @@ export const WebhooksWidget = () => {
             Создать
           </Button>
         </Box>
-
-        {isFetching && !isLoading && <LinearProgress sx={{ mb: 2 }} />}
 
         {!hasWebhooks && (
           <Alert severity="info" sx={{ mt: 2 }}>

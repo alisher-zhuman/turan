@@ -3,7 +3,6 @@ import Alert from "@mui/material/Alert";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
-import LinearProgress from "@mui/material/LinearProgress";
 import { createDeviceColumns, useDevices } from "@/features/devices";
 import { DataTable } from "@/shared/ui/data-table";
 import { Loader } from "@/shared/ui/loader";
@@ -18,7 +17,6 @@ export const DevicesWidget = () => {
     emptyText,
     isLoading,
     isError,
-    isFetching,
     page,
     limit,
     setPage,
@@ -83,8 +81,6 @@ export const DevicesWidget = () => {
           Удалить выбранные
         </Button>
       </Box>
-
-      {isFetching && !isLoading && <LinearProgress sx={{ mb: 2 }} />}
 
       {!hasDevices && (
         <Alert severity="info" sx={{ mt: 2 }}>
