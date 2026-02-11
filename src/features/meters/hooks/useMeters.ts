@@ -16,25 +16,36 @@ import {
 } from "@/shared/helpers";
 import { useAuthStore } from "@/shared/stores";
 
+type MeterFilters = {
+  meterName: string;
+  customerId: string;
+  status: string;
+  isArchived: boolean;
+  groupId: number | null;
+  valveFilter: "all" | "open" | "closed";
+};
+
 export const useMeters = () => {
-  const [meterName, setMeterName] = useState("");
-  const [customerId, setCustomerId] = useState("");
-  const [status, setStatus] = useState<string>("all");
-  const [isArchived, setIsArchived] = useState(false);
-  const [groupId, setGroupId] = useState<number | null>(null);
-  const [valveFilter, setValveFilter] = useState<"all" | "open" | "closed">(
-    "all",
-  );
-  
+  const [filters, setFilters] = useState<MeterFilters>({
+    meterName: "",
+    customerId: "",
+    status: "all" as string,
+    isArchived: false,
+    groupId: null as number | null,
+    valveFilter: "all" as "all" | "open" | "closed",
+  });
+
+  const filtersKey = [
+    filters.status,
+    filters.isArchived ? "archived" : "active",
+    filters.groupId ?? "null",
+    filters.customerId,
+    filters.meterName,
+    filters.valveFilter,
+  ].join("|");
+
   const { page, limit, setPage, setLimit } = usePagination({
-    resetKey: [
-      status,
-      isArchived ? "archived" : "active",
-      groupId ?? "null",
-      customerId,
-      meterName,
-      valveFilter,
-    ].join("|"),
+    resetKey: filtersKey,
   });
 
   const user = useAuthStore((state) => state.user);
@@ -42,6 +53,15 @@ export const useMeters = () => {
   const isAdmin = hasRoleAdmin(user?.role);
   const canEdit = canEditMeters(user?.role);
   const canManageMetersToGroups = canManageMetersToGroupsRole(user?.role);
+
+  const {
+    meterName,
+    customerId,
+    status,
+    isArchived,
+    groupId,
+    valveFilter,
+  } = filters;
 
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: [
@@ -96,17 +116,20 @@ export const useMeters = () => {
     items: meters,
     getId: (meter) => meter.id,
     enabled: canManageMetersToGroups,
-    resetKey: [
-      page,
-      limit,
-      status,
-      isArchived,
-      groupId ?? "null",
-      customerId,
-      meterName,
-      valveFilter,
-    ].join("|"),
+    resetKey: [page, limit, filtersKey].join("|"),
   });
+
+  const updateFilters = (patch: Partial<MeterFilters>) => {
+    setFilters((prev) => ({ ...prev, ...patch }));
+  };
+
+  const setStatus = (value: string) => updateFilters({ status: value });
+  const setIsArchived = (value: boolean) => updateFilters({ isArchived: value });
+  const setGroupId = (value: number | null) => updateFilters({ groupId: value });
+  const setCustomerId = (value: string) => updateFilters({ customerId: value });
+  const setMeterName = (value: string) => updateFilters({ meterName: value });
+  const setValveFilter = (value: "all" | "open" | "closed") =>
+    updateFilters({ valveFilter: value });
 
   const deleteMutation = useToastMutation({
     mutationFn: (meterIds: number[]) => deleteMeters(meterIds),
@@ -168,12 +191,14 @@ export const useMeters = () => {
   };
 
   const handleResetFilters = () => {
-    setStatus("all");
-    setValveFilter("all");
-    setIsArchived(false);
-    setGroupId(null);
-    setCustomerId("");
-    setMeterName("");
+    setFilters({
+      meterName: "",
+      customerId: "",
+      status: "all",
+      isArchived: false,
+      groupId: null,
+      valveFilter: "all",
+    });
     setPage(0);
   };
 

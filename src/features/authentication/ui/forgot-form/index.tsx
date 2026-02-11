@@ -2,21 +2,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { sendForgotRequest } from "@/entities/authentication";
 import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
+import { FormTextField } from "@/shared/ui/form-text-field";
 import { getApiErrorMessage } from "@/shared/helpers";
 import { ForgotFormSchema } from "../../model/schema";
 import type { ForgotFormValues } from "../../model/types";
 
 export const ForgotForm = () => {
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors },
   } = useForm<ForgotFormValues>({
     resolver: zodResolver(ForgotFormSchema),
     defaultValues: {
@@ -56,14 +55,13 @@ export const ForgotForm = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <FormFieldset disabled={mutation.isPending}>
-            <TextField
+            <FormTextField
               label="Email"
               type="email"
               fullWidth
               required
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message}
+              name="email"
+              control={control}
             />
           </FormFieldset>
 

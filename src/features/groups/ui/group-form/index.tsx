@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import type { AxiosError } from "axios";
 import { createGroup, updateGroup, type Group } from "@/entities/groups";
 import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
+import { FormTextField } from "@/shared/ui/form-text-field";
 import { getApiErrorMessage } from "@/shared/helpers";
 import { GroupFormSchema } from "../../model/schema";
 import type { GroupFormValues } from "../../model/types";
@@ -19,10 +19,9 @@ interface Props {
 
 export const GroupForm = ({ groupToEdit, onClose }: Props) => {
   const {
-    register,
+    control,
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm<GroupFormValues>({
     resolver: zodResolver(GroupFormSchema),
     defaultValues: {
@@ -68,12 +67,11 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
       gap={2}
     >
       <FormFieldset disabled={mutation.isPending}>
-        <TextField
+        <FormTextField
           label="Название группы"
-          {...register("name")}
           fullWidth
-          error={!!errors.name}
-          helperText={errors.name?.message}
+          name="name"
+          control={control}
         />
       </FormFieldset>
 

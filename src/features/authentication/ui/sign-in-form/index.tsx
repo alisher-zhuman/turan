@@ -3,13 +3,13 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import { signIn } from "@/entities/authentication";
 import { useAuthStore } from "@/shared/stores";
 import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
+import { FormTextField } from "@/shared/ui/form-text-field";
 import { getApiErrorMessage } from "@/shared/helpers";
 import { ROUTES } from "@/shared/constants";
 import { SignInFormSchema } from "../../model/schema";
@@ -21,9 +21,8 @@ export const SignInForm = () => {
   const navigate = useNavigate();
 
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors },
   } = useForm<SignInFormValues>({
     resolver: zodResolver(SignInFormSchema),
     defaultValues: {
@@ -73,24 +72,22 @@ export const SignInForm = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <FormFieldset disabled={mutation.isPending}>
-            <TextField
+            <FormTextField
               label="Логин"
               type="text"
               fullWidth
               required
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message}
+              name="email"
+              control={control}
             />
 
-            <TextField
+            <FormTextField
               label="Пароль"
               type="password"
               fullWidth
               required
-              {...register("password")}
-              error={!!errors.password}
-              helperText={errors.password?.message}
+              name="password"
+              control={control}
             />
           </FormFieldset>
 

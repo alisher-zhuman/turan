@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import {
   createCompany,
   editCompany,
@@ -13,6 +12,7 @@ import {
 } from "@/entities/companies";
 import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
+import { FormTextField } from "@/shared/ui/form-text-field";
 import { getApiErrorMessage } from "@/shared/helpers";
 import { CompanyFormSchema } from "../../model/schema";
 import type { CompanyFormValues } from "../../model/types";
@@ -26,10 +26,9 @@ export const CompanyForm = ({ company, onClose }: Props) => {
   const isEditing = !!company;
 
   const {
-    register,
+    control,
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm<CompanyFormValues>({
     resolver: zodResolver(CompanyFormSchema),
     defaultValues: {
@@ -81,22 +80,20 @@ export const CompanyForm = ({ company, onClose }: Props) => {
       sx={{ display: "flex", flexDirection: "column", gap: 2 }}
     >
       <FormFieldset disabled={mutation.isPending}>
-        <TextField
+        <FormTextField
           label="Название компании"
-          {...register("name")}
           fullWidth
           required
-          error={!!errors.name}
-          helperText={errors.name?.message}
+          name="name"
+          control={control}
         />
 
-        <TextField
+        <FormTextField
           label="Адрес"
-          {...register("address")}
           fullWidth
           required
-          error={!!errors.address}
-          helperText={errors.address?.message}
+          name="address"
+          control={control}
         />
       </FormFieldset>
 

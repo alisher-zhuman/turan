@@ -2,11 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { createWebhook } from "@/entities/webhooks";
 import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
+import { FormTextField } from "@/shared/ui/form-text-field";
 import { getApiErrorMessage } from "@/shared/helpers";
 import { WebhookFormSchema } from "../../model/schema";
 import type { WebhookFormValues } from "../../model/types";
@@ -17,9 +17,8 @@ interface Props {
 
 export const WebhookForm = ({ onClose }: Props) => {
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors },
   } = useForm<WebhookFormValues>({
     resolver: zodResolver(WebhookFormSchema),
     defaultValues: {
@@ -51,12 +50,11 @@ export const WebhookForm = ({ onClose }: Props) => {
       gap={2}
     >
       <FormFieldset disabled={mutation.isPending}>
-        <TextField
+        <FormTextField
           label="URL вебхука"
-          {...register("url")}
           fullWidth
-          error={!!errors.url}
-          helperText={errors.url?.message}
+          name="url"
+          control={control}
         />
       </FormFieldset>
 

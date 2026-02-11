@@ -1,17 +1,16 @@
 // src/features/meters/ui/meter-form.tsx
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { updateMeter, type Meter } from "@/entities/meters";
 import { useToastMutation } from "@/shared/hooks";
 import { getApiErrorMessage } from "@/shared/helpers";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
+import { FormCheckbox } from "@/shared/ui/form-checkbox";
+import { FormTextField } from "@/shared/ui/form-text-field";
 import { MeterFormSchema } from "../../model/schema";
 import type { MeterFormValues } from "../../model/types";
 
@@ -23,7 +22,6 @@ interface Props {
 
 export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
   const {
-    register,
     handleSubmit,
     control,
     reset,
@@ -93,42 +91,36 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
       gap={2}
     >
       <FormFieldset disabled={mutation.isPending}>
-        <TextField
+        <FormTextField
           label="ID Клиента"
-          {...register("customerID")}
+          name="customerID"
+          control={control}
         />
 
-        <TextField
+        <FormTextField
           label="Клиент"
-          {...register("client")}
+          name="client"
+          control={control}
         />
 
-        <TextField
+        <FormTextField
           label="Адрес"
-          {...register("address")}
+          name="address"
+          control={control}
         />
 
-        <TextField
+        <FormTextField
           label="Описание"
-          {...register("descriptions")}
           multiline
           minRows={2}
+          name="descriptions"
+          control={control}
         />
 
         {canArchive && (
-          <FormControlLabel
-            control={
-              <Controller
-                name="isArchived"
-                control={control}
-                render={({ field }) => (
-                  <Checkbox
-                    checked={field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
-                  />
-                )}
-              />
-            }
+          <FormCheckbox
+            name="isArchived"
+            control={control}
             label="Отправить в архив"
           />
         )}

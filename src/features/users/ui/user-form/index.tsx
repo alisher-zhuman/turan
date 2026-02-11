@@ -1,17 +1,18 @@
 import { useEffect, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { getCompanies, type Company } from "@/entities/companies";
 import { useAuthStore } from "@/shared/stores";
 import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
+import { FormSelect } from "@/shared/ui/form-select";
+import { FormTextField } from "@/shared/ui/form-text-field";
 import {
   getApiErrorMessage,
   availableUserRolesFor,
@@ -45,12 +46,10 @@ export const UserForm = ({ onClose, userToEdit }: Props) => {
   );
 
   const {
-    register,
+    control,
     handleSubmit,
     reset,
     watch,
-    control,
-    formState: { errors },
   } = useForm<UserFormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -123,84 +122,62 @@ export const UserForm = ({ onClose, userToEdit }: Props) => {
     >
       <FormFieldset disabled={mutation.isPending}>
         {!isEditing && (
-          <TextField
+          <FormTextField
             label="Email"
-            {...register("email")}
             fullWidth
             required
             type="email"
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            name="email"
+            control={control}
           />
         )}
 
-        <TextField
+        <FormTextField
           label="Имя"
-          {...register("firstName")}
           fullWidth
           required
-          error={!!errors.firstName}
-          helperText={errors.firstName?.message}
+          name="firstName"
+          control={control}
         />
 
-        <TextField
+        <FormTextField
           label="Фамилия"
-          {...register("lastName")}
           fullWidth
           required
-          error={!!errors.lastName}
-          helperText={errors.lastName?.message}
+          name="lastName"
+          control={control}
         />
 
-        <Controller
+        <FormSelect
           name="role"
           control={control}
-          render={({ field }) => (
-            <TextField
-              select
-              label="Роль"
-              value={field.value}
-              onChange={(e) => field.onChange(e.target.value)}
-              fullWidth
-              required
-            >
-              {availableRoles.map((r) => (
-                <MenuItem key={r} value={r}>
-                  {ROLE_LABELS[r]}
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
-        />
+          label="Роль"
+          fullWidth
+          required
+        >
+          {availableRoles.map((r) => (
+            <MenuItem key={r} value={r}>
+              {ROLE_LABELS[r]}
+            </MenuItem>
+          ))}
+        </FormSelect>
 
         {showCompanySelect && (
-          <Controller
+          <FormSelect
             name="companyId"
             control={control}
-            render={({ field }) => (
-              <TextField
-                select
-                label="Компания"
-                value={field.value ?? ""}
-                onChange={(e) =>
-                  field.onChange(
-                    e.target.value ? Number(e.target.value) : null,
-                  )
-                }
-                fullWidth
-              required
-              disabled={isCompaniesLoading || mutation.isPending}
-              error={!!errors.companyId}
-              helperText={errors.companyId?.message}
-            >
-                {companies?.map(({ id, name }: Company) => (
-                  <MenuItem key={id} value={id}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          />
+            label="Компания"
+            fullWidth
+            required
+            disabled={isCompaniesLoading || mutation.isPending}
+            parseValue={(value) => (value ? Number(value) : null)}
+          >
+            {companies?.map(({ id, name }: Company) => (
+              <MenuItem key={id} value={id}>
+                {name}
+              </MenuItem>
+            ))}
+          </FormSelect>
         )}
       </FormFieldset>
 
