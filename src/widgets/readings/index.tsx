@@ -1,11 +1,10 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
 import { useReadings, createReadingColumns } from "@/features/readings";
 import type { Reading } from "@/entities/readings";
 import { DataTable } from "@/shared/ui/data-table";
-import { Loader } from "@/shared/ui/loader";
 import { Pagination } from "@/shared/ui/pagination";
+import { ListSection } from "@/shared/ui/list-section";
 
 export const ReadingsWidget = () => {
   const {
@@ -33,15 +32,6 @@ export const ReadingsWidget = () => {
     handleDeleteSelected,
   } = useReadings();
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError)
-    return (
-      <Alert severity="error">Ошибка при загрузке показаний водомеров</Alert>
-    );
-
   const columns = createReadingColumns({
     isAdmin,
     selectedIds,
@@ -52,46 +42,48 @@ export const ReadingsWidget = () => {
     onDeleteOne: handleDeleteOne,
   });
 
-  return (
-    <Box>
-      <Box mb={2} display="flex" alignItems="center" justifyContent="flex-end">
-        {isAdmin && (
-          <Button
-            variant="outlined"
-            color="error"
-            disabled={selectedIds.length === 0}
-            onClick={handleDeleteSelected}
-          >
-            Удалить выбранные
-          </Button>
-        )}
-      </Box>
-
-      {!hasReadings && (
-        <Alert severity="info" sx={{ mt: 2 }}>
-          {emptyText}
-        </Alert>
-      )}
-
-      {hasReadings && (
-        <>
-          <DataTable
-            rows={readings}
-            columns={columns}
-            getRowId={(r: Reading) => r.id}
-          />
-
-          <Pagination
-            page={page}
-            limit={limit}
-            total={total}
-            onPageChange={setPage}
-            rowsPerPageOptions={[5, 10, 20]}
-            labelRowsPerPage="Показаний на странице:"
-            onLimitChange={setLimit}
-          />
-        </>
+  const toolbar = (
+    <Box mb={2} display="flex" alignItems="center" justifyContent="flex-end">
+      {isAdmin && (
+        <Button
+          variant="outlined"
+          color="error"
+          disabled={selectedIds.length === 0}
+          onClick={handleDeleteSelected}
+        >
+          Удалить выбранные
+        </Button>
       )}
     </Box>
+  );
+
+  const pagination = (
+    <Pagination
+      page={page}
+      limit={limit}
+      total={total}
+      onPageChange={setPage}
+      rowsPerPageOptions={[5, 10, 20]}
+      labelRowsPerPage="Показаний на странице:"
+      onLimitChange={setLimit}
+    />
+  );
+
+  return (
+    <ListSection
+      isLoading={isLoading}
+      isError={isError}
+      errorText="Ошибка при загрузке показаний водомеров"
+      hasItems={hasReadings}
+      emptyText={emptyText}
+      toolbar={toolbar}
+      pagination={pagination}
+    >
+      <DataTable
+        rows={readings}
+        columns={columns}
+        getRowId={(r: Reading) => r.id}
+      />
+    </ListSection>
   );
 };

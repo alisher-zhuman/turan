@@ -1,13 +1,12 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
 import { createGroupColumns, GroupForm, useGroups } from "@/features/groups";
 import type { Group } from "@/entities/groups";
-import { Loader } from "@/shared/ui/loader";
 import { Pagination } from "@/shared/ui/pagination";
 import { Modal } from "@/shared/ui/modal";
 import { DataTable } from "@/shared/ui/data-table";
+import { ListSection } from "@/shared/ui/list-section";
 
 export const GroupsWidget = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -28,14 +27,6 @@ export const GroupsWidget = () => {
     handleDelete,
   } = useGroups({});
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError) {
-    return <Alert severity="error">Ошибка при загрузке групп</Alert>;
-  }
-
   const openCreateModal = () => {
     if (!isAdmin) return;
     setEditingGroup(null);
@@ -55,52 +46,45 @@ export const GroupsWidget = () => {
 
   const columns = createGroupColumns(openEditModal, handleDelete, isAdmin);
 
+  const toolbar = (
+    <Box mb={2} display="flex" alignItems="center" justifyContent="flex-end">
+      {isAdmin && (
+        <Button onClick={openCreateModal} variant="contained" color="primary">
+          Создать
+        </Button>
+      )}
+    </Box>
+  );
+
+  const pagination = (
+    <Pagination
+      page={page}
+      limit={limit}
+      total={total}
+      onPageChange={setPage}
+      rowsPerPageOptions={[5, 10, 20]}
+      labelRowsPerPage="Групп на странице:"
+      onLimitChange={setLimit}
+    />
+  );
+
   return (
     <>
-      <Box>
-        <Box
-          mb={2}
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-end"
-        >
-          {isAdmin && (
-            <Button
-              onClick={openCreateModal}
-              variant="contained"
-              color="primary"
-            >
-              Создать
-            </Button>
-          )}
-        </Box>
-
-        {!hasGroups && (
-          <Alert severity="info" sx={{ mt: 2 }}>
-            {emptyText}
-          </Alert>
-        )}
-
-        {hasGroups && (
-          <>
-            <DataTable
-              rows={groups}
-              columns={columns}
-              getRowId={(g: Group) => g.id}
-            />
-
-            <Pagination
-              page={page}
-              limit={limit}
-              total={total}
-              onPageChange={setPage}
-              rowsPerPageOptions={[5, 10, 20]}
-              labelRowsPerPage="Групп на странице:"
-              onLimitChange={setLimit}
-            />
-          </>
-        )}
-      </Box>
+      <ListSection
+        isLoading={isLoading}
+        isError={isError}
+        errorText="Ошибка при загрузке групп"
+        hasItems={hasGroups}
+        emptyText={emptyText}
+        toolbar={toolbar}
+        pagination={pagination}
+      >
+        <DataTable
+          rows={groups}
+          columns={columns}
+          getRowId={(g: Group) => g.id}
+        />
+      </ListSection>
 
       <Modal
         open={isModalOpen}
