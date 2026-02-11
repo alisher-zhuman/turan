@@ -37,7 +37,7 @@ export const useMeterForm = ({
     defaultValues,
   });
 
-  useFormReset(reset, defaultValues, [meterToEdit]);
+  useFormReset(reset, defaultValues);
 
   const mutation = useToastMutation({
     mutationFn: (payload: {

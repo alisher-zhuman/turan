@@ -42,7 +42,7 @@ export const CompanyForm = ({ company, onClose }: Props) => {
     defaultValues,
   });
 
-  useFormReset(reset, defaultValues, [company]);
+  useFormReset(reset, defaultValues);
 
   const mutation = useToastMutation({
     mutationFn: (payload: CompanyPayload) =>

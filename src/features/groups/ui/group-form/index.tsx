@@ -39,7 +39,7 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
     defaultValues,
   });
 
-  useFormReset(reset, defaultValues, [groupToEdit]);
+  useFormReset(reset, defaultValues);
 
   const mutation = useToastMutation({
     mutationFn: ({

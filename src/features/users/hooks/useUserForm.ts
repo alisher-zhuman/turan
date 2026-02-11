@@ -57,7 +57,7 @@ export const useUserForm = ({ onClose, userToEdit }: Params) => {
     defaultValues,
   });
 
-  useFormReset(reset, defaultValues, [userToEdit]);
+  useFormReset(reset, defaultValues);
 
   const watchedRole = watch("role") as Role;
 
