@@ -13,6 +13,7 @@ import { getApiErrorMessage } from "@/shared/helpers";
 
 export const useUsers = () => {
   const [isArchived, setIsArchived] = useState(false);
+
   const { page, limit, setPage, setLimit } = usePagination({
     resetKey: isArchived ? "archived" : "active",
   });

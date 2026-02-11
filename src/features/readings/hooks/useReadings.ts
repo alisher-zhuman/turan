@@ -6,8 +6,9 @@ import { usePagination, useSelection, useToastMutation } from "@/shared/hooks";
 import { getApiErrorMessage, hasRoleAdmin } from "@/shared/helpers";
 
 export const useReadings = () => {
-  const { page, limit, setPage, setLimit } = usePagination({});
   const user = useAuthStore((state) => state.user);
+
+  const { page, limit, setPage, setLimit } = usePagination({});
 
   const isAdmin = hasRoleAdmin(user?.role);
 
