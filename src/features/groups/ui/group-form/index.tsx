@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
@@ -22,9 +23,12 @@ interface Props {
 }
 
 export const GroupForm = ({ groupToEdit, onClose }: Props) => {
-  const defaultValues = {
-    name: groupToEdit?.name ?? "",
-  };
+  const defaultValues = useMemo(
+    () => ({
+      name: groupToEdit?.name ?? "",
+    }),
+    [groupToEdit],
+  );
 
   const {
     control,
@@ -35,7 +39,7 @@ export const GroupForm = ({ groupToEdit, onClose }: Props) => {
     defaultValues,
   });
 
-  useFormReset(reset, defaultValues, [groupToEdit, reset]);
+  useFormReset(reset, defaultValues, [groupToEdit]);
 
   const mutation = useToastMutation({
     mutationFn: ({

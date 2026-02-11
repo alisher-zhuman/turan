@@ -1,12 +1,12 @@
 import { useEffect, type DependencyList } from "react";
-import type { UseFormReset } from "react-hook-form";
+import type { FieldValues, UseFormReset } from "react-hook-form";
 
-export const useFormReset = <T,>(
+export const useFormReset = <T extends FieldValues>(
   reset: UseFormReset<T>,
   values: T,
-  deps: DependencyList,
+  deps: DependencyList = [],
 ) => {
   useEffect(() => {
     reset(values);
-  }, deps);
+  }, [reset, values, ...deps]);
 };

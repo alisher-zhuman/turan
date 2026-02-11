@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { AxiosError } from "axios";
@@ -24,10 +25,13 @@ interface Props {
 
 export const CompanyForm = ({ company, onClose }: Props) => {
   const isEditing = !!company;
-  const defaultValues = {
-    name: company?.name ?? "",
-    address: company?.address ?? "",
-  };
+  const defaultValues = useMemo(
+    () => ({
+      name: company?.name ?? "",
+      address: company?.address ?? "",
+    }),
+    [company],
+  );
 
   const {
     control,
@@ -38,7 +42,7 @@ export const CompanyForm = ({ company, onClose }: Props) => {
     defaultValues,
   });
 
-  useFormReset(reset, defaultValues, [company, reset]);
+  useFormReset(reset, defaultValues, [company]);
 
   const mutation = useToastMutation({
     mutationFn: (payload: CompanyPayload) =>

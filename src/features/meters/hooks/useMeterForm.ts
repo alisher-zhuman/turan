@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { AxiosError } from "axios";
@@ -26,12 +27,17 @@ export const useMeterForm = ({
   onClose,
   canArchive,
 }: Params) => {
+  const defaultValues = useMemo(
+    () => getDefaultValues(meterToEdit),
+    [meterToEdit],
+  );
+
   const { handleSubmit, control, reset } = useForm<MeterFormValues>({
     resolver: zodResolver(MeterFormSchema),
-    defaultValues: getDefaultValues(meterToEdit),
+    defaultValues,
   });
 
-  useFormReset(reset, getDefaultValues(meterToEdit), [meterToEdit, reset]);
+  useFormReset(reset, defaultValues, [meterToEdit]);
 
   const mutation = useToastMutation({
     mutationFn: (payload: {

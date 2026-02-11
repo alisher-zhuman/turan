@@ -47,12 +47,17 @@ export const useUserForm = ({ onClose, userToEdit }: Params) => {
     [user?.role, isEditing],
   );
 
+  const defaultValues = useMemo(
+    () => getDefaultValues(userToEdit),
+    [userToEdit],
+  );
+
   const { handleSubmit, reset, watch, control } = useForm<UserFormValues>({
     resolver: zodResolver(schema),
-    defaultValues: getDefaultValues(userToEdit),
+    defaultValues,
   });
 
-  useFormReset(reset, getDefaultValues(userToEdit), [userToEdit, reset]);
+  useFormReset(reset, defaultValues, [userToEdit]);
 
   const watchedRole = watch("role") as Role;
 
