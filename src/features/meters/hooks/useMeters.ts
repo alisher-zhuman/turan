@@ -1,4 +1,4 @@
-import { usePagination } from "@/shared/hooks";
+import { useDebouncedValue, usePagination } from "@/shared/hooks";
 import { useMeterAccess } from "./useMeterAccess";
 import { useMeterActions } from "./useMeterActions";
 import { useMeterFilters } from "./useMeterFilters";
@@ -24,8 +24,10 @@ export const useMeters = () => {
 
   const { isAdmin, canEdit, canManageMetersToGroups } = useMeterAccess();
 
-  const { status, isArchived, groupId, customerId, meterName, valveFilter } =
-    filters;
+  const debouncedCustomerId = useDebouncedValue(filters.customerId);
+  const debouncedMeterName = useDebouncedValue(filters.meterName);
+
+  const { status, isArchived, groupId, valveFilter } = filters;
 
   const {
     meters,
@@ -35,7 +37,15 @@ export const useMeters = () => {
     isLoading,
     isError,
     isFetching,
-  } = useMetersQuery({ page, limit, filters });
+  } = useMetersQuery({
+    page,
+    limit,
+    filters: {
+      ...filters,
+      customerId: debouncedCustomerId,
+      meterName: debouncedMeterName,
+    },
+  });
 
   const {
     selectedIds,
@@ -91,9 +101,9 @@ export const useMeters = () => {
     groupId,
     setGroupId,
 
-    customerId,
+    customerId: filters.customerId,
     setCustomerId,
-    meterName,
+    meterName: filters.meterName,
     setMeterName,
 
     isAdmin,
