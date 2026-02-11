@@ -1,20 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
-import {
-  deleteMeters,
-  getMeters,
-  sendMeterCommand,
-  type Meter,
-} from "@/entities/meters";
-import { usePagination, useSelection, useToastMutation } from "@/shared/hooks";
-import {
-  getApiErrorMessage,
-  canEditMeters,
-  canManageMetersToGroups as canManageMetersToGroupsRole,
-  hasRoleAdmin,
-} from "@/shared/helpers";
-import { useAuthStore } from "@/shared/stores";
+import { usePagination } from "@/shared/hooks";
+import { useMeterAccess } from "./useMeterAccess";
+import { useMeterActions } from "./useMeterActions";
 import { useMeterFilters } from "./useMeterFilters";
+import { useMeterSelection } from "./useMeterSelection";
+import { useMetersQuery } from "./useMetersQuery";
 
 export const useMeters = () => {
   const {
@@ -33,134 +22,43 @@ export const useMeters = () => {
     resetKey: filtersKey,
   });
 
-  const user = useAuthStore((state) => state.user);
+  const { isAdmin, canEdit, canManageMetersToGroups } = useMeterAccess();
 
-  const isAdmin = hasRoleAdmin(user?.role);
-  const canEdit = canEditMeters(user?.role);
-  const canManageMetersToGroups = canManageMetersToGroupsRole(user?.role);
+  const { status, isArchived, groupId, customerId, meterName, valveFilter } =
+    filters;
 
   const {
-    meterName,
-    customerId,
-    status,
-    isArchived,
-    groupId,
-    valveFilter,
-  } = filters;
-
-  const { data, isLoading, isError, isFetching } = useQuery({
-    queryKey: [
-      "meters",
-      page,
-      limit,
-      status,
-      isArchived,
-      groupId,
-      customerId,
-      meterName,
-    ],
-    queryFn: () =>
-      getMeters(
-        page + 1,
-        limit,
-        isArchived,
-        status,
-        groupId,
-        customerId,
-        meterName,
-      ),
-  });
-
-  const metersRaw: Meter[] = data?.data ?? [];
-  const meters: Meter[] = metersRaw.filter((m) => {
-    if (valveFilter === "all") {
-      return true;
-    }
-    if (valveFilter === "open") {
-      return m.valveStatus === "open";
-    }
-    if (valveFilter === "closed") {
-      return m.valveStatus === "closed";
-    }
-    return true;
-  });
-
-  const hasMeters = meters.length > 0;
-  const emptyText = "Счётчики не найдены";
-  const total = data?.total ?? 0;
+    meters,
+    total,
+    hasMeters,
+    emptyText,
+    isLoading,
+    isError,
+    isFetching,
+  } = useMetersQuery({ page, limit, filters });
 
   const {
     selectedIds,
     allSelected,
     isIndeterminate,
-    toggleAll,
-    toggleOne,
+    handleToggleAll,
+    handleToggleOne,
     clearSelection,
     removeSelected,
-  } = useSelection<Meter, number>({
-    items: meters,
-    getId: (meter) => meter.id,
-    enabled: canManageMetersToGroups,
+  } = useMeterSelection({
+    meters,
+    canManageMetersToGroups,
     resetKey: [page, limit, filtersKey].join("|"),
   });
 
-  const deleteMutation = useToastMutation({
-    mutationFn: (meterIds: number[]) => deleteMeters(meterIds),
-    invalidateKeys: [["meters"]],
-    successMessage: (_, meterIds) =>
-      meterIds.length === 1
-        ? "Счётчик удалён"
-        : "Выбранные счётчики удалены",
-    errorMessage: (error: AxiosError<{ message?: string }>, meterIds) =>
-      getApiErrorMessage(
-        error,
-        meterIds.length === 1
-          ? "Ошибка при удалении счётчика"
-          : "Ошибка при удалении выбранных счётчиков",
-      ),
-    onSuccess: (_, meterIds) => {
-      removeSelected(meterIds);
-    },
-  });
+  const { handleDeleteOne, handleDeleteSelected, handleCommand } =
+    useMeterActions({
+      isAdmin,
+      onRemoved: removeSelected,
+    });
 
-  const commandMutation = useToastMutation({
-    mutationFn: ({
-      meterId,
-      command,
-    }: {
-      meterId: number;
-      command: "open" | "close";
-    }) => sendMeterCommand(meterId, command),
-    invalidateKeys: [["meters"]],
-    successMessage: (_, { command }) =>
-      command === "open"
-        ? "Команда на открытие клапана отправлена"
-        : "Команда на закрытие клапана отправлена",
-    errorMessage: (error: AxiosError<{ message?: string }>) =>
-      getApiErrorMessage(error, "Ошибка при отправке команды клапану"),
-  });
-
-  const handleDeleteOne = (meterId: number) => {
-    if (!isAdmin) return;
-    deleteMutation.mutate([meterId]);
-  };
-
-  const handleDeleteSelected = () => {
-    if (!isAdmin || selectedIds.length === 0) return;
-    deleteMutation.mutate(selectedIds);
-  };
-
-  const handleCommand = (meterId: number, command: "open" | "close") => {
-    if (!isAdmin) return;
-    commandMutation.mutate({ meterId, command });
-  };
-
-  const handleToggleAll = (checked: boolean) => {
-    toggleAll(checked);
-  };
-
-  const handleToggleOne = (id: number) => {
-    toggleOne(id);
+  const handleDeleteSelectedWithIds = () => {
+    handleDeleteSelected(selectedIds);
   };
 
   const handleResetFilters = () => {
@@ -208,7 +106,7 @@ export const useMeters = () => {
     handleToggleAll,
     handleToggleOne,
     handleDeleteOne,
-    handleDeleteSelected,
+    handleDeleteSelected: handleDeleteSelectedWithIds,
     handleCommand,
     handleResetFilters,
     clearSelection,
