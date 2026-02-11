@@ -5,6 +5,7 @@ import {
   useWebhooksQuery,
 } from "@/features/webhooks";
 import { TableSection } from "@/shared/ui/table-section";
+import { ERROR_TEXTS } from "@/shared/constants";
 import { WebhooksHeader } from "./ui/webhooks-header";
 import { WebhooksModals } from "./ui/webhooks-modals";
 import { useWebhooksUiState } from "./hooks/useWebhooksUiState";
@@ -29,7 +30,7 @@ export const WebhooksWidget = () => {
       <TableSection
         isLoading={isLoading}
         isError={isError}
-        errorText="Ошибка при загрузке вебхуков"
+        errorText={ERROR_TEXTS.webhooks}
         hasItems={hasWebhooks}
         emptyText={emptyText}
         toolbar={toolbar}

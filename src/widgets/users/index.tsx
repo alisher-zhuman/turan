@@ -8,6 +8,7 @@ import {
 import { useRoleAccess } from "@/shared/hooks";
 import { usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
+import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { UsersHeader } from "./ui/users-header";
 import { UsersModals } from "./ui/users-modals";
 import { useUsersUiState } from "./hooks/useUsersUiState";
@@ -50,7 +51,7 @@ export const UsersWidget = () => {
       <TableSection
         isLoading={isLoading}
         isError={isError}
-        errorText="Ошибка при загрузке пользователей"
+        errorText={ERROR_TEXTS.users}
         hasItems={hasUsers}
         emptyText={emptyText}
         toolbar={
@@ -66,7 +67,7 @@ export const UsersWidget = () => {
           total,
           onPageChange: setPage,
           rowsPerPageOptions: [5, 10, 20],
-          labelRowsPerPage: "Пользователей на странице:",
+          labelRowsPerPage: ROWS_PER_PAGE_LABELS.users,
           onLimitChange: setLimit,
         }}
         rows={users}

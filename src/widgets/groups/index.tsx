@@ -7,6 +7,7 @@ import {
 } from "@/features/groups";
 import { usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
+import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { GroupsHeader } from "./ui/groups-header";
 import { GroupsModals } from "./ui/groups-modals";
 import { useGroupsUiState } from "./hooks/useGroupsUiState";
@@ -59,7 +60,7 @@ export const GroupsWidget = () => {
       <TableSection
         isLoading={isLoading}
         isError={isError}
-        errorText="Ошибка при загрузке групп"
+        errorText={ERROR_TEXTS.groups}
         hasItems={hasGroups}
         emptyText={emptyText}
         toolbar={
@@ -71,7 +72,7 @@ export const GroupsWidget = () => {
           total,
           onPageChange: setPage,
           rowsPerPageOptions: [5, 10, 20],
-          labelRowsPerPage: "Групп на странице:",
+          labelRowsPerPage: ROWS_PER_PAGE_LABELS.groups,
           onLimitChange: setLimit,
         }}
         rows={groups}

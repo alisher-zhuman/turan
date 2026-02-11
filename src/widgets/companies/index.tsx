@@ -6,6 +6,7 @@ import {
   useCompanyFilters,
 } from "@/features/companies";
 import { TableSection } from "@/shared/ui/table-section";
+import { ERROR_TEXTS } from "@/shared/constants";
 import { CompaniesHeader } from "./ui/companies-header";
 import { CompaniesModals } from "./ui/companies-modals";
 import { useCompaniesUiState } from "./hooks/useCompaniesUiState";
@@ -49,7 +50,7 @@ export const CompaniesWidget = () => {
       <TableSection
         isLoading={isLoading}
         isError={isError}
-        errorText="Ошибка при загрузке компаний"
+        errorText={ERROR_TEXTS.companies}
         errorVariant="filled"
         hasItems={hasCompanies}
         emptyText={emptyText}

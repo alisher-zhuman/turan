@@ -1,4 +1,5 @@
 import Alert from "@mui/material/Alert";
+import { ERROR_TEXTS } from "@/shared/constants";
 import { MetersActions } from "@/features/meters";
 
 interface Props {
@@ -29,7 +30,7 @@ export const MetersHeader = ({
   <>
     {isError && (
       <Alert severity="error" sx={{ mb: 2 }}>
-        Ошибка при загрузке счётчиков
+        {ERROR_TEXTS.meters}
       </Alert>
     )}
 

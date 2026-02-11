@@ -8,6 +8,7 @@ import {
 } from "@/features/devices";
 import { usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
+import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { DevicesHeader } from "./ui/devices-header";
 
 export const DevicesWidget = () => {
@@ -67,7 +68,7 @@ export const DevicesWidget = () => {
     <TableSection
       isLoading={isLoading}
       isError={isError}
-      errorText="Ошибка при загрузке устройств"
+      errorText={ERROR_TEXTS.devices}
       hasItems={hasDevices}
       emptyText={emptyText}
       toolbar={
@@ -84,7 +85,7 @@ export const DevicesWidget = () => {
         total,
         onPageChange: setPage,
         rowsPerPageOptions: [5, 10, 20],
-        labelRowsPerPage: "Устройств на странице:",
+        labelRowsPerPage: ROWS_PER_PAGE_LABELS.devices,
         onLimitChange: setLimit,
       }}
       rows={devices}

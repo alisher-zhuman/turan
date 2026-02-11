@@ -5,6 +5,7 @@ import type { Meter } from "@/entities/meters";
 import { DataTable } from "@/shared/ui/data-table";
 import { Loader } from "@/shared/ui/loader";
 import { Pagination } from "@/shared/ui/pagination";
+import { ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 
 interface Props {
   isLoading: boolean;
@@ -61,7 +62,7 @@ export const MetersTableSection = ({
         total={total}
         onPageChange={onPageChange}
         rowsPerPageOptions={[5, 10, 20]}
-        labelRowsPerPage="Счётчиков на странице:"
+        labelRowsPerPage={ROWS_PER_PAGE_LABELS.meters}
         onLimitChange={onLimitChange}
       />
     </>
