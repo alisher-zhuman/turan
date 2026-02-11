@@ -6,11 +6,24 @@ export const getApiErrorMessage = (
 ) => {
   if (typeof error === "string") return error;
 
+  const apiError = error as ApiErrorLike | null;
+
+  const message = apiError?.response?.data?.message;
+
+  if (Array.isArray(message)) {
+    return message[0] || fallback;
+  }
+
+  if (typeof message === "string" && message) {
+    return message;
+  }
+
+  const responseError = apiError?.response?.data?.error;
+  if (responseError) return responseError;
+
   if (error instanceof Error && error.message) {
     return error.message;
   }
 
-  const apiError = error as ApiErrorLike | null;
-
-  return apiError?.response?.data?.message || apiError?.message || fallback;
+  return apiError?.message || fallback;
 };

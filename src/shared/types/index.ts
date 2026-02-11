@@ -41,7 +41,9 @@ export interface Column<T> {
 export interface ApiErrorLike {
   response?: {
     data?: {
-      message?: string;
+      message?: string | string[];
+      error?: string;
+      statusCode?: number;
     };
   };
   message?: string;
