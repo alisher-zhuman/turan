@@ -1,74 +1,44 @@
-import { useQuery } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
-import { deleteReadings, getReadings, type Reading } from "@/entities/readings";
-import { useAuthStore } from "@/shared/stores";
-import { usePagination, useSelection, useToastMutation } from "@/shared/hooks";
-import { getApiErrorMessage, hasRoleAdmin } from "@/shared/helpers";
+import { usePagination } from "@/shared/hooks";
+import { useReadingsAccess } from "./useReadingsAccess";
+import { useReadingsActions } from "./useReadingsActions";
+import { useReadingsQuery } from "./useReadingsQuery";
+import { useReadingsSelection } from "./useReadingsSelection";
 
 export const useReadings = () => {
-  const user = useAuthStore((state) => state.user);
-
   const { page, limit, setPage, setLimit } = usePagination({});
 
-  const isAdmin = hasRoleAdmin(user?.role);
+  const { isAdmin } = useReadingsAccess();
 
-  const { data, isLoading, isError, isFetching } = useQuery({
-    queryKey: ["readings", page, limit],
-    queryFn: () => getReadings(page + 1, limit),
-  });
-
-  const readings: Reading[] = data?.data ?? [];
-  const hasReadings = readings.length > 0;
-  const total = data?.total ?? 0;
-  const emptyText = "Показания не найдены";
+  const {
+    readings,
+    total,
+    hasReadings,
+    emptyText,
+    isLoading,
+    isError,
+    isFetching,
+  } = useReadingsQuery({ page, limit });
 
   const {
     selectedIds,
     allSelected,
     isIndeterminate,
-    toggleAll,
-    toggleOne,
+    handleToggleAll,
+    handleToggleOne,
     removeSelected,
-  } = useSelection<Reading, string>({
-    items: readings,
-    getId: (reading) => reading.id,
-    enabled: isAdmin,
+  } = useReadingsSelection({
+    readings,
+    isAdmin,
     resetKey: [page, limit].join("|"),
   });
 
-  const deleteMutation = useToastMutation({
-    mutationFn: (ids: string[]) => deleteReadings(ids),
-    invalidateKeys: [["readings"]],
-    successMessage: (_, ids) =>
-      ids.length === 1 ? "Показание удалено" : "Выбранные показания удалены",
-    errorMessage: (error: AxiosError<{ message?: string }>, ids) =>
-      getApiErrorMessage(
-        error,
-        ids.length === 1
-          ? "Ошибка при удалении показания"
-          : "Ошибка при удалении выбранных показаний",
-      ),
-    onSuccess: (_, ids) => {
-      removeSelected(ids);
-    },
+  const { handleDeleteOne, handleDeleteSelected } = useReadingsActions({
+    isAdmin,
+    onRemoved: removeSelected,
   });
 
-  const handleDeleteOne = (id: string) => {
-    if (!isAdmin) return;
-    deleteMutation.mutate([id]);
-  };
-
-  const handleDeleteSelected = () => {
-    if (!isAdmin || selectedIds.length === 0) return;
-    deleteMutation.mutate(selectedIds);
-  };
-
-  const handleToggleAll = (checked: boolean) => {
-    toggleAll(checked);
-  };
-
-  const handleToggleOne = (id: string) => {
-    toggleOne(id);
+  const handleDeleteSelectedWithIds = () => {
+    handleDeleteSelected(selectedIds);
   };
 
   return {
@@ -94,6 +64,6 @@ export const useReadings = () => {
     handleToggleOne,
 
     handleDeleteOne,
-    handleDeleteSelected,
+    handleDeleteSelected: handleDeleteSelectedWithIds,
   };
 };

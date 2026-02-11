@@ -1,38 +1,13 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { sendForgotRequest } from "@/entities/authentication";
-import { useToastMutation } from "@/shared/hooks";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { FormTextField } from "@/shared/ui/form-text-field";
-import { getApiErrorMessage } from "@/shared/helpers";
-import { ForgotFormSchema } from "../../model/schema";
-import type { ForgotFormValues } from "../../model/types";
+import { useForgotForm } from "../../hooks/useForgotForm";
 
 export const ForgotForm = () => {
-  const {
-    control,
-    handleSubmit,
-  } = useForm<ForgotFormValues>({
-    resolver: zodResolver(ForgotFormSchema),
-    defaultValues: {
-      email: "",
-    },
-  });
-
-  const mutation = useToastMutation({
-    mutationFn: ({ email }: ForgotFormValues) => sendForgotRequest(email),
-    successMessage: "Инструкция для восстановления отправлена на почту.",
-    errorMessage: (err: unknown) =>
-      getApiErrorMessage(err, "Ошибка при восстановлении"),
-  });
-
-  const onSubmit = (values: ForgotFormValues) => {
-    mutation.mutate(values);
-  };
+  const { control, onSubmit, isPending } = useForgotForm();
 
   return (
     <Box
@@ -52,9 +27,9 @@ export const ForgotForm = () => {
         <Box
           component="form"
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={onSubmit}
         >
-          <FormFieldset disabled={mutation.isPending}>
+          <FormFieldset disabled={isPending}>
             <FormTextField
               label="Email"
               type="email"
@@ -70,9 +45,9 @@ export const ForgotForm = () => {
             variant="contained"
             size="large"
             fullWidth
-            disabled={mutation.isPending}
+            disabled={isPending}
           >
-            {mutation.isPending ? "Отправка..." : "Отправить"}
+            {isPending ? "Отправка..." : "Отправить"}
           </Button>
 
         </Box>
