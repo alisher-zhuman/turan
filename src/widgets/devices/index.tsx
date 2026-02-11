@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   createDeviceColumns,
   useDeviceActions,
@@ -40,15 +41,27 @@ export const DevicesWidget = () => {
     handleDeleteSelected(selectedIds);
   };
 
-  const columns = createDeviceColumns({
-    selectedIds,
-    allSelected,
-    isIndeterminate,
-    onToggleAll: handleToggleAll,
-    onToggleOne: handleToggleOne,
-    onVerify: handleVerify,
-    onDeleteOne: handleDeleteOne,
-  });
+  const columns = useMemo(
+    () =>
+      createDeviceColumns({
+        selectedIds,
+        allSelected,
+        isIndeterminate,
+        onToggleAll: handleToggleAll,
+        onToggleOne: handleToggleOne,
+        onVerify: handleVerify,
+        onDeleteOne: handleDeleteOne,
+      }),
+    [
+      selectedIds,
+      allSelected,
+      isIndeterminate,
+      handleToggleAll,
+      handleToggleOne,
+      handleVerify,
+      handleDeleteOne,
+    ],
+  );
 
   return (
     <TableSection

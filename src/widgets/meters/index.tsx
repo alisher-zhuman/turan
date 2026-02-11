@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Box from "@mui/material/Box";
 import { createMeterColumns, useMeters } from "@/features/meters";
 import { useGroupActions, useGroupsQuery } from "@/features/groups";
@@ -87,20 +88,37 @@ export const MetersWidget = () => {
     onClearSelection: clearSelection,
   });
 
-  const columns = createMeterColumns({
-    isAdmin,
-    canEdit,
-    canManageMetersToGroups,
-    selectedIds,
-    allSelected,
-    isIndeterminate,
-    onToggleAll: handleToggleAll,
-    onToggleOne: handleToggleOne,
-    onEdit: handleEdit,
-    onDeleteOne: handleDeleteOne,
-    onCommand: handleCommand,
-    onView: handleView,
-  });
+  const columns = useMemo(
+    () =>
+      createMeterColumns({
+        isAdmin,
+        canEdit,
+        canManageMetersToGroups,
+        selectedIds,
+        allSelected,
+        isIndeterminate,
+        onToggleAll: handleToggleAll,
+        onToggleOne: handleToggleOne,
+        onEdit: handleEdit,
+        onDeleteOne: handleDeleteOne,
+        onCommand: handleCommand,
+        onView: handleView,
+      }),
+    [
+      isAdmin,
+      canEdit,
+      canManageMetersToGroups,
+      selectedIds,
+      allSelected,
+      isIndeterminate,
+      handleToggleAll,
+      handleToggleOne,
+      handleEdit,
+      handleDeleteOne,
+      handleCommand,
+      handleView,
+    ],
+  );
 
   return (
     <>

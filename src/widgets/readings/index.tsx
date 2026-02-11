@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   createReadingColumns,
   useReadingsAccess,
@@ -39,15 +40,27 @@ export const ReadingsWidget = () => {
     handleDeleteSelected(selectedIds);
   };
 
-  const columns = createReadingColumns({
-    isAdmin,
-    selectedIds,
-    allSelected,
-    isIndeterminate,
-    onToggleAll: handleToggleAll,
-    onToggleOne: handleToggleOne,
-    onDeleteOne: handleDeleteOne,
-  });
+  const columns = useMemo(
+    () =>
+      createReadingColumns({
+        isAdmin,
+        selectedIds,
+        allSelected,
+        isIndeterminate,
+        onToggleAll: handleToggleAll,
+        onToggleOne: handleToggleOne,
+        onDeleteOne: handleDeleteOne,
+      }),
+    [
+      isAdmin,
+      selectedIds,
+      allSelected,
+      isIndeterminate,
+      handleToggleAll,
+      handleToggleOne,
+      handleDeleteOne,
+    ],
+  );
 
   return (
     <TableSection

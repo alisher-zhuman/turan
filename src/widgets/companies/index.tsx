@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   createCompanyColumns,
   useCompaniesQuery,
@@ -25,10 +26,14 @@ export const CompaniesWidget = () => {
     closeModal,
   } = useCompaniesUiState();
 
-  const columns = createCompanyColumns(
-    handleRefreshToken,
-    handleToggleArchive,
-    openEditModal,
+  const columns = useMemo(
+    () =>
+      createCompanyColumns(
+        handleRefreshToken,
+        handleToggleArchive,
+        openEditModal,
+      ),
+    [handleRefreshToken, handleToggleArchive, openEditModal],
   );
 
   const toolbar = (

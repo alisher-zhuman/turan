@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   createWebhookColumns,
   useWebhookActions,
@@ -16,7 +17,10 @@ export const WebhooksWidget = () => {
 
   const { isModalOpen, openModal, closeModal } = useWebhooksUiState();
 
-  const columns = createWebhookColumns(handleDelete);
+  const columns = useMemo(
+    () => createWebhookColumns(handleDelete),
+    [handleDelete],
+  );
 
   const toolbar = <WebhooksHeader onCreate={openModal} />;
 

@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from "react";
 import {
   createGroupColumns,
   useGroupAccess,
@@ -35,17 +36,23 @@ export const GroupsWidget = () => {
     closeModal,
   } = useGroupsUiState();
 
-  const handleOpenCreateModal = () => {
+  const handleOpenCreateModal = useCallback(() => {
     if (!isAdmin) return;
     openCreateModal();
-  };
+  }, [isAdmin, openCreateModal]);
 
-  const handleOpenEditModal = (group: (typeof groups)[number]) => {
-    if (!isAdmin) return;
-    openEditModal(group);
-  };
+  const handleOpenEditModal = useCallback(
+    (group: (typeof groups)[number]) => {
+      if (!isAdmin) return;
+      openEditModal(group);
+    },
+    [isAdmin, openEditModal],
+  );
 
-  const columns = createGroupColumns(handleOpenEditModal, handleDelete, isAdmin);
+  const columns = useMemo(
+    () => createGroupColumns(handleOpenEditModal, handleDelete, isAdmin),
+    [handleOpenEditModal, handleDelete, isAdmin],
+  );
 
   return (
     <>

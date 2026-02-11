@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   createUserColumns,
   useUserActions,
@@ -33,11 +34,15 @@ export const UsersWidget = () => {
     closeModal,
   } = useUsersUiState();
 
-  const columns = createUserColumns(
-    handleToggleArchive,
-    openEditModal,
-    canDeleteUsers,
-    handleDeleteUser,
+  const columns = useMemo(
+    () =>
+      createUserColumns(
+        handleToggleArchive,
+        openEditModal,
+        canDeleteUsers,
+        handleDeleteUser,
+      ),
+    [handleToggleArchive, openEditModal, canDeleteUsers, handleDeleteUser],
   );
 
   return (
