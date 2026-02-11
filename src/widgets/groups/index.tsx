@@ -1,17 +1,10 @@
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { createGroupColumns, GroupForm, useGroups } from "@/features/groups";
-import type { Group } from "@/entities/groups";
-import { Pagination } from "@/shared/ui/pagination";
-import { Modal } from "@/shared/ui/modal";
-import { DataTable } from "@/shared/ui/data-table";
-import { ListSection } from "@/shared/ui/list-section";
+import { createGroupColumns, useGroups } from "@/features/groups";
+import { GroupsHeader } from "./ui/groups-header";
+import { GroupsModals } from "./ui/groups-modals";
+import { GroupsTableSection } from "./ui/groups-table-section";
+import { useGroupsUiState } from "./hooks/useGroupsUiState";
 
 export const GroupsWidget = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [editingGroup, setEditingGroup] = useState<Group | null>(null);
-
   const {
     groups,
     total,
@@ -27,72 +20,50 @@ export const GroupsWidget = () => {
     handleDelete,
   } = useGroups({});
 
-  const openCreateModal = () => {
+  const {
+    isModalOpen,
+    editingGroup,
+    openCreateModal,
+    openEditModal,
+    closeModal,
+  } = useGroupsUiState();
+
+  const handleOpenCreateModal = () => {
     if (!isAdmin) return;
-    setEditingGroup(null);
-    setModalOpen(true);
+    openCreateModal();
   };
 
-  const openEditModal = (group: Group) => {
+  const handleOpenEditModal = (group: (typeof groups)[number]) => {
     if (!isAdmin) return;
-    setEditingGroup(group);
-    setModalOpen(true);
+    openEditModal(group);
   };
 
-  const closeModal = () => {
-    setEditingGroup(null);
-    setModalOpen(false);
-  };
-
-  const columns = createGroupColumns(openEditModal, handleDelete, isAdmin);
-
-  const toolbar = (
-    <Box mb={2} display="flex" alignItems="center" justifyContent="flex-end">
-      {isAdmin && (
-        <Button onClick={openCreateModal} variant="contained" color="primary">
-          Создать
-        </Button>
-      )}
-    </Box>
-  );
-
-  const pagination = (
-    <Pagination
-      page={page}
-      limit={limit}
-      total={total}
-      onPageChange={setPage}
-      rowsPerPageOptions={[5, 10, 20]}
-      labelRowsPerPage="Групп на странице:"
-      onLimitChange={setLimit}
-    />
-  );
+  const columns = createGroupColumns(handleOpenEditModal, handleDelete, isAdmin);
 
   return (
     <>
-      <ListSection
+      <GroupsTableSection
         isLoading={isLoading}
         isError={isError}
-        errorText="Ошибка при загрузке групп"
-        hasItems={hasGroups}
+        hasGroups={hasGroups}
         emptyText={emptyText}
-        toolbar={toolbar}
-        pagination={pagination}
-      >
-        <DataTable
-          rows={groups}
-          columns={columns}
-          getRowId={(g: Group) => g.id}
-        />
-      </ListSection>
+        groups={groups}
+        columns={columns}
+        page={page}
+        limit={limit}
+        total={total}
+        onPageChange={setPage}
+        onLimitChange={setLimit}
+        toolbar={
+          <GroupsHeader isAdmin={isAdmin} onCreate={handleOpenCreateModal} />
+        }
+      />
 
-      <Modal
-        open={isModalOpen}
+      <GroupsModals
+        isOpen={isModalOpen}
+        editingGroup={editingGroup}
         onClose={closeModal}
-        title={editingGroup ? "Редактировать группу" : "Создать группу"}
-      >
-        <GroupForm groupToEdit={editingGroup} onClose={closeModal} />
-      </Modal>
+      />
     </>
   );
 };

@@ -1,20 +1,10 @@
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-
-import {
-  createWebhookColumns,
-  useWebhooks,
-  WebhookForm,
-} from "@/features/webhooks";
-import type { Webhook } from "@/entities/webhooks";
-import { DataTable } from "@/shared/ui/data-table";
-import { Modal } from "@/shared/ui/modal";
-import { ListSection } from "@/shared/ui/list-section";
+import { createWebhookColumns, useWebhooks } from "@/features/webhooks";
+import { WebhooksHeader } from "./ui/webhooks-header";
+import { WebhooksModals } from "./ui/webhooks-modals";
+import { WebhooksTableSection } from "./ui/webhooks-table-section";
+import { useWebhooksUiState } from "./hooks/useWebhooksUiState";
 
 export const WebhooksWidget = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-
   const {
     webhooks,
     hasWebhooks,
@@ -24,39 +14,25 @@ export const WebhooksWidget = () => {
     handleDelete,
   } = useWebhooks();
 
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const { isModalOpen, openModal, closeModal } = useWebhooksUiState();
 
   const columns = createWebhookColumns(handleDelete);
 
-  const toolbar = (
-    <Box mb={2} display="flex" alignItems="center" justifyContent="flex-end">
-      <Button onClick={openModal} variant="contained" color="primary">
-        Создать
-      </Button>
-    </Box>
-  );
+  const toolbar = <WebhooksHeader onCreate={openModal} />;
 
   return (
     <>
-      <ListSection
+      <WebhooksTableSection
         isLoading={isLoading}
         isError={isError}
-        errorText="Ошибка при загрузке вебхуков"
-        hasItems={hasWebhooks}
+        hasWebhooks={hasWebhooks}
         emptyText={emptyText}
+        webhooks={webhooks}
+        columns={columns}
         toolbar={toolbar}
-      >
-        <DataTable
-          rows={webhooks}
-          columns={columns}
-          getRowId={(w: Webhook) => w.id}
-        />
-      </ListSection>
+      />
 
-      <Modal open={isModalOpen} onClose={closeModal} title="Создать вебхук">
-        <WebhookForm onClose={closeModal} />
-      </Modal>
+      <WebhooksModals isOpen={isModalOpen} onClose={closeModal} />
     </>
   );
 };

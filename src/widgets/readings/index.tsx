@@ -1,10 +1,6 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import { useReadings, createReadingColumns } from "@/features/readings";
-import type { Reading } from "@/entities/readings";
-import { DataTable } from "@/shared/ui/data-table";
-import { Pagination } from "@/shared/ui/pagination";
-import { ListSection } from "@/shared/ui/list-section";
+import { ReadingsHeader } from "./ui/readings-header";
+import { ReadingsTableSection } from "./ui/readings-table-section";
 
 export const ReadingsWidget = () => {
   const {
@@ -42,48 +38,26 @@ export const ReadingsWidget = () => {
     onDeleteOne: handleDeleteOne,
   });
 
-  const toolbar = (
-    <Box mb={2} display="flex" alignItems="center" justifyContent="flex-end">
-      {isAdmin && (
-        <Button
-          variant="outlined"
-          color="error"
-          disabled={selectedIds.length === 0}
-          onClick={handleDeleteSelected}
-        >
-          Удалить выбранные
-        </Button>
-      )}
-    </Box>
-  );
-
-  const pagination = (
-    <Pagination
+  return (
+    <ReadingsTableSection
+      isLoading={isLoading}
+      isError={isError}
+      hasReadings={hasReadings}
+      emptyText={emptyText}
+      readings={readings}
+      columns={columns}
       page={page}
       limit={limit}
       total={total}
       onPageChange={setPage}
-      rowsPerPageOptions={[5, 10, 20]}
-      labelRowsPerPage="Показаний на странице:"
       onLimitChange={setLimit}
+      toolbar={
+        <ReadingsHeader
+          isAdmin={isAdmin}
+          selectedCount={selectedIds.length}
+          onDeleteSelected={handleDeleteSelected}
+        />
+      }
     />
-  );
-
-  return (
-    <ListSection
-      isLoading={isLoading}
-      isError={isError}
-      errorText="Ошибка при загрузке показаний водомеров"
-      hasItems={hasReadings}
-      emptyText={emptyText}
-      toolbar={toolbar}
-      pagination={pagination}
-    >
-      <DataTable
-        rows={readings}
-        columns={columns}
-        getRowId={(r: Reading) => r.id}
-      />
-    </ListSection>
   );
 };
