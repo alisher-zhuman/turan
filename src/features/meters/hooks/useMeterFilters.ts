@@ -9,7 +9,7 @@ export interface MeterFilters {
   valveFilter: "all" | "open" | "closed";
 }
 
-const initialFilters: MeterFilters = {
+const DEFAULT_FILTERS: MeterFilters = {
   meterName: "",
   customerId: "",
   status: "all",
@@ -19,17 +19,20 @@ const initialFilters: MeterFilters = {
 };
 
 interface Params {
-  initialGroupId?: number;
+  initialFilters?: Partial<MeterFilters>;
 }
 
-const getInitialFilters = (initialGroupId?: number): MeterFilters => ({
-  ...initialFilters,
-  groupId: initialGroupId ?? null,
+const getInitialFilters = (
+  initialFiltersPatch?: Partial<MeterFilters>,
+): MeterFilters => ({
+  ...DEFAULT_FILTERS,
+  ...initialFiltersPatch,
+  groupId: initialFiltersPatch?.groupId ?? null,
 });
 
-export const useMeterFilters = ({ initialGroupId }: Params = {}) => {
+export const useMeterFilters = ({ initialFilters: initialFiltersPatch }: Params = {}) => {
   const [filters, setFilters] = useState<MeterFilters>(() =>
-    getInitialFilters(initialGroupId),
+    getInitialFilters(initialFiltersPatch),
   );
 
   const filtersKey = useMemo(
@@ -75,7 +78,7 @@ export const useMeterFilters = ({ initialGroupId }: Params = {}) => {
   );
 
   const resetFilters = useCallback(() => {
-    setFilters(initialFilters);
+    setFilters(DEFAULT_FILTERS);
   }, []);
 
   return {

@@ -1,18 +1,22 @@
-import { useEffect } from "react";
-
 import { useDebouncedValue, usePagination } from "@/shared/hooks";
 
 import { useMeterAccess } from "./useMeterAccess";
 import { useMeterActions } from "./useMeterActions";
-import { useMeterFilters } from "./useMeterFilters";
+import { type MeterFilters, useMeterFilters } from "./useMeterFilters";
 import { useMeterSelection } from "./useMeterSelection";
 import { useMetersQuery } from "./useMetersQuery";
 
 interface Params {
-  initialGroupId?: number;
+  initialFilters?: Partial<MeterFilters>;
+  initialPage?: number;
+  initialLimit?: number;
 }
 
-export const useMeters = ({ initialGroupId }: Params = {}) => {
+export const useMeters = ({
+  initialFilters,
+  initialPage = 0,
+  initialLimit = 10,
+}: Params = {}) => {
   const {
     filters,
     filtersKey,
@@ -23,19 +27,14 @@ export const useMeters = ({ initialGroupId }: Params = {}) => {
     setMeterName,
     setValveFilter,
     resetFilters,
-  } = useMeterFilters({ initialGroupId });
+  } = useMeterFilters({ initialFilters });
 
   const { page, limit, setPage, setLimit } = usePagination({
+    initialPage,
+    initialLimit,
+    resetPage: 0,
     resetKey: filtersKey,
   });
-
-  useEffect(() => {
-    if (initialGroupId === undefined) return;
-    if (filters.groupId === initialGroupId) return;
-
-    setGroupId(initialGroupId);
-    setPage(0);
-  }, [initialGroupId, filters.groupId, setGroupId, setPage]);
 
   const { isAdmin, canEdit, canManageMetersToGroups } = useMeterAccess();
 
