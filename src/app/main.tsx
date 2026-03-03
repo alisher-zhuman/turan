@@ -4,6 +4,8 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router";
 
 import "./styles/index.css";
+import "@/shared/config/env";
+
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 

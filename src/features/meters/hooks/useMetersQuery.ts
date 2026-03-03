@@ -1,8 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getMeters, type Meter,metersKeys } from "@/entities/meters";
+import { getMeters, type Meter, metersKeys } from "@/entities/meters";
 
 import type { MeterFilters } from "./useMeterFilters";
+
+const METERS_QUERY_OPTIONS = {
+  staleTime: 5_000,
+  retry: 1,
+} as const;
 
 interface Params {
   page: number;
@@ -40,6 +45,8 @@ export const useMetersQuery = ({ page, limit, filters }: Params) => {
         customerId,
         meterName,
       ),
+    staleTime: METERS_QUERY_OPTIONS.staleTime,
+    retry: METERS_QUERY_OPTIONS.retry,
   });
 
   const metersRaw: Meter[] = data?.data ?? [];

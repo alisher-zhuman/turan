@@ -11,11 +11,15 @@
    ```bash
    npm ci
    ```
-2. Убедиться, что в `.env` задан URL API:
+2. Создать `.env` из примера:
+   ```bash
+   cp .env.example .env
+   ```
+3. Убедиться, что в `.env` задан URL API:
    ```bash
    VITE_API_URL="https://your-api-host/api/"
    ```
-3. Запустить приложение:
+4. Запустить приложение:
    ```bash
    npm run dev
    ```

@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getUsers, type UserRow,usersKeys } from "@/entities/users";
+import { getUsers, type UserRow, usersKeys } from "@/entities/users";
+
+const USERS_QUERY_OPTIONS = {
+  staleTime: 30_000,
+  retry: 1,
+} as const;
 
 interface Params {
   page: number;
@@ -12,6 +17,8 @@ export const useUsersQuery = ({ page, limit, isArchived }: Params) => {
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: usersKeys.list(page, limit, isArchived),
     queryFn: () => getUsers(page + 1, limit, isArchived),
+    staleTime: USERS_QUERY_OPTIONS.staleTime,
+    retry: USERS_QUERY_OPTIONS.retry,
   });
 
   const users: UserRow[] = data?.data ?? [];

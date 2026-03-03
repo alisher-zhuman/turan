@@ -51,6 +51,9 @@ export default defineConfig([
             // Router
             ["^react-router(?:$|/)", "^react-router-dom(?:$|/)"],
 
+            // Side-effect imports (e.g. global css/env bootstrap)
+            ["^\\u0000"],
+
             // Third-party libs (excluding React/Router/UI and local aliases)
             [
               "^(?![./])(?!(react$|react/|react-dom$|react-dom/|react-router$|react-router/|react-router-dom$|react-router-dom/|@mui/|@emotion/|@/|@pages/|@widgets/|@features/|@entities/|@shared/)).",

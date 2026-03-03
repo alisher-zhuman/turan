@@ -8,11 +8,15 @@
    ```bash
    npm ci
    ```
-2. Заполнить `.env`:
+2. Создать `.env` из примера:
+   ```bash
+   cp .env.example .env
+   ```
+3. Заполнить `.env`:
    ```bash
    VITE_API_URL="https://your-api-host/api/"
    ```
-3. Запустить dev-сервер:
+4. Запустить dev-сервер:
    ```bash
    npm run dev
    ```

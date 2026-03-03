@@ -6,7 +6,7 @@ import type { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import { companiesKeys, type Company,getCompanies } from "@/entities/companies";
+import { companiesKeys, type Company, getCompanies } from "@/entities/companies";
 import {
   createUser,
   type CreateUserPayload,
@@ -28,6 +28,11 @@ import type { Role } from "@/shared/types";
 
 import { createUserFormSchema } from "../model/schema";
 import type { UserFormValues } from "../model/types";
+
+const USER_FORM_COMPANIES_QUERY_OPTIONS = {
+  staleTime: 120_000,
+  retry: 1,
+} as const;
 
 interface Params {
   onClose: () => void;
@@ -69,6 +74,8 @@ export const useUserForm = ({ onClose, userToEdit }: Params) => {
     queryKey: companiesKeys.list(false),
     queryFn: () => getCompanies(false),
     enabled: hasRoleSuperAdmin(user?.role),
+    staleTime: USER_FORM_COMPANIES_QUERY_OPTIONS.staleTime,
+    retry: USER_FORM_COMPANIES_QUERY_OPTIONS.retry,
   });
 
   const mutation = useToastMutation({

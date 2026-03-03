@@ -1,9 +1,10 @@
 import axios from "axios";
 
+import { ENV } from "@/shared/config/env";
 import { useAuthStore } from "@/shared/stores";
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: ENV.VITE_API_URL,
 });
 
 api.interceptors.request.use((config) => {
