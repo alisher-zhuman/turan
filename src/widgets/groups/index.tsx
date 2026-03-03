@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from "react";
 
+import { useNavigate } from "react-router";
+
 import {
   createGroupColumns,
   useGroupAccess,
@@ -9,7 +11,7 @@ import {
 
 import type { Group } from "@/entities/groups";
 
-import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
+import { ERROR_TEXTS, ROUTES, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { useEntityModal, usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
@@ -17,6 +19,8 @@ import { GroupsHeader } from "./ui/groups-header";
 import { GroupsModals } from "./ui/groups-modals";
 
 export const GroupsWidget = () => {
+  const navigate = useNavigate();
+
   const { page, limit, setPage, setLimit } = usePagination({});
 
   const { isAdmin, canManageMetersToGroups } = useGroupAccess();
@@ -55,8 +59,14 @@ export const GroupsWidget = () => {
   );
 
   const columns = useMemo(
-    () => createGroupColumns(handleOpenEditModal, handleDelete, isAdmin),
-    [handleOpenEditModal, handleDelete, isAdmin],
+    () =>
+      createGroupColumns(
+        (group) => navigate(`/${ROUTES.METERS}?groupId=${group.id}`),
+        handleOpenEditModal,
+        handleDelete,
+        isAdmin,
+      ),
+    [navigate, handleOpenEditModal, handleDelete, isAdmin],
   );
 
   return (

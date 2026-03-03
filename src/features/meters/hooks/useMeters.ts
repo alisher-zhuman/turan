@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { useDebouncedValue, usePagination } from "@/shared/hooks";
 
 import { useMeterAccess } from "./useMeterAccess";
@@ -6,7 +8,11 @@ import { useMeterFilters } from "./useMeterFilters";
 import { useMeterSelection } from "./useMeterSelection";
 import { useMetersQuery } from "./useMetersQuery";
 
-export const useMeters = () => {
+interface Params {
+  initialGroupId?: number;
+}
+
+export const useMeters = ({ initialGroupId }: Params = {}) => {
   const {
     filters,
     filtersKey,
@@ -17,11 +23,19 @@ export const useMeters = () => {
     setMeterName,
     setValveFilter,
     resetFilters,
-  } = useMeterFilters();
+  } = useMeterFilters({ initialGroupId });
 
   const { page, limit, setPage, setLimit } = usePagination({
     resetKey: filtersKey,
   });
+
+  useEffect(() => {
+    if (initialGroupId === undefined) return;
+    if (filters.groupId === initialGroupId) return;
+
+    setGroupId(initialGroupId);
+    setPage(0);
+  }, [initialGroupId, filters.groupId, setGroupId, setPage]);
 
   const { isAdmin, canEdit, canManageMetersToGroups } = useMeterAccess();
 

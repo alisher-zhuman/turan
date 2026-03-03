@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import { useSearchParams } from "react-router";
+
 import Box from "@mui/material/Box";
 
 import { useGroupActions, useGroupsQuery } from "@/features/groups";
@@ -13,6 +15,22 @@ import { MetersHeader } from "./ui/meters-header";
 import { MetersModals } from "./ui/meters-modals";
 
 export const MetersWidget = () => {
+  const [searchParams] = useSearchParams();
+
+  const initialGroupId = useMemo(() => {
+    const value = searchParams.get("groupId");
+
+    if (!value) return undefined;
+
+    const parsed = Number(value);
+
+    if (!Number.isInteger(parsed) || parsed <= 0) {
+      return undefined;
+    }
+
+    return parsed;
+  }, [searchParams]);
+
   const {
     meters,
     total,
@@ -49,7 +67,7 @@ export const MetersWidget = () => {
     handleCommand,
     handleResetFilters,
     clearSelection,
-  } = useMeters();
+  } = useMeters({ initialGroupId });
 
   const { groups } = useGroupsQuery({
     page: 0,
