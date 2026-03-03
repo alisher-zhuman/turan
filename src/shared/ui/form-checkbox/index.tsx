@@ -3,10 +3,10 @@ import FormControlLabel, {
   type FormControlLabelProps,
 } from "@mui/material/FormControlLabel";
 import {
-  useController,
   type Control,
   type FieldPath,
   type FieldValues,
+  useController,
 } from "react-hook-form";
 
 type Props<TFieldValues extends FieldValues> = Omit<

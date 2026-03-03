@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMeters, metersKeys, type Meter } from "@/entities/meters";
+
+import { getMeters, type Meter,metersKeys } from "@/entities/meters";
+
 import type { MeterFilters } from "./useMeterFilters";
 
 interface Params {

@@ -1,5 +1,5 @@
-import { useSelection } from "@/shared/hooks";
 import type { Device } from "@/entities/devices";
+import { useSelection } from "@/shared/hooks";
 
 interface Params {
   devices: Device[];

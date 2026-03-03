@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+
 import type { Company } from "@/entities/companies";
 import {
   createCompanyColumns,
@@ -6,9 +7,10 @@ import {
   useCompanyActions,
   useCompanyFilters,
 } from "@/features/companies";
-import { TableSection } from "@/shared/ui/table-section";
 import { ERROR_TEXTS } from "@/shared/constants";
 import { useEntityModal } from "@/shared/hooks";
+import { TableSection } from "@/shared/ui/table-section";
+
 import { CompaniesHeader } from "./ui/companies-header";
 import { CompaniesModals } from "./ui/companies-modals";
 

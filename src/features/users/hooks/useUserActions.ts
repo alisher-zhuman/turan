@@ -1,12 +1,13 @@
 import type { AxiosError } from "axios";
+
 import {
   archiveUser,
   deleteUser,
-  usersKeys,
   unarchiveUser,
+  usersKeys,
 } from "@/entities/users";
-import { useToastMutation } from "@/shared/hooks";
 import { getApiErrorMessage } from "@/shared/helpers";
+import { useToastMutation } from "@/shared/hooks";
 
 export const useUserActions = () => {
   const toggleArchiveMutation = useToastMutation({

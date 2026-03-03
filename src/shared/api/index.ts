@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { useAuthStore } from "@/shared/stores";
 
 export const api = axios.create({

@@ -1,6 +1,7 @@
 import { z } from "zod";
-import type { Role } from "@/shared/types";
+
 import { canSelectCompanyForRole } from "@/shared/helpers";
+import type { Role } from "@/shared/types";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

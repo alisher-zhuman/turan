@@ -1,6 +1,7 @@
 import type { SidebarLink } from "@/shared/types";
-import { ROUTES } from "./routes";
+
 import { ROLE } from "./roles";
+import { ROUTES } from "./routes";
 
 export const SIDEBAR_LINKS: SidebarLink[] = [
   {

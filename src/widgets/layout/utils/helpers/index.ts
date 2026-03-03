@@ -1,15 +1,16 @@
-import SpeedIcon from "@mui/icons-material/Speed";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import GroupsIcon from "@mui/icons-material/Groups";
 import BusinessIcon from "@mui/icons-material/Business";
 import DevicesOtherIcon from "@mui/icons-material/DevicesOther";
-import PeopleIcon from "@mui/icons-material/People";
-import WebhookIcon from "@mui/icons-material/Webhook";
+import GroupsIcon from "@mui/icons-material/Groups";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import ShieldIcon from "@mui/icons-material/Shield";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import PeopleIcon from "@mui/icons-material/People";
 import PersonIcon from "@mui/icons-material/Person";
+import ShieldIcon from "@mui/icons-material/Shield";
+import SpeedIcon from "@mui/icons-material/Speed";
+import WebhookIcon from "@mui/icons-material/Webhook";
+
 import { ROLE, ROUTES } from "@/shared/constants";
 import type { Role } from "@/shared/types";
 

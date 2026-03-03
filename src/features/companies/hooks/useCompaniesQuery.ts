@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCompanies, companiesKeys, type Company } from "@/entities/companies";
+
+import { companiesKeys, type Company,getCompanies } from "@/entities/companies";
 
 interface Params {
   isArchived: boolean;

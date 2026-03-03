@@ -1,14 +1,16 @@
 import { useMemo } from "react";
+
 import {
   createWebhookColumns,
   useWebhookActions,
   useWebhooksQuery,
 } from "@/features/webhooks";
-import { TableSection } from "@/shared/ui/table-section";
 import { ERROR_TEXTS } from "@/shared/constants";
+import { TableSection } from "@/shared/ui/table-section";
+
+import { useWebhooksUiState } from "./hooks/useWebhooksUiState";
 import { WebhooksHeader } from "./ui/webhooks-header";
 import { WebhooksModals } from "./ui/webhooks-modals";
-import { useWebhooksUiState } from "./hooks/useWebhooksUiState";
 
 export const WebhooksWidget = () => {
   const { webhooks, hasWebhooks, emptyText, isLoading, isError } =

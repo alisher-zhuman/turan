@@ -1,5 +1,5 @@
-import { useSelection } from "@/shared/hooks";
 import type { Meter } from "@/entities/meters";
+import { useSelection } from "@/shared/hooks";
 
 interface Params {
   meters: Meter[];

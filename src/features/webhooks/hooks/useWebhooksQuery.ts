@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getWebhooks, webhooksKeys, type Webhook } from "@/entities/webhooks";
+
+import { getWebhooks, type Webhook,webhooksKeys } from "@/entities/webhooks";
 
 export const useWebhooksQuery = () => {
   const { data, isLoading, isError, isFetching } = useQuery({

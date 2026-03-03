@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUsers, usersKeys, type UserRow } from "@/entities/users";
+
+import { getUsers, type UserRow,usersKeys } from "@/entities/users";
 
 interface Params {
   page: number;

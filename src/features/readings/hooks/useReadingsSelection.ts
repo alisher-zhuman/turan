@@ -1,5 +1,5 @@
-import { useSelection } from "@/shared/hooks";
 import type { Reading } from "@/entities/readings";
+import { useSelection } from "@/shared/hooks";
 
 interface Params {
   readings: Reading[];

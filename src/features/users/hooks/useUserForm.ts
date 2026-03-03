@@ -1,27 +1,29 @@
-import { useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
-import { getCompanies, companiesKeys, type Company } from "@/entities/companies";
-import { useAuthStore } from "@/shared/stores";
-import { useFormReset, useToastMutation } from "@/shared/hooks";
-import {
-  getApiErrorMessage,
-  availableUserRolesFor,
-  canSelectCompanyForRole,
-  hasRoleSuperAdmin,
-} from "@/shared/helpers";
-import type { Role } from "@/shared/types";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+
+import { companiesKeys, type Company,getCompanies } from "@/entities/companies";
 import {
   createUser,
-  editUser,
-  usersKeys,
   type CreateUserPayload,
+  editUser,
   type UserRow,
+  usersKeys,
 } from "@/entities/users";
 import { ROLE, ROLE_LABELS } from "@/shared/constants";
+import {
+  availableUserRolesFor,
+  canSelectCompanyForRole,
+  getApiErrorMessage,
+  hasRoleSuperAdmin,
+} from "@/shared/helpers";
+import { useFormReset, useToastMutation } from "@/shared/hooks";
+import { useAuthStore } from "@/shared/stores";
+import type { Role } from "@/shared/types";
+
 import { createUserFormSchema } from "../model/schema";
 import type { UserFormValues } from "../model/types";
 

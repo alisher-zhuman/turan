@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getDevices, devicesKeys, type Device } from "@/entities/devices";
+
+import { type Device,devicesKeys, getDevices } from "@/entities/devices";
 
 interface Params {
   page: number;

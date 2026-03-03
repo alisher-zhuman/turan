@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getGroups, groupsKeys, type Group } from "@/entities/groups";
+
+import { getGroups, type Group,groupsKeys } from "@/entities/groups";
 
 interface Params {
   page: number;

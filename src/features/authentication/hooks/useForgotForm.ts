@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+
 import { sendForgotRequest } from "@/entities/authentication";
-import { useToastMutation } from "@/shared/hooks";
 import { getApiErrorMessage } from "@/shared/helpers";
+import { useToastMutation } from "@/shared/hooks";
+
 import { ForgotFormSchema } from "../model/schema";
 import type { ForgotFormValues } from "../model/types";
 

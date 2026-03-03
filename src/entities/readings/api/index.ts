@@ -1,5 +1,6 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
+
 import { ReadingsResponseSchema } from "../model/schemas";
 
 export const getReadings = async (page = 1, limit = 10) => {

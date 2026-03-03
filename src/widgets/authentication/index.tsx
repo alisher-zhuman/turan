@@ -1,7 +1,8 @@
-import { useLocation, useNavigate } from "react-router";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useLocation, useNavigate } from "react-router";
+
 import { ForgotForm, SignInForm } from "@/features/authentication";
 
 export const AuthenticationWidget = () => {

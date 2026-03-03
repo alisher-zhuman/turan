@@ -1,7 +1,8 @@
 import type { AxiosError } from "axios";
+
 import { deleteWebhook, webhooksKeys } from "@/entities/webhooks";
-import { useToastMutation } from "@/shared/hooks";
 import { getApiErrorMessage } from "@/shared/helpers";
+import { useToastMutation } from "@/shared/hooks";
 
 export const useWebhookActions = () => {
   const deleteMutation = useToastMutation({

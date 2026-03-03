@@ -1,10 +1,11 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import type { Group } from "@/entities/groups";
-import type { Column } from "@/shared/types";
 import { formatDateTime } from "@/shared/helpers";
+import type { Column } from "@/shared/types";
 
 export const createGroupColumns = (
   onEdit: (group: Group) => void,

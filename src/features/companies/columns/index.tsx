@@ -1,13 +1,15 @@
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
+import ArchiveIcon from "@mui/icons-material/Archive";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import EditIcon from "@mui/icons-material/Edit";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import ArchiveIcon from "@mui/icons-material/Archive";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+
 import type { Company } from "@/entities/companies";
-import type { Column } from "@/shared/types";
 import { formatDateTime } from "@/shared/helpers";
+import type { Column } from "@/shared/types";
+
 import { copyToClipboard } from "../utils/helpers";
 
 export const createCompanyColumns = (

@@ -1,5 +1,7 @@
 import type { z } from "zod";
+
 import type { Role } from "@/shared/types";
+
 import { type UsersResponseSchema } from "./schemas";
 
 export type UsersResponse = z.infer<typeof UsersResponseSchema>;

@@ -1,9 +1,9 @@
-import { type ReactNode } from "react";
-import Box from "@mui/material/Box";
-import MUIModal from "@mui/material/Modal";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import MUIModal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import { type ReactNode } from "react";
 
 interface Props {
   open: boolean;

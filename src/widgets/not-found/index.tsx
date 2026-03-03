@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { useEffect,useState } from "react";
+import { useNavigate } from "react-router";
 
 export const NotFoundWidget = () => {
   const [seconds, setSeconds] = useState(5);

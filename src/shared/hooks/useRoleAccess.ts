@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/shared/stores";
 import {
   canDeleteUsers,
   canEditMeters,
@@ -6,6 +5,7 @@ import {
   hasRoleAdmin,
   hasRoleSuperAdmin,
 } from "@/shared/helpers";
+import { useAuthStore } from "@/shared/stores";
 
 export const useRoleAccess = () => {
   const user = useAuthStore((state) => state.user);

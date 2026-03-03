@@ -1,12 +1,13 @@
 import type { AxiosError } from "axios";
+
 import {
   archiveCompany,
   companiesKeys,
   refreshCompanyToken,
   unarchiveCompany,
 } from "@/entities/companies";
-import { useToastMutation } from "@/shared/hooks";
 import { getApiErrorMessage } from "@/shared/helpers";
+import { useToastMutation } from "@/shared/hooks";
 
 export const useCompanyActions = () => {
   const refreshTokenMutation = useToastMutation({

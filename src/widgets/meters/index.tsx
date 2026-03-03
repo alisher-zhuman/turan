@@ -1,12 +1,14 @@
-import { useMemo } from "react";
 import Box from "@mui/material/Box";
-import { createMeterColumns, useMeters } from "@/features/meters";
+import { useMemo } from "react";
+
 import { useGroupActions, useGroupsQuery } from "@/features/groups";
+import { createMeterColumns, useMeters } from "@/features/meters";
+import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
+import { TableSection } from "@/shared/ui/table-section";
+
+import { useMetersUiState } from "./hooks/useMetersUiState";
 import { MetersHeader } from "./ui/meters-header";
 import { MetersModals } from "./ui/meters-modals";
-import { useMetersUiState } from "./hooks/useMetersUiState";
-import { TableSection } from "@/shared/ui/table-section";
-import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 
 export const MetersWidget = () => {
   const {

@@ -1,13 +1,15 @@
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Checkbox from "@mui/material/Checkbox";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import Box from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+
 import type { Meter } from "@/entities/meters";
 import type { Column } from "@/shared/types";
+
 import type { CreateMeterColumnsParams } from "../types";
 import { STATUS_LABELS, VALVE_LABELS } from "../utils/constants";
 

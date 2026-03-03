@@ -1,9 +1,11 @@
 import "./styles/index.css";
+
+import { QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider } from "react-router";
-import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
+import { RouterProvider } from "react-router";
+
 import { QUERY_CLIENT } from "./configs/query";
 import { ROUTER } from "./router";
 

@@ -1,5 +1,5 @@
-import { type Meter } from "@/entities/meters";
 import { type Group } from "@/entities/groups";
+import { type Meter } from "@/entities/meters";
 import {
   MeterDetails,
   MeterForm,

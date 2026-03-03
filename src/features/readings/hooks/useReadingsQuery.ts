@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getReadings, readingsKeys, type Reading } from "@/entities/readings";
+
+import { getReadings, type Reading,readingsKeys } from "@/entities/readings";
 
 interface Params {
   page: number;

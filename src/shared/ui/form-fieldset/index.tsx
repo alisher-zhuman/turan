@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import type { SxProps, Theme } from "@mui/material/styles";
+import type { ReactNode } from "react";
 
 interface Props {
   disabled?: boolean;
