@@ -21,7 +21,7 @@ export const createGroupColumns = (
     },
     {
       id: "name",
-      header: "Название",
+      header: "Название группы",
       cell: (g) => g.name,
     },
   {
