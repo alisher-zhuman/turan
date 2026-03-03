@@ -1,4 +1,4 @@
 import type { z } from "zod";
-import { MeterFormSchema } from "./schema";
+import { type MeterFormSchema } from "./schema";
 
 export type MeterFormValues = z.infer<typeof MeterFormSchema>;

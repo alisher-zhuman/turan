@@ -21,7 +21,7 @@ export const getMeters = async (
     params.status = status;
   }
 
-  if (groupId != null) {
+  if (groupId !== null && groupId !== undefined) {
     params.groupId = groupId;
   }
 

@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { MetersResponseSchema } from "./schemas";
+import { type MetersResponseSchema } from "./schemas";
 
 export type MetersResponse = z.infer<typeof MetersResponseSchema>;
 export type Meter = MetersResponse["data"][number];

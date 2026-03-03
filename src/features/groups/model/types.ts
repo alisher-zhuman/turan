@@ -1,4 +1,4 @@
 import type { z } from "zod";
-import { GroupFormSchema } from "./schema";
+import { type GroupFormSchema } from "./schema";
 
 export type GroupFormValues = z.infer<typeof GroupFormSchema>;
