@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 
 import type { Company } from "@/entities/companies";
+
 import { formatDateTime } from "@/shared/helpers";
 import type { Column } from "@/shared/types";
 

@@ -1,4 +1,5 @@
 import type { Device } from "@/entities/devices";
+
 import { useSelection } from "@/shared/hooks";
 
 interface Params {

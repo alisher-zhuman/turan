@@ -1,4 +1,3 @@
-import TextField, { type TextFieldProps } from "@mui/material/TextField";
 import type { ChangeEvent } from "react";
 import {
   type Control,
@@ -6,6 +5,8 @@ import {
   type FieldValues,
   useController,
 } from "react-hook-form";
+
+import TextField, { type TextFieldProps } from "@mui/material/TextField";
 
 type Props<TFieldValues extends FieldValues> = Omit<
   TextFieldProps,

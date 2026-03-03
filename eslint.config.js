@@ -41,7 +41,40 @@ export default defineConfig([
         "warn",
         { prefer: "type-imports", fixStyle: "inline-type-imports" },
       ],
-      "simple-import-sort/imports": "error",
+      "simple-import-sort/imports": [
+        "error",
+        {
+          groups: [
+            // React core
+            ["^react$", "^react-dom(?:$|/)"],
+
+            // Router
+            ["^react-router(?:$|/)", "^react-router-dom(?:$|/)"],
+
+            // Third-party libs (excluding React/Router/UI and local aliases)
+            [
+              "^(?![./])(?!(react$|react/|react-dom$|react-dom/|react-router$|react-router/|react-router-dom$|react-router-dom/|@mui/|@emotion/|@/|@pages/|@widgets/|@features/|@entities/|@shared/)).",
+            ],
+
+            // External UI libs
+            ["^@mui(?:$|/)", "^@emotion(?:$|/)"],
+
+            // Local aliases by layers
+            ["^@pages(?:/|$)", "^@/pages(?:/|$)"],
+            ["^@widgets(?:/|$)", "^@/widgets(?:/|$)"],
+            ["^@features(?:/|$)", "^@/features(?:/|$)"],
+            ["^@entities(?:/|$)", "^@/entities(?:/|$)"],
+            ["^@shared(?:/|$)", "^@/shared(?:/|$)"],
+
+            // Other local aliases
+            ["^@/"],
+
+            // Relative imports
+            ["^\\.\\.(?:/|$)"],
+            ["^\\./"],
+          ],
+        },
+      ],
       "simple-import-sort/exports": "error",
     },
   },

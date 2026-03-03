@@ -7,6 +7,7 @@ import {
   useDeviceSelection,
   useDevicesQuery,
 } from "@/features/devices";
+
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";

@@ -3,6 +3,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
 import type { Meter } from "@/entities/meters";
+
 import { formatDateTime } from "@/shared/helpers";
 
 import { STATUS_LABELS, VALVE_LABELS } from "../../utils/constants";

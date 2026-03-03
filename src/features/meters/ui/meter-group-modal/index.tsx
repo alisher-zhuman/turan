@@ -4,6 +4,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
 import type { Group } from "@/entities/groups";
+
 import { Modal } from "@/shared/ui/modal";
 
 interface Props {

@@ -8,6 +8,7 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 
 import type { Meter } from "@/entities/meters";
+
 import type { Column } from "@/shared/types";
 
 import type { CreateMeterColumnsParams } from "../types";

@@ -1,5 +1,6 @@
-import type { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router";
+
+import type { ReactNode } from "react";
 
 import { ROUTES } from "@/shared/constants";
 import { getAllowedPathsByRole } from "@/shared/helpers";

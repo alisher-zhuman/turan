@@ -1,7 +1,8 @@
+import { useMemo } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -13,6 +14,7 @@ import {
   type UserRow,
   usersKeys,
 } from "@/entities/users";
+
 import { ROLE, ROLE_LABELS } from "@/shared/constants";
 import {
   availableUserRolesFor,

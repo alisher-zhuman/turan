@@ -1,12 +1,14 @@
 import { useMemo } from "react";
 
-import type { Company } from "@/entities/companies";
 import {
   createCompanyColumns,
   useCompaniesQuery,
   useCompanyActions,
   useCompanyFilters,
 } from "@/features/companies";
+
+import type { Company } from "@/entities/companies";
+
 import { ERROR_TEXTS } from "@/shared/constants";
 import { useEntityModal } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";

@@ -4,6 +4,7 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 
 import type { Group } from "@/entities/groups";
+
 import { Modal } from "@/shared/ui/modal";
 
 interface Props {

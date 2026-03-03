@@ -1,8 +1,10 @@
-import Box from "@mui/material/Box";
 import { useMemo } from "react";
+
+import Box from "@mui/material/Box";
 
 import { useGroupActions, useGroupsQuery } from "@/features/groups";
 import { createMeterColumns, useMeters } from "@/features/meters";
+
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { TableSection } from "@/shared/ui/table-section";
 

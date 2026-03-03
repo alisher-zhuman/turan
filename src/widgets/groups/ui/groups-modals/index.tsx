@@ -1,5 +1,7 @@
-import { type Group } from "@/entities/groups";
 import { GroupForm } from "@/features/groups";
+
+import { type Group } from "@/entities/groups";
+
 import { Modal } from "@/shared/ui/modal";
 
 interface Props {

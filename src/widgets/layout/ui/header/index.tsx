@@ -1,9 +1,10 @@
+import { Link, useNavigate } from "react-router";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link, useNavigate } from "react-router";
 
 import { ROLE_LABELS, ROUTES } from "@/shared/constants";
 import { useRoleAccess } from "@/shared/hooks";

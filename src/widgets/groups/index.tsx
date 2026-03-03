@@ -1,12 +1,14 @@
 import { useCallback, useMemo } from "react";
 
-import type { Group } from "@/entities/groups";
 import {
   createGroupColumns,
   useGroupAccess,
   useGroupActions,
   useGroupsQuery,
 } from "@/features/groups";
+
+import type { Group } from "@/entities/groups";
+
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { useEntityModal, usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";

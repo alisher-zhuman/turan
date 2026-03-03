@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 
 import type { Group } from "@/entities/groups";
+
 import { formatDateTime } from "@/shared/helpers";
 import type { Column } from "@/shared/types";
 

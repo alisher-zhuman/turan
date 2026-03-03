@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import { Link, useLocation } from "react-router";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useTheme } from "@mui/material";
@@ -12,8 +16,6 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import { Link, useLocation } from "react-router";
 
 import { ROLE_LABELS, SIDEBAR_LINKS } from "@/shared/constants";
 import { useRoleAccess } from "@/shared/hooks";

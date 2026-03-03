@@ -1,6 +1,7 @@
 import type { AxiosError } from "axios";
 
 import { deleteDevice, devicesKeys, verifyDevice } from "@/entities/devices";
+
 import { getApiErrorMessage } from "@/shared/helpers";
 import { useToastMutation } from "@/shared/hooks";
 

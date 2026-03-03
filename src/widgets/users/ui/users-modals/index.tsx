@@ -1,5 +1,7 @@
-import { type UserRow } from "@/entities/users";
 import { UserForm } from "@/features/users";
+
+import { type UserRow } from "@/entities/users";
+
 import { Modal } from "@/shared/ui/modal";
 
 interface Props {

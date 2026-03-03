@@ -5,6 +5,7 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 
 import type { Device } from "@/entities/devices";
+
 import { formatDateTime } from "@/shared/helpers";
 import type { Column } from "@/shared/types";
 
