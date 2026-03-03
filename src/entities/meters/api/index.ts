@@ -1,5 +1,6 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
+
 import { MetersResponseSchema } from "../model/schemas";
 
 export const getMeters = async (
@@ -21,7 +22,7 @@ export const getMeters = async (
     params.status = status;
   }
 
-  if (groupId != null) {
+  if (groupId !== null && groupId !== undefined) {
     params.groupId = groupId;
   }
 

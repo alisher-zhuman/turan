@@ -1,13 +1,15 @@
+import ArchiveIcon from "@mui/icons-material/Archive";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import UnarchiveIcon from "@mui/icons-material/Unarchive";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { ROLE_LABELS } from "@/shared/constants";
-import type { Column } from "@/shared/types";
-import { formatDateTime } from "@/shared/helpers";
+
 import type { UserRow } from "@/entities/users";
+
+import { ROLE_LABELS } from "@/shared/constants";
+import { formatDateTime } from "@/shared/helpers";
+import type { Column } from "@/shared/types";
 
 export const createUserColumns = (
   onToggleArchive: (userId: number, isArchived: boolean) => void,

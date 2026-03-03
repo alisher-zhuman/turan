@@ -1,7 +1,9 @@
 import type { AxiosError } from "axios";
+
 import { deleteMeters, metersKeys, sendMeterCommand } from "@/entities/meters";
-import { useToastMutation } from "@/shared/hooks";
+
 import { getApiErrorMessage } from "@/shared/helpers";
+import { useToastMutation } from "@/shared/hooks";
 
 interface Params {
   isAdmin: boolean;

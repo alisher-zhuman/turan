@@ -1,5 +1,7 @@
-import { type Company } from "@/entities/companies";
 import { CompanyForm } from "@/features/companies";
+
+import { type Company } from "@/entities/companies";
+
 import { Modal } from "@/shared/ui/modal";
 
 interface Props {

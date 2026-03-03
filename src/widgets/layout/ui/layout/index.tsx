@@ -1,6 +1,8 @@
 import { Outlet } from "react-router";
+
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+
 import { Header } from "../header";
 import { Sidebar } from "../sidebar";
 

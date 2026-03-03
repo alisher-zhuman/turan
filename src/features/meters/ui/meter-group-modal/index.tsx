@@ -1,8 +1,10 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
 import type { Group } from "@/entities/groups";
+
 import { Modal } from "@/shared/ui/modal";
 
 interface Props {

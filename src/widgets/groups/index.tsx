@@ -1,16 +1,20 @@
 import { useCallback, useMemo } from "react";
+
 import {
   createGroupColumns,
   useGroupAccess,
   useGroupActions,
   useGroupsQuery,
 } from "@/features/groups";
+
+import type { Group } from "@/entities/groups";
+
+import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { useEntityModal, usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
-import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
+
 import { GroupsHeader } from "./ui/groups-header";
 import { GroupsModals } from "./ui/groups-modals";
-import type { Group } from "@/entities/groups";
 
 export const GroupsWidget = () => {
   const { page, limit, setPage, setLimit } = usePagination({});

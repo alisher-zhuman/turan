@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 import { AUTH_STORAGE_KEY } from "@/shared/constants";
 import type { AuthSession, AuthState } from "@/shared/types";
 

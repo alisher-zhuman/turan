@@ -1,19 +1,24 @@
 import { useMemo } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import Box from "@mui/material/Box";
 import type { AxiosError } from "axios";
+import { useForm } from "react-hook-form";
+
+import Box from "@mui/material/Box";
+
 import {
   createGroup,
-  updateGroup,
-  groupsKeys,
   type Group,
+  groupsKeys,
+  updateGroup,
 } from "@/entities/groups";
+
+import { getApiErrorMessage } from "@/shared/helpers";
 import { useFormReset, useToastMutation } from "@/shared/hooks";
+import { FormActions } from "@/shared/ui/form-actions";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { FormTextField } from "@/shared/ui/form-text-field";
-import { FormActions } from "@/shared/ui/form-actions";
-import { getApiErrorMessage } from "@/shared/helpers";
+
 import { GroupFormSchema } from "../../model/schema";
 import type { GroupFormValues } from "../../model/types";
 

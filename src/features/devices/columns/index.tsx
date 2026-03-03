@@ -1,11 +1,14 @@
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+
 import type { Device } from "@/entities/devices";
-import type { Column } from "@/shared/types";
+
 import { formatDateTime } from "@/shared/helpers";
+import type { Column } from "@/shared/types";
+
 import type { CreateDeviceColumnsParams } from "../types";
 
 export const createDeviceColumns = ({

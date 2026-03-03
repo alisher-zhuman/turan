@@ -1,5 +1,6 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
+
 import { SignInResponseSchema } from "../model/schemas";
 
 export const signIn = async (email: string, password: string) => {

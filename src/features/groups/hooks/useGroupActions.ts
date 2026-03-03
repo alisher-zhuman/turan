@@ -1,13 +1,15 @@
 import type { AxiosError } from "axios";
+
 import {
   addMetersToGroup,
   deleteGroup,
-  removeMetersFromGroup,
   groupsKeys,
+  removeMetersFromGroup,
 } from "@/entities/groups";
 import { metersKeys } from "@/entities/meters";
-import { useToastMutation } from "@/shared/hooks";
+
 import { getApiErrorMessage } from "@/shared/helpers";
+import { useToastMutation } from "@/shared/hooks";
 
 interface Params {
   isAdmin: boolean;

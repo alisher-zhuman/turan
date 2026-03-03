@@ -1,13 +1,14 @@
+import {
+  type Control,
+  type FieldPath,
+  type FieldValues,
+  useController,
+} from "react-hook-form";
+
 import Checkbox, { type CheckboxProps } from "@mui/material/Checkbox";
 import FormControlLabel, {
   type FormControlLabelProps,
 } from "@mui/material/FormControlLabel";
-import {
-  useController,
-  type Control,
-  type FieldPath,
-  type FieldValues,
-} from "react-hook-form";
 
 type Props<TFieldValues extends FieldValues> = Omit<
   FormControlLabelProps,

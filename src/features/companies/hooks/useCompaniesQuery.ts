@@ -1,5 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCompanies, companiesKeys, type Company } from "@/entities/companies";
+
+import { companiesKeys, type Company, getCompanies } from "@/entities/companies";
+
+const COMPANIES_QUERY_OPTIONS = {
+  staleTime: 60_000,
+  retry: 1,
+} as const;
 
 interface Params {
   isArchived: boolean;
@@ -9,6 +15,8 @@ export const useCompaniesQuery = ({ isArchived }: Params) => {
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: companiesKeys.list(isArchived),
     queryFn: () => getCompanies(isArchived),
+    staleTime: COMPANIES_QUERY_OPTIONS.staleTime,
+    retry: COMPANIES_QUERY_OPTIONS.retry,
   });
 
   const companies: Company[] = data ?? [];

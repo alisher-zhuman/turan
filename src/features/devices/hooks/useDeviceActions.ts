@@ -1,7 +1,9 @@
 import type { AxiosError } from "axios";
+
 import { deleteDevice, devicesKeys, verifyDevice } from "@/entities/devices";
-import { useToastMutation } from "@/shared/hooks";
+
 import { getApiErrorMessage } from "@/shared/helpers";
+import { useToastMutation } from "@/shared/hooks";
 
 interface Params {
   onRemoved?: (deviceIds: number[]) => void;

@@ -1,11 +1,13 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+
+import { ROUTES } from "@/shared/constants";
+import { FormActions } from "@/shared/ui/form-actions";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { FormTextField } from "@/shared/ui/form-text-field";
-import { FormActions } from "@/shared/ui/form-actions";
-import { ROUTES } from "@/shared/constants";
+
 import { useSignInForm } from "../../hooks/useSignInForm";
 
 export const SignInForm = () => {

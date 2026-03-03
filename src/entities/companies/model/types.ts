@@ -1,5 +1,6 @@
 import type { z } from "zod";
-import { CompaniesResponseSchema } from "./schemas";
+
+import { type CompaniesResponseSchema } from "./schemas";
 
 export type CompaniesResponse = z.infer<typeof CompaniesResponseSchema>;
 export type Company = CompaniesResponse[number];

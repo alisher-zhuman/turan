@@ -1,4 +1,5 @@
-import { Suspense, type ReactNode } from "react";
+import { type ReactNode,Suspense } from "react";
+
 import { Loader } from "@/shared/ui/loader";
 
 interface Props {

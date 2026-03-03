@@ -1,6 +1,7 @@
 import { useState } from "react";
-import type { Meter } from "@/entities/meters";
+
 import type { Group } from "@/entities/groups";
+import type { Meter } from "@/entities/meters";
 
 interface Params {
   canEdit: boolean;

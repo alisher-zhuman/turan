@@ -1,11 +1,14 @@
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
+
+import { type UserRow } from "@/entities/users";
+
+import { ROLE_LABELS } from "@/shared/constants";
+import { FormActions } from "@/shared/ui/form-actions";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { FormSelect } from "@/shared/ui/form-select";
 import { FormTextField } from "@/shared/ui/form-text-field";
-import { FormActions } from "@/shared/ui/form-actions";
-import { type UserRow } from "@/entities/users";
-import { ROLE_LABELS } from "@/shared/constants";
+
 import { useUserForm } from "../../hooks/useUserForm";
 
 interface Props {

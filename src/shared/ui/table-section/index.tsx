@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
-import type { Column } from "@/shared/types";
-import type { SxProps, Theme } from "@mui/material/styles";
+
 import type { AlertProps } from "@mui/material/Alert";
+import type { SxProps, Theme } from "@mui/material/styles";
+
+import type { Column } from "@/shared/types";
 import { DataTable } from "@/shared/ui/data-table";
 import { ListSection } from "@/shared/ui/list-section";
 import { Pagination } from "@/shared/ui/pagination";

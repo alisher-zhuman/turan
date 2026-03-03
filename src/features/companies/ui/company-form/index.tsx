@@ -1,20 +1,25 @@
 import { useMemo } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import type { AxiosError } from "axios";
+import { useForm } from "react-hook-form";
+
 import Box from "@mui/material/Box";
+
 import {
-  createCompany,
-  editCompany,
   companiesKeys,
   type Company,
   type CompanyPayload,
+  createCompany,
+  editCompany,
 } from "@/entities/companies";
+
+import { getApiErrorMessage } from "@/shared/helpers";
 import { useFormReset, useToastMutation } from "@/shared/hooks";
+import { FormActions } from "@/shared/ui/form-actions";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { FormTextField } from "@/shared/ui/form-text-field";
-import { FormActions } from "@/shared/ui/form-actions";
-import { getApiErrorMessage } from "@/shared/helpers";
+
 import { CompanyFormSchema } from "../../model/schema";
 import type { CompanyFormValues } from "../../model/types";
 

@@ -1,21 +1,25 @@
 import { useState } from "react";
+
 import { Link, useLocation } from "react-router";
+
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useTheme } from "@mui/material";
+import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useRoleAccess } from "@/shared/hooks";
+
 import { ROLE_LABELS, SIDEBAR_LINKS } from "@/shared/constants";
+import { useRoleAccess } from "@/shared/hooks";
+
 import { getRoleIcon, getSidebarIcon } from "../../utils/helpers";
 
 export const Sidebar = () => {

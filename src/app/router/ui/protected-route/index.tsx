@@ -1,8 +1,10 @@
-import type { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router";
-import { useAuthStore } from "@/shared/stores";
-import { getAllowedPathsByRole } from "@/shared/helpers";
+
+import type { ReactNode } from "react";
+
 import { ROUTES } from "@/shared/constants";
+import { getAllowedPathsByRole } from "@/shared/helpers";
+import { useAuthStore } from "@/shared/stores";
 
 interface Props {
   children: ReactNode;

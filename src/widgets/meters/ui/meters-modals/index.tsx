@@ -1,11 +1,13 @@
-import { type Meter } from "@/entities/meters";
-import { type Group } from "@/entities/groups";
 import {
   MeterDetails,
   MeterForm,
   MeterGroupModal,
   MetersFiltersModal,
 } from "@/features/meters";
+
+import { type Group } from "@/entities/groups";
+import { type Meter } from "@/entities/meters";
+
 import { Modal } from "@/shared/ui/modal";
 
 interface Props {

@@ -1,7 +1,9 @@
 import Box from "@mui/material/Box";
+
+import { FormActions } from "@/shared/ui/form-actions";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { FormTextField } from "@/shared/ui/form-text-field";
-import { FormActions } from "@/shared/ui/form-actions";
+
 import { useWebhookForm } from "../../hooks/useWebhookForm";
 
 interface Props {

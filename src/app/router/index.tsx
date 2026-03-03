@@ -1,8 +1,13 @@
-import { createBrowserRouter } from "react-router";
 import { lazy } from "react";
+
+import { createBrowserRouter } from "react-router";
+
 import { Authentication } from "@/pages/authentication";
+
 import { Layout } from "@/widgets/layout";
+
 import { ROUTES } from "@/shared/constants";
+
 import { ProtectedRoute } from "./ui/protected-route";
 import { WithSuspense } from "./ui/with-suspense";
 

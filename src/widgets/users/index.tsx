@@ -1,16 +1,20 @@
 import { useMemo } from "react";
+
 import {
   createUserColumns,
   useUserActions,
   useUserFilters,
   useUsersQuery,
 } from "@/features/users";
+
+import type { UserRow } from "@/entities/users";
+
+import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { useEntityModal, usePagination, useRoleAccess } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
-import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
+
 import { UsersHeader } from "./ui/users-header";
 import { UsersModals } from "./ui/users-modals";
-import type { UserRow } from "@/entities/users";
 
 export const UsersWidget = () => {
   const { canDeleteUsers } = useRoleAccess();
