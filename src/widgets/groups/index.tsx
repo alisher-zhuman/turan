@@ -15,13 +15,26 @@ import { ERROR_TEXTS, ROUTES, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { useEntityModal, usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
+import { useInitialGroupsSearchState } from "./hooks/useInitialGroupsSearchState";
+import { useSyncGroupsSearchParams } from "./hooks/useSyncGroupsSearchParams";
 import { GroupsHeader } from "./ui/groups-header";
 import { GroupsModals } from "./ui/groups-modals";
 
 export const GroupsWidget = () => {
+  const initialSearchState = useInitialGroupsSearchState();
+
   const navigate = useNavigate();
 
-  const { page, limit, setPage, setLimit } = usePagination({});
+  const { page, limit, setPage, setLimit } = usePagination({
+    initialPage: initialSearchState.page,
+    initialLimit: initialSearchState.limit,
+    resetPage: 0,
+  });
+
+  useSyncGroupsSearchParams({
+    page,
+    limit,
+  });
 
   const { isAdmin, canManageMetersToGroups } = useGroupAccess();
 

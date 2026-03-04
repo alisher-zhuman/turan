@@ -13,11 +13,21 @@ import { ERROR_TEXTS } from "@/shared/constants";
 import { useEntityModal } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
+import { useInitialCompaniesSearchState } from "./hooks/useInitialCompaniesSearchState";
+import { useSyncCompaniesSearchParams } from "./hooks/useSyncCompaniesSearchParams";
 import { CompaniesHeader } from "./ui/companies-header";
 import { CompaniesModals } from "./ui/companies-modals";
 
 export const CompaniesWidget = () => {
-  const { isArchived, setIsArchived } = useCompanyFilters();
+  const initialSearchState = useInitialCompaniesSearchState();
+
+  const { isArchived, setIsArchived } = useCompanyFilters({
+    initialIsArchived: initialSearchState.isArchived,
+  });
+
+  useSyncCompaniesSearchParams({
+    isArchived,
+  });
 
   const { companies, hasCompanies, emptyText, isLoading, isError } =
     useCompaniesQuery({ isArchived });

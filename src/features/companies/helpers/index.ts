@@ -5,3 +5,5 @@ export const copyToClipboard = (value: string | undefined) => {
   navigator.clipboard.writeText(value);
   toast.success("Скопировано в буфер обмена");
 };
+
+export * from "./search-params";

@@ -12,10 +12,23 @@ import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
+import { useInitialReadingsSearchState } from "./hooks/useInitialReadingsSearchState";
+import { useSyncReadingsSearchParams } from "./hooks/useSyncReadingsSearchParams";
 import { ReadingsHeader } from "./ui/readings-header";
 
 export const ReadingsWidget = () => {
-  const { page, limit, setPage, setLimit } = usePagination({});
+  const initialSearchState = useInitialReadingsSearchState();
+
+  const { page, limit, setPage, setLimit } = usePagination({
+    initialPage: initialSearchState.page,
+    initialLimit: initialSearchState.limit,
+    resetPage: 0,
+  });
+
+  useSyncReadingsSearchParams({
+    page,
+    limit,
+  });
 
   const { isAdmin } = useReadingsAccess();
 
