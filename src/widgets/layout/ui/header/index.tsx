@@ -16,7 +16,7 @@ export const Header = () => {
 
   const handleLogout = () => {
     logout();
-    navigate(`/${ROUTES.SIGN_IN}`);
+    navigate(`/${ROUTES.LOG_IN}`);
   };
 
   const TITLES = user
@@ -54,7 +54,7 @@ export const Header = () => {
           {!user && (
             <Button
               component={Link}
-              to={`/${ROUTES.SIGN_IN}`}
+              to={`/${ROUTES.LOG_IN}`}
               color="inherit"
               sx={{ ":hover": { background: "inherit" } }}
             >
@@ -67,7 +67,7 @@ export const Header = () => {
               {user.passwordChange && (
                 <Button
                   component={Link}
-                  to={`/${ROUTES.FORGOT}`}
+                  to={`/${ROUTES.FORGOT_PASSWORD}`}
                   color="inherit"
                   sx={{ ":hover": { background: "inherit" } }}
                 >

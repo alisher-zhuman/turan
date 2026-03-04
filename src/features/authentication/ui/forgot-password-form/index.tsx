@@ -1,17 +1,15 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-import { ROUTES } from "@/shared/constants";
 import { FormActions } from "@/shared/ui/form-actions";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { FormTextField } from "@/shared/ui/form-text-field";
 
-import { useSignInForm } from "../../hooks/useSignInForm";
+import { useForgotPasswordForm } from "../../hooks/useForgotPasswordForm";
 
-export const SignInForm = () => {
-  const { control, onSubmit, isPending } = useSignInForm();
+export const ForgotPasswordForm = () => {
+  const { control, onSubmit, isPending } = useForgotPasswordForm();
 
   return (
     <Box
@@ -25,7 +23,7 @@ export const SignInForm = () => {
     >
       <Paper elevation={3} sx={{ p: 4, width: 360, borderRadius: 3 }}>
         <Typography variant="h5" mb={3} textAlign="center">
-          Войти
+          Восстановление пароля
         </Typography>
 
         <Box
@@ -35,40 +33,24 @@ export const SignInForm = () => {
         >
           <FormFieldset disabled={isPending}>
             <FormTextField
-              label="Логин"
-              type="text"
+              label="Email"
+              type="email"
               fullWidth
               required
               name="email"
-              control={control}
-            />
-
-            <FormTextField
-              label="Пароль"
-              type="password"
-              fullWidth
-              required
-              name="password"
               control={control}
             />
           </FormFieldset>
 
           <FormActions
             isSubmitting={isPending}
-            submitLabel="Войти"
-            submitLabelLoading="Вход..."
+            submitLabel="Отправить"
+            submitLabelLoading="Отправка..."
             align="center"
             fullWidth
             submitProps={{ size: "large" }}
           />
 
-          <Button
-            variant="text"
-            href={`/${ROUTES.FORGOT}`}
-            sx={{ mt: 1, width: "fit-content", margin: "auto" }}
-          >
-            Забыли пароль?
-          </Button>
         </Box>
       </Paper>
     </Box>

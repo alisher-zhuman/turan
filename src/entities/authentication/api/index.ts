@@ -1,16 +1,16 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
 
-import { SignInResponseSchema } from "../model/schemas";
+import { LogInResponseSchema } from "../model/schemas";
 
-export const signIn = async (email: string, password: string) => {
-  const { data } = await api.post(API_ROUTES.AUTH_LOGIN, {
+export const logIn = async (email: string, password: string) => {
+  const { data } = await api.post(API_ROUTES.AUTH_LOG_IN, {
     email,
     password,
   });
-  return SignInResponseSchema.parse(data);
+  return LogInResponseSchema.parse(data);
 };
 
-export const sendForgotRequest = async (email: string) => {
-  await api.post(API_ROUTES.USERS_PASSWORD_FORGOT, { email });
+export const sendForgotPasswordRequest = async (email: string) => {
+  await api.post(API_ROUTES.USERS_PASSWORD_FORGOT_PASSWORD, { email });
 };

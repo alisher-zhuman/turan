@@ -1,7 +1,7 @@
 import type { z } from "zod";
 
-import { type ForgotFormSchema, type SignInFormSchema } from "../schemas";
+import { type ForgotPasswordFormSchema, type LogInFormSchema } from "../schemas";
 
-export type SignInFormValues = z.infer<typeof SignInFormSchema>;
+export type LogInFormValues = z.infer<typeof LogInFormSchema>;
 
-export type ForgotFormValues = z.infer<typeof ForgotFormSchema>;
+export type ForgotPasswordFormValues = z.infer<typeof ForgotPasswordFormSchema>;

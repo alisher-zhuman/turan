@@ -25,8 +25,8 @@ The project is organized in layers, inspired by FSD:
 
 Main routes:
 
-- `/sign-in`
-- `/forgot`
+- `/log-in`
+- `/forgot-password`
 - `/companies`
 - `/users`
 - `/devices`

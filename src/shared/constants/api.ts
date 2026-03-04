@@ -1,6 +1,6 @@
 export const API_ROUTES = {
-  AUTH_LOGIN: "/auth/login/web",
-  USERS_PASSWORD_FORGOT: "/users/password/forgot",
+  AUTH_LOG_IN: "/auth/login/web",
+  USERS_PASSWORD_FORGOT_PASSWORD: "/users/password/forgot",
 
   COMPANIES: "/companies",
   COMPANIES_ARCHIVE: "/companies/archive",

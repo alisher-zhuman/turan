@@ -37,8 +37,8 @@ const Webhooks = lazy(() =>
 );
 
 export const ROUTER = createBrowserRouter([
-  { path: `/${ROUTES.SIGN_IN}`, element: <Authentication /> },
-  { path: `/${ROUTES.FORGOT}`, element: <Authentication /> },
+  { path: `/${ROUTES.LOG_IN}`, element: <Authentication /> },
+  { path: `/${ROUTES.FORGOT_PASSWORD}`, element: <Authentication /> },
   {
     path: "*",
     element: (

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { IdNameSchema, RoleSchema } from "@/shared/validation";
 
-export const SignInResponseSchema = z
+export const LogInResponseSchema = z
   .object({
     accessToken: z.string(),
     id: z.number(),

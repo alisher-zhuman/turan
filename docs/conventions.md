@@ -13,7 +13,7 @@
 - `shared`:
   - reusable generic building blocks
 
-Example: `useForgotForm` stays in `features/authentication` because it is a form scenario, not a domain entity.
+Example: `useForgotPasswordForm` stays in `features/authentication` because it is a form scenario, not a domain entity.
 
 ## Imports
 

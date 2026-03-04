@@ -17,7 +17,7 @@ export const ProtectedRoute = ({ children }: Props) => {
   const location = useLocation();
 
   if (!accessToken) {
-    return <Navigate to={`/${ROUTES.SIGN_IN}`} replace />;
+    return <Navigate to={`/${ROUTES.LOG_IN}`} replace />;
   }
 
   if (!user) {
@@ -28,7 +28,7 @@ export const ProtectedRoute = ({ children }: Props) => {
   const firstAllowed = allowedPaths[0];
 
   if (allowedPaths.length === 0) {
-    return <Navigate to={`/${ROUTES.SIGN_IN}`} replace />;
+    return <Navigate to={`/${ROUTES.LOG_IN}`} replace />;
   }
 
   const isAllowed = allowedPaths.some(

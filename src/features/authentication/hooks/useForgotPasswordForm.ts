@@ -1,24 +1,25 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { sendForgotRequest } from "@/entities/authentication";
+import { sendForgotPasswordRequest } from "@/entities/authentication";
 
 import { getApiErrorMessage } from "@/shared/helpers";
 import { useToastMutation } from "@/shared/hooks";
 
-import { ForgotFormSchema } from "../schemas";
-import type { ForgotFormValues } from "../types";
+import { ForgotPasswordFormSchema } from "../schemas";
+import type { ForgotPasswordFormValues } from "../types";
 
-export const useForgotForm = () => {
-  const { handleSubmit, control } = useForm<ForgotFormValues>({
-    resolver: zodResolver(ForgotFormSchema),
+export const useForgotPasswordForm = () => {
+  const { handleSubmit, control } = useForm<ForgotPasswordFormValues>({
+    resolver: zodResolver(ForgotPasswordFormSchema),
     defaultValues: {
       email: "",
     },
   });
 
   const mutation = useToastMutation({
-    mutationFn: ({ email }: ForgotFormValues) => sendForgotRequest(email),
+    mutationFn: ({ email }: ForgotPasswordFormValues) =>
+      sendForgotPasswordRequest(email),
     successMessage: "Инструкция для восстановления отправлена на почту.",
     errorMessage: (err: unknown) =>
       getApiErrorMessage(err, "Ошибка при восстановлении"),

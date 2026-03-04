@@ -3,21 +3,21 @@ import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { signIn } from "@/entities/authentication";
+import { logIn } from "@/entities/authentication";
 
 import { getApiErrorMessage } from "@/shared/helpers";
 import { useToastMutation } from "@/shared/hooks";
 import { useAuthStore } from "@/shared/stores";
 
-import { SignInFormSchema } from "../schemas";
-import type { SignInFormValues } from "../types";
+import { LogInFormSchema } from "../schemas";
+import type { LogInFormValues } from "../types";
 
-export const useSignInForm = () => {
+export const useLogInForm = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
   const navigate = useNavigate();
 
-  const { handleSubmit, control } = useForm<SignInFormValues>({
-    resolver: zodResolver(SignInFormSchema),
+  const { handleSubmit, control } = useForm<LogInFormValues>({
+    resolver: zodResolver(LogInFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -25,8 +25,8 @@ export const useSignInForm = () => {
   });
 
   const mutation = useToastMutation({
-    mutationFn: ({ email, password }: SignInFormValues) =>
-      signIn(email, password),
+    mutationFn: ({ email, password }: LogInFormValues) =>
+      logIn(email, password),
     onSuccess: (data) => {
       const { accessToken, ...user } = data;
 
