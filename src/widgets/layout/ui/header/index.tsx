@@ -29,14 +29,28 @@ export const Header = () => {
 
   return (
     <AppBar position="fixed" sx={{ zIndex: 1201 }}>
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 2,
+        }}
+      >
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {user && (
             <Typography variant="body2">{TITLES.join(" | ")}</Typography>
           )}
         </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 2,
+          }}
+        >
           {!user && (
             <Button
               component={Link}

@@ -21,6 +21,7 @@ export const DevicesHeader = ({
     display="flex"
     alignItems="center"
     justifyContent="space-between"
+    flexWrap="wrap"
     gap={2}
   >
     <Select

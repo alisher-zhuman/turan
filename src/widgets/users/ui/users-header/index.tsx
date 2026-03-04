@@ -19,6 +19,7 @@ export const UsersHeader = ({
     display="flex"
     alignItems="center"
     justifyContent="flex-end"
+    flexWrap="wrap"
     gap={2}
   >
     <Select
