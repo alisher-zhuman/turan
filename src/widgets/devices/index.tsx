@@ -2,6 +2,8 @@ import { useMemo } from "react";
 
 import {
   createDeviceColumns,
+  createDevicesSearchString,
+  parseDevicesSearchState,
   useDeviceActions,
   useDeviceFilters,
   useDeviceSelection,
@@ -9,15 +11,13 @@ import {
 } from "@/features/devices";
 
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
-import { usePagination } from "@/shared/hooks";
+import { useInitialSearchState, usePagination, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { useInitialDevicesSearchState } from "./hooks/useInitialDevicesSearchState";
-import { useSyncDevicesSearchParams } from "./hooks/useSyncDevicesSearchParams";
 import { DevicesHeader } from "./ui/devices-header";
 
 export const DevicesWidget = () => {
-  const initialSearchState = useInitialDevicesSearchState();
+  const initialSearchState = useInitialSearchState(parseDevicesSearchState);
 
   const { verified, setVerified, filtersKey } = useDeviceFilters({
     initialVerified: initialSearchState.verified,
@@ -30,11 +30,7 @@ export const DevicesWidget = () => {
     resetKey: filtersKey,
   });
 
-  useSyncDevicesSearchParams({
-    page,
-    limit,
-    verified,
-  });
+  useSyncSearchParams({ page, limit, verified }, createDevicesSearchString);
 
   const { devices, total, hasDevices, emptyText, isLoading, isError } =
     useDevicesQuery({ page, limit, verified });

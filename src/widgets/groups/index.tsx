@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 
 import {
   createGroupColumns,
+  createGroupsSearchString,
+  parseGroupsSearchState,
   useGroupAccess,
   useGroupActions,
   useGroupsQuery,
@@ -12,16 +14,19 @@ import {
 import type { Group } from "@/entities/groups";
 
 import { ERROR_TEXTS, ROUTES, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
-import { useEntityModal, usePagination } from "@/shared/hooks";
+import {
+  useEntityModal,
+  useInitialSearchState,
+  usePagination,
+  useSyncSearchParams,
+} from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { useInitialGroupsSearchState } from "./hooks/useInitialGroupsSearchState";
-import { useSyncGroupsSearchParams } from "./hooks/useSyncGroupsSearchParams";
 import { GroupsHeader } from "./ui/groups-header";
 import { GroupsModals } from "./ui/groups-modals";
 
 export const GroupsWidget = () => {
-  const initialSearchState = useInitialGroupsSearchState();
+  const initialSearchState = useInitialSearchState(parseGroupsSearchState);
 
   const navigate = useNavigate();
 
@@ -31,10 +36,7 @@ export const GroupsWidget = () => {
     resetPage: 0,
   });
 
-  useSyncGroupsSearchParams({
-    page,
-    limit,
-  });
+  useSyncSearchParams({ page, limit }, createGroupsSearchString);
 
   const { isAdmin, canManageMetersToGroups } = useGroupAccess();
 

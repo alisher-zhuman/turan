@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 
 import {
+  createCompaniesSearchString,
   createCompanyColumns,
+  parseCompaniesSearchState,
   useCompaniesQuery,
   useCompanyActions,
   useCompanyFilters,
@@ -10,24 +12,25 @@ import {
 import type { Company } from "@/entities/companies";
 
 import { ERROR_TEXTS } from "@/shared/constants";
-import { useEntityModal } from "@/shared/hooks";
+import { useEntityModal, useInitialSearchState, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { useInitialCompaniesSearchState } from "./hooks/useInitialCompaniesSearchState";
-import { useSyncCompaniesSearchParams } from "./hooks/useSyncCompaniesSearchParams";
 import { CompaniesHeader } from "./ui/companies-header";
 import { CompaniesModals } from "./ui/companies-modals";
 
 export const CompaniesWidget = () => {
-  const initialSearchState = useInitialCompaniesSearchState();
+  const initialSearchState = useInitialSearchState(parseCompaniesSearchState);
 
   const { isArchived, setIsArchived } = useCompanyFilters({
     initialIsArchived: initialSearchState.isArchived,
   });
 
-  useSyncCompaniesSearchParams({
-    isArchived,
-  });
+  useSyncSearchParams(
+    {
+      isArchived,
+    },
+    createCompaniesSearchString,
+  );
 
   const { companies, hasCompanies, emptyText, isLoading, isError } =
     useCompaniesQuery({ isArchived });

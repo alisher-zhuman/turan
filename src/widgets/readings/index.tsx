@@ -2,6 +2,8 @@ import { useMemo } from "react";
 
 import {
   createReadingColumns,
+  createReadingsSearchString,
+  parseReadingsSearchState,
   useReadingsAccess,
   useReadingsActions,
   useReadingsQuery,
@@ -9,15 +11,13 @@ import {
 } from "@/features/readings";
 
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
-import { usePagination } from "@/shared/hooks";
+import { useInitialSearchState, usePagination, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { useInitialReadingsSearchState } from "./hooks/useInitialReadingsSearchState";
-import { useSyncReadingsSearchParams } from "./hooks/useSyncReadingsSearchParams";
 import { ReadingsHeader } from "./ui/readings-header";
 
 export const ReadingsWidget = () => {
-  const initialSearchState = useInitialReadingsSearchState();
+  const initialSearchState = useInitialSearchState(parseReadingsSearchState);
 
   const { page, limit, setPage, setLimit } = usePagination({
     initialPage: initialSearchState.page,
@@ -25,10 +25,7 @@ export const ReadingsWidget = () => {
     resetPage: 0,
   });
 
-  useSyncReadingsSearchParams({
-    page,
-    limit,
-  });
+  useSyncSearchParams({ page, limit }, createReadingsSearchString);
 
   const { isAdmin } = useReadingsAccess();
 

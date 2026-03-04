@@ -3,19 +3,23 @@ import { useMemo } from "react";
 import Box from "@mui/material/Box";
 
 import { useGroupActions, useGroupsQuery } from "@/features/groups";
-import { createMeterColumns, useMeters } from "@/features/meters";
+import {
+  createMeterColumns,
+  createMetersSearchString,
+  parseMeterSearchState,
+  useMeters,
+} from "@/features/meters";
 
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
+import { useInitialSearchState, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { useInitialMetersSearchState } from "./hooks/useInitialMetersSearchState";
 import { useMetersUiState } from "./hooks/useMetersUiState";
-import { useSyncMetersSearchParams } from "./hooks/useSyncMetersSearchParams";
 import { MetersHeader } from "./ui/meters-header";
 import { MetersModals } from "./ui/meters-modals";
 
 export const MetersWidget = () => {
-  const initialSearchState = useInitialMetersSearchState();
+  const initialSearchState = useInitialSearchState(parseMeterSearchState);
 
   const {
     meters,
@@ -59,16 +63,19 @@ export const MetersWidget = () => {
     initialLimit: initialSearchState.limit,
   });
 
-  useSyncMetersSearchParams({
-    page,
-    limit,
-    status,
-    isArchived,
-    groupId,
-    customerId,
-    meterName,
-    valveFilter,
-  });
+  useSyncSearchParams(
+    {
+      page,
+      limit,
+      status,
+      isArchived,
+      groupId,
+      customerId,
+      meterName,
+      valveFilter,
+    },
+    createMetersSearchString,
+  );
 
   const { groups } = useGroupsQuery({
     page: 0,

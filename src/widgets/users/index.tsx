@@ -2,6 +2,8 @@ import { useMemo } from "react";
 
 import {
   createUserColumns,
+  createUsersSearchString,
+  parseUsersSearchState,
   useUserActions,
   useUserFilters,
   useUsersQuery,
@@ -10,16 +12,20 @@ import {
 import type { UserRow } from "@/entities/users";
 
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
-import { useEntityModal, usePagination, useRoleAccess } from "@/shared/hooks";
+import {
+  useEntityModal,
+  useInitialSearchState,
+  usePagination,
+  useRoleAccess,
+  useSyncSearchParams,
+} from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { useInitialUsersSearchState } from "./hooks/useInitialUsersSearchState";
-import { useSyncUsersSearchParams } from "./hooks/useSyncUsersSearchParams";
 import { UsersHeader } from "./ui/users-header";
 import { UsersModals } from "./ui/users-modals";
 
 export const UsersWidget = () => {
-  const initialSearchState = useInitialUsersSearchState();
+  const initialSearchState = useInitialSearchState(parseUsersSearchState);
 
   const { canDeleteUsers } = useRoleAccess();
 
@@ -34,11 +40,7 @@ export const UsersWidget = () => {
     resetKey: filtersKey,
   });
 
-  useSyncUsersSearchParams({
-    page,
-    limit,
-    isArchived,
-  });
+  useSyncSearchParams({ page, limit, isArchived }, createUsersSearchString);
 
   const { users, total, hasUsers, emptyText, isLoading, isError } =
     useUsersQuery({ page, limit, isArchived });
