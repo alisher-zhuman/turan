@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const MeterFormSchema = z.object({
-  meterId: z.string().optional(),
+  meterId: z.string().trim().min(1, "Номер счётчика обязателен"),
   password: z.string().optional(),
   customerID: z.string().optional(),
   client: z.string().optional(),

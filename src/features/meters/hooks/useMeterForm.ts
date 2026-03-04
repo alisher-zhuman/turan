@@ -24,7 +24,7 @@ interface Params {
 }
 
 const getDefaultValues = (meterToEdit: Meter | null): MeterFormValues => ({
-  meterId: "",
+  meterId: meterToEdit?.name ?? "",
   password: "",
   customerID: meterToEdit?.customerID ?? "",
   client: meterToEdit?.client ?? "",
@@ -50,7 +50,7 @@ export const useMeterForm = ({
     [meterToEdit],
   );
 
-  const { handleSubmit, control, reset, setError } = useForm<MeterFormValues>({
+  const { handleSubmit, control, reset } = useForm<MeterFormValues>({
     resolver: zodResolver(MeterFormSchema),
     defaultValues,
   });
@@ -77,7 +77,8 @@ export const useMeterForm = ({
 
   const updateMutation = useToastMutation({
     mutationFn: (payload: {
-      meterId: number;
+      id: number;
+      meterId: string;
       customerID: string | null;
       client: string | null;
       address: string | null;
@@ -94,22 +95,13 @@ export const useMeterForm = ({
   });
 
   const onSubmit = handleSubmit((values) => {
+    const normalizedMeterId = values.meterId.trim();
     const normalizedCustomerID = normalizeOptionalString(values.customerID);
     const normalizedClient = normalizeOptionalString(values.client);
     const normalizedAddress = normalizeOptionalString(values.address);
     const normalizedDescriptions = normalizeOptionalString(values.descriptions);
 
     if (!isEditing) {
-      const normalizedMeterId = normalizeOptionalString(values.meterId);
-
-      if (!normalizedMeterId) {
-        setError("meterId", {
-          type: "required",
-          message: "Номер счётчика обязателен",
-        });
-        return;
-      }
-
       createMutation.mutate({
         meterId: normalizedMeterId,
         customerID: normalizedCustomerID,
@@ -122,7 +114,8 @@ export const useMeterForm = ({
     }
 
     updateMutation.mutate({
-      meterId: meterToEdit.id,
+      id: meterToEdit.id,
+      meterId: normalizedMeterId,
       customerID: normalizedCustomerID,
       client: normalizedClient ?? "",
       address: normalizedAddress ?? "",

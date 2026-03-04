@@ -59,20 +59,18 @@ export const createMeter = async (params: {
 };
 
 export const updateMeter = async (params: {
-  meterId: number;
+  id: number;
+  meterId: string;
   customerID?: string | null;
   client?: string | null;
   address?: string | null;
   descriptions?: string | null;
   isArchived?: boolean;
 }) => {
-  const { meterId, ...rest } = params;
+  const { id, ...rest } = params;
 
-  await api.patch(`${API_ROUTES.METERS}/${meterId}`, null, {
-    params: {
-      meterId,
-      ...rest,
-    },
+  await api.patch(`${API_ROUTES.METERS}/${id}`, null, {
+    params: rest,
   });
 };
 

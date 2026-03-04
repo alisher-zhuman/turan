@@ -32,21 +32,15 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
       gap={2}
     >
       <FormFieldset disabled={isPending}>
-        {!isEditing && (
-          <>
-            <FormTextField
-              label="Номер счётчика"
-              name="meterId"
-              required
-              control={control}
-            />
+        <FormTextField
+          label="Номер счётчика"
+          name="meterId"
+          required
+          control={control}
+        />
 
-            <FormTextField
-              label="Пароль"
-              name="password"
-              control={control}
-            />
-          </>
+        {!isEditing && (
+          <FormTextField label="Пароль" name="password" control={control} />
         )}
 
         <FormTextField
@@ -55,17 +49,9 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
           control={control}
         />
 
-        <FormTextField
-          label="ФИО"
-          name="client"
-          control={control}
-        />
+        <FormTextField label="ФИО" name="client" control={control} />
 
-        <FormTextField
-          label="Адрес"
-          name="address"
-          control={control}
-        />
+        <FormTextField label="Адрес" name="address" control={control} />
 
         <FormTextField
           label="Описание"

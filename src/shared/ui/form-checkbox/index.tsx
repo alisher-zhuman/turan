@@ -30,6 +30,7 @@ export const FormCheckbox = <TFieldValues extends FieldValues>({
   return (
     <FormControlLabel
       {...rest}
+      sx={{ width: "fit-content" }}
       control={
         <Checkbox
           {...checkboxProps}
