@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useSearchParams } from "react-router";
 
-import { parseUsersSearchState } from "@/features/users/helpers/search-params";
+import { parseUsersSearchState } from "@/features/users";
 
 export const useInitialUsersSearchState = () => {
   const [searchParams] = useSearchParams();

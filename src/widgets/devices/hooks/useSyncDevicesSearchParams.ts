@@ -2,8 +2,10 @@ import { useEffect, useMemo } from "react";
 
 import { useSearchParams } from "react-router";
 
-import { createDevicesSearchString } from "@/features/devices/helpers/search-params";
-import type { DevicesSearchState } from "@/features/devices/types/search-params";
+import {
+  createDevicesSearchString,
+  type DevicesSearchState,
+} from "@/features/devices";
 
 export const useSyncDevicesSearchParams = (state: DevicesSearchState) => {
   const { page, limit, verified } = state;

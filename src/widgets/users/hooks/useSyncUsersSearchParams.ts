@@ -2,8 +2,7 @@ import { useEffect, useMemo } from "react";
 
 import { useSearchParams } from "react-router";
 
-import { createUsersSearchString } from "@/features/users/helpers/search-params";
-import type { UsersSearchState } from "@/features/users/types/search-params";
+import { createUsersSearchString, type UsersSearchState } from "@/features/users";
 
 export const useSyncUsersSearchParams = (state: UsersSearchState) => {
   const { page, limit, isArchived } = state;

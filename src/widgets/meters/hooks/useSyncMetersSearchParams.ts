@@ -2,8 +2,7 @@ import { useEffect, useMemo } from "react";
 
 import { useSearchParams } from "react-router";
 
-import { createMetersSearchString } from "@/features/meters/helpers/search-params";
-import type { MetersSearchSyncState } from "@/features/meters/types/search-params";
+import { createMetersSearchString, type MetersSearchSyncState } from "@/features/meters";
 
 export const useSyncMetersSearchParams = (state: MetersSearchSyncState) => {
   const {

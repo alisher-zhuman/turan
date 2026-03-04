@@ -8,3 +8,5 @@ export const STATUS_LABELS: Record<string, string> = {
   warning: "Предупреждение",
   error: "Ошибка",
 };
+
+export * from "./search-params";

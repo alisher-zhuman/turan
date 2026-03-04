@@ -1,4 +1,4 @@
-import type { ValveFilter } from "../types/search-params";
+import type { ValveFilter } from "../types";
 
 export const DEFAULT_PAGE = 0;
 export const DEFAULT_LIMIT = 10;

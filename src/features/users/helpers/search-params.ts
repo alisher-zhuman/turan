@@ -1,5 +1,5 @@
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from "../constants/search-params";
-import type { UsersSearchState } from "../types/search-params";
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "../constants";
+import type { UsersSearchState } from "../types";
 
 const parsePositiveInt = (value: string | null): number | null => {
   if (!value) {
