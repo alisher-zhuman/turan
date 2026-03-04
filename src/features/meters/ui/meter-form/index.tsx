@@ -1,7 +1,7 @@
 // src/features/meters/ui/meter-form.tsx
 import Box from "@mui/material/Box";
 
-import { type Meter } from "@/entities/meters";
+import type { Meter } from "@/entities/meters";
 
 import { FormActions } from "@/shared/ui/form-actions";
 import { FormCheckbox } from "@/shared/ui/form-checkbox";
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
-  const { control, onSubmit, isPending } = useMeterForm({
+  const { control, onSubmit, isPending, isEditing } = useMeterForm({
     meterToEdit,
     onClose,
     canArchive,
@@ -32,14 +32,31 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
       gap={2}
     >
       <FormFieldset disabled={isPending}>
+        {!isEditing && (
+          <>
+            <FormTextField
+              label="Номер счётчика"
+              name="meterId"
+              required
+              control={control}
+            />
+
+            <FormTextField
+              label="Пароль"
+              name="password"
+              control={control}
+            />
+          </>
+        )}
+
         <FormTextField
-          label="ID Клиента"
+          label="Лицевой счет"
           name="customerID"
           control={control}
         />
 
         <FormTextField
-          label="Клиент"
+          label="ФИО"
           name="client"
           control={control}
         />
@@ -58,7 +75,7 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
           control={control}
         />
 
-        {canArchive && (
+        {isEditing && canArchive && (
           <FormCheckbox
             name="isArchived"
             control={control}
@@ -67,7 +84,11 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
         )}
       </FormFieldset>
 
-      <FormActions isSubmitting={isPending} submitLabel="Сохранить" />
+      <FormActions
+        isSubmitting={isPending}
+        submitLabel={isEditing ? "Сохранить" : "Создать"}
+        submitLabelLoading={isEditing ? "Сохранение..." : "Создание..."}
+      />
     </Box>
   );
 };

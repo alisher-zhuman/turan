@@ -45,6 +45,19 @@ export const deleteMeters = async (meterIds: number[]) => {
   });
 };
 
+export const createMeter = async (params: {
+  meterId: string;
+  customerID?: string | null;
+  client?: string | null;
+  address?: string | null;
+  descriptions?: string | null;
+  password?: string | null;
+}) => {
+  await api.post(API_ROUTES.METERS, null, {
+    params,
+  });
+};
+
 export const updateMeter = async (params: {
   meterId: number;
   customerID?: string | null;
@@ -71,10 +84,10 @@ export const sendMeterCommand = async (
     `${API_ROUTES.METERS_COMMAND}/${meterId}`,
     null,
     {
-    params: {
-      meterId,
-      command,
-    },
+      params: {
+        meterId,
+        command,
+      },
     },
   );
 };

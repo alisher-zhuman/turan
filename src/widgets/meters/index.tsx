@@ -98,6 +98,7 @@ export const MetersWidget = () => {
     groupModalGroupId,
     setGroupModalGroupId,
     setFiltersOpen,
+    handleCreate,
     handleEdit,
     handleView,
     closeEditModal,
@@ -107,6 +108,7 @@ export const MetersWidget = () => {
     closeGroupModal,
     handleConfirmGroupModal,
   } = useMetersUiState({
+    isAdmin,
     canEdit,
     canManageMetersToGroups,
     selectedIds,
@@ -155,6 +157,7 @@ export const MetersWidget = () => {
       canManageMetersToGroups={canManageMetersToGroups}
       selectedCount={selectedIds.length}
       hasGroups={groups.length > 0}
+      onCreate={handleCreate}
       onOpenFilters={() => setFiltersOpen(true)}
       onDeleteSelected={handleDeleteSelected}
       onAddSelectedToGroup={openAddToGroupModal}

@@ -4,7 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 
-import { type Meter,metersKeys, updateMeter } from "@/entities/meters";
+import {
+  createMeter,
+  type Meter,
+  metersKeys,
+  updateMeter,
+} from "@/entities/meters";
 
 import { getApiErrorMessage } from "@/shared/helpers";
 import { useFormReset, useToastMutation } from "@/shared/hooks";
@@ -19,6 +24,8 @@ interface Params {
 }
 
 const getDefaultValues = (meterToEdit: Meter | null): MeterFormValues => ({
+  meterId: "",
+  password: "",
   customerID: meterToEdit?.customerID ?? "",
   client: meterToEdit?.client ?? "",
   address: meterToEdit?.address ?? "",
@@ -26,24 +33,49 @@ const getDefaultValues = (meterToEdit: Meter | null): MeterFormValues => ({
   isArchived: meterToEdit?.isArchived ?? false,
 });
 
+const normalizeOptionalString = (value?: string) => {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : null;
+};
+
 export const useMeterForm = ({
   meterToEdit,
   onClose,
   canArchive,
 }: Params) => {
+  const isEditing = Boolean(meterToEdit);
+
   const defaultValues = useMemo(
     () => getDefaultValues(meterToEdit),
     [meterToEdit],
   );
 
-  const { handleSubmit, control, reset } = useForm<MeterFormValues>({
+  const { handleSubmit, control, reset, setError } = useForm<MeterFormValues>({
     resolver: zodResolver(MeterFormSchema),
     defaultValues,
   });
 
   useFormReset(reset, defaultValues);
 
-  const mutation = useToastMutation({
+  const createMutation = useToastMutation({
+    mutationFn: (payload: {
+      meterId: string;
+      customerID?: string | null;
+      client?: string | null;
+      address?: string | null;
+      descriptions?: string | null;
+      password?: string | null;
+    }) => createMeter(payload),
+    invalidateKeys: [metersKeys.all],
+    successMessage: "Счётчик создан",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      getApiErrorMessage(error, "Ошибка при создании счётчика"),
+    onSuccess: () => {
+      onClose();
+    },
+  });
+
+  const updateMutation = useToastMutation({
     mutationFn: (payload: {
       meterId: number;
       customerID: string | null;
@@ -62,19 +94,39 @@ export const useMeterForm = ({
   });
 
   const onSubmit = handleSubmit((values) => {
-    if (!meterToEdit) return;
+    const normalizedCustomerID = normalizeOptionalString(values.customerID);
+    const normalizedClient = normalizeOptionalString(values.client);
+    const normalizedAddress = normalizeOptionalString(values.address);
+    const normalizedDescriptions = normalizeOptionalString(values.descriptions);
 
-    const normalizedCustomerID =
-      values.customerID && values.customerID.trim().length > 0
-        ? values.customerID.trim()
-        : null;
+    if (!isEditing) {
+      const normalizedMeterId = normalizeOptionalString(values.meterId);
 
-    mutation.mutate({
+      if (!normalizedMeterId) {
+        setError("meterId", {
+          type: "required",
+          message: "Номер счётчика обязателен",
+        });
+        return;
+      }
+
+      createMutation.mutate({
+        meterId: normalizedMeterId,
+        customerID: normalizedCustomerID,
+        client: normalizedClient,
+        address: normalizedAddress,
+        descriptions: normalizedDescriptions,
+        password: normalizeOptionalString(values.password),
+      });
+      return;
+    }
+
+    updateMutation.mutate({
       meterId: meterToEdit.id,
       customerID: normalizedCustomerID,
-      client: values.client ?? "",
-      address: values.address ?? "",
-      descriptions: values.descriptions ?? "",
+      client: normalizedClient ?? "",
+      address: normalizedAddress ?? "",
+      descriptions: normalizedDescriptions ?? "",
       isArchived: canArchive ? values.isArchived : meterToEdit.isArchived,
     });
   });
@@ -82,6 +134,7 @@ export const useMeterForm = ({
   return {
     control,
     onSubmit,
-    isPending: mutation.isPending,
+    isPending: createMutation.isPending || updateMutation.isPending,
+    isEditing,
   };
 };
