@@ -6,8 +6,8 @@ import { sendForgotRequest } from "@/entities/authentication";
 import { getApiErrorMessage } from "@/shared/helpers";
 import { useToastMutation } from "@/shared/hooks";
 
-import { ForgotFormSchema } from "../model/schema";
-import type { ForgotFormValues } from "../model/types";
+import { ForgotFormSchema } from "../schemas";
+import type { ForgotFormValues } from "../types";
 
 export const useForgotForm = () => {
   const { handleSubmit, control } = useForm<ForgotFormValues>({

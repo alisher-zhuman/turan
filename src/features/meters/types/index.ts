@@ -1,5 +1,7 @@
 import type { Meter } from "@/entities/meters";
 
+export type { MeterFormValues } from "./form";
+
 export interface CreateMeterColumnsParams {
   isAdmin: boolean;
   canEdit: boolean;

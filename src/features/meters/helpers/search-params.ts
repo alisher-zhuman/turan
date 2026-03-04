@@ -5,8 +5,12 @@ import {
   DEFAULT_VALVE_FILTER,
   VALID_STATUSES,
   VALID_VALVE_FILTERS,
-} from "./constants";
-import type { MeterSearchState, MetersSearchSyncState, ValveFilter } from "./types";
+} from "../constants/search-params";
+import type {
+  MeterSearchState,
+  MetersSearchSyncState,
+  ValveFilter,
+} from "../types/search-params";
 
 const parsePositiveInt = (value: string | null): number | null => {
   if (!value) {

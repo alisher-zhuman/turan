@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useSearchParams } from "react-router";
 
-import { parseMeterSearchState } from "@/features/meters/model/search-params/helpers";
+import { parseMeterSearchState } from "@/features/meters/helpers/search-params";
 
 export const useInitialMetersSearchState = () => {
   const [searchParams] = useSearchParams();

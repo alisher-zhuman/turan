@@ -11,8 +11,8 @@ import type { Meter } from "@/entities/meters";
 
 import type { Column } from "@/shared/types";
 
+import { STATUS_LABELS, VALVE_LABELS } from "../constants";
 import type { CreateMeterColumnsParams } from "../types";
-import { STATUS_LABELS, VALVE_LABELS } from "../utils/constants";
 
 export const createMeterColumns = ({
   isAdmin,

@@ -9,8 +9,8 @@ import { getApiErrorMessage } from "@/shared/helpers";
 import { useToastMutation } from "@/shared/hooks";
 import { useAuthStore } from "@/shared/stores";
 
-import { SignInFormSchema } from "../model/schema";
-import type { SignInFormValues } from "../model/types";
+import { SignInFormSchema } from "../schemas";
+import type { SignInFormValues } from "../types";
 
 export const useSignInForm = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
