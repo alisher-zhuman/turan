@@ -32,6 +32,13 @@ Import order is enforced by ESLint (`simple-import-sort`):
 6. Other `@/` imports
 7. Relative imports (`../`, `./`)
 
+## Public API
+
+- `index.ts` is a public API file only. It should not contain runtime logic (constants/functions/etc.).
+- If a folder has both implementation and re-exports, move implementation to `base.ts` (or another named file) and re-export it from `index.ts`.
+- In root feature barrels (`src/features/<feature>/index.ts`), use explicit exports (`export { ... }`, `export type { ... }`) to keep the external contract clear.
+- In internal subfolder barrels (`constants/index.ts`, `helpers/index.ts`, `types/index.ts`), `export * from ...` is allowed.
+
 ## Linting
 
 - Run: `npm run lint`

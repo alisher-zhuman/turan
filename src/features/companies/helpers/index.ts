@@ -1,9 +1,2 @@
-import toast from "react-hot-toast";
-
-export const copyToClipboard = (value: string | undefined) => {
-  if (!value) return;
-  navigator.clipboard.writeText(value);
-  toast.success("Скопировано в буфер обмена");
-};
-
+export * from "./base";
 export * from "./search-params";
