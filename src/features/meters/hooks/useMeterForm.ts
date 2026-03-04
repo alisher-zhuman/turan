@@ -101,7 +101,7 @@ export const useMeterForm = ({
     const normalizedAddress = normalizeOptionalString(values.address);
     const normalizedDescriptions = normalizeOptionalString(values.descriptions);
 
-    if (!isEditing) {
+    if (!meterToEdit) {
       createMutation.mutate({
         meterId: normalizedMeterId,
         customerID: normalizedCustomerID,
