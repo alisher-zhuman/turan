@@ -24,8 +24,8 @@ export const MeterDetails = ({ meter }: Props) => (
     <Field label="ID" value={meter.id} />
     <Field label="Номер счётчика" value={meter.name} />
     <Field label="Пароль" value={meter.password} />
-    <Field label="Customer ID" value={meter.customerID} />
-    <Field label="Клиент" value={meter.client} />
+    <Field label="Лицевой счет" value={meter.customerID} />
+    <Field label="ФИО" value={meter.client} />
     <Field label="Адрес" value={meter.address} />
     <Field label="Описание" value={meter.descriptions} />
     <Field
