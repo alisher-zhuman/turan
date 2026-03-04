@@ -1,31 +1,6 @@
-import { useEffect, useMemo } from "react";
-
-import { useSearchParams } from "react-router";
-
 import { createUsersSearchString, type UsersSearchState } from "@/features/users";
 
-export const useSyncUsersSearchParams = (state: UsersSearchState) => {
-  const { page, limit, isArchived } = state;
+import { useSyncSearchParams } from "@/shared/hooks";
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const usersSearchString = useMemo(
-    () =>
-      createUsersSearchString({
-        page,
-        limit,
-        isArchived,
-      }),
-    [page, limit, isArchived],
-  );
-
-  const currentSearchString = searchParams.toString();
-
-  useEffect(() => {
-    if (currentSearchString === usersSearchString) {
-      return;
-    }
-
-    setSearchParams(new URLSearchParams(usersSearchString), { replace: true });
-  }, [currentSearchString, usersSearchString, setSearchParams]);
-};
+export const useSyncUsersSearchParams = (state: UsersSearchState) =>
+  useSyncSearchParams(state, createUsersSearchString);

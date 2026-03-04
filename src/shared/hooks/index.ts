@@ -1,7 +1,9 @@
 export { useDebouncedValue } from "./useDebouncedValue";
 export { useEntityModal } from "./useEntityModal";
 export { useFormReset } from "./useFormReset";
+export { useInitialSearchState } from "./useInitialSearchState";
 export { usePagination } from "./usePagination";
 export { useRoleAccess } from "./useRoleAccess";
 export { useSelection } from "./useSelection";
+export { useSyncSearchParams } from "./useSyncSearchParams";
 export { useToastMutation } from "./useToastMutation";

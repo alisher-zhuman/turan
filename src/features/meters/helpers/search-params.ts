@@ -1,3 +1,5 @@
+import { parseBooleanFlag, parsePositiveInt } from "@/shared/helpers";
+
 import {
   DEFAULT_LIMIT,
   DEFAULT_PAGE,
@@ -12,20 +14,6 @@ import type {
   ValveFilter,
 } from "../types";
 
-const parsePositiveInt = (value: string | null): number | null => {
-  if (!value) {
-    return null;
-  }
-
-  const parsed = Number(value);
-
-  if (!Number.isInteger(parsed) || parsed <= 0) {
-    return null;
-  }
-
-  return parsed;
-};
-
 export const parseMeterSearchState = (params: URLSearchParams): MeterSearchState => {
   const page = parsePositiveInt(params.get("page"));
   const limit = parsePositiveInt(params.get("limit"));
@@ -35,7 +23,7 @@ export const parseMeterSearchState = (params: URLSearchParams): MeterSearchState
   const status = VALID_STATUSES.has(statusRaw) ? statusRaw : DEFAULT_STATUS;
 
   const archivedRaw = params.get("archived");
-  const isArchived = archivedRaw === "1" || archivedRaw === "true";
+  const isArchived = parseBooleanFlag(archivedRaw);
 
   const valveRaw = params.get("valve") as ValveFilter | null;
   const valveFilter = VALID_VALVE_FILTERS.has(

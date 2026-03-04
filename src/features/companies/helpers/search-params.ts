@@ -1,3 +1,5 @@
+import { parseBooleanFlag } from "@/shared/helpers";
+
 import { DEFAULT_ARCHIVED } from "../constants";
 import type { CompaniesSearchState } from "../types";
 
@@ -13,7 +15,7 @@ export const parseCompaniesSearchState = (
   }
 
   return {
-    isArchived: archivedRaw === "1" || archivedRaw === "true",
+    isArchived: parseBooleanFlag(archivedRaw),
   };
 };
 

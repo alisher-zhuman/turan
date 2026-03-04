@@ -1,15 +1,6 @@
-import { useState } from "react";
-
-import { useSearchParams } from "react-router";
-
 import { parseCompaniesSearchState } from "@/features/companies";
 
-export const useInitialCompaniesSearchState = () => {
-  const [searchParams] = useSearchParams();
-  
-  const [initialSearchState] = useState(() =>
-    parseCompaniesSearchState(searchParams),
-  );
+import { useInitialSearchState } from "@/shared/hooks";
 
-  return initialSearchState;
-};
+export const useInitialCompaniesSearchState = () =>
+  useInitialSearchState(parseCompaniesSearchState);

@@ -1,19 +1,7 @@
+import { parsePositiveInt } from "@/shared/helpers";
+
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from "../constants";
 import type { GroupsSearchState } from "../types";
-
-const parsePositiveInt = (value: string | null): number | null => {
-  if (!value) {
-    return null;
-  }
-
-  const parsed = Number(value);
-
-  if (!Number.isInteger(parsed) || parsed <= 0) {
-    return null;
-  }
-
-  return parsed;
-};
 
 export const parseGroupsSearchState = (
   params: URLSearchParams,

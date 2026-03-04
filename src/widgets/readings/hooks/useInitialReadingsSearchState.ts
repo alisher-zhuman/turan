@@ -1,15 +1,6 @@
-import { useState } from "react";
-
-import { useSearchParams } from "react-router";
-
 import { parseReadingsSearchState } from "@/features/readings";
 
-export const useInitialReadingsSearchState = () => {
-  const [searchParams] = useSearchParams();
-  
-  const [initialSearchState] = useState(() =>
-    parseReadingsSearchState(searchParams),
-  );
+import { useInitialSearchState } from "@/shared/hooks";
 
-  return initialSearchState;
-};
+export const useInitialReadingsSearchState = () =>
+  useInitialSearchState(parseReadingsSearchState);

@@ -1,13 +1,6 @@
-import { useState } from "react";
-
-import { useSearchParams } from "react-router";
-
 import { parseGroupsSearchState } from "@/features/groups";
 
-export const useInitialGroupsSearchState = () => {
-  const [searchParams] = useSearchParams();
-  
-  const [initialSearchState] = useState(() => parseGroupsSearchState(searchParams));
+import { useInitialSearchState } from "@/shared/hooks";
 
-  return initialSearchState;
-};
+export const useInitialGroupsSearchState = () =>
+  useInitialSearchState(parseGroupsSearchState);

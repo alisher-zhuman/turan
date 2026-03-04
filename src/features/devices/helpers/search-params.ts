@@ -1,19 +1,7 @@
+import { parseBooleanFlag, parsePositiveInt } from "@/shared/helpers";
+
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from "../constants";
 import type { DevicesSearchState } from "../types";
-
-const parsePositiveInt = (value: string | null): number | null => {
-  if (!value) {
-    return null;
-  }
-
-  const parsed = Number(value);
-
-  if (!Number.isInteger(parsed) || parsed <= 0) {
-    return null;
-  }
-
-  return parsed;
-};
 
 export const parseDevicesSearchState = (
   params: URLSearchParams,
@@ -25,7 +13,7 @@ export const parseDevicesSearchState = (
   return {
     page: page ? page - 1 : DEFAULT_PAGE,
     limit: limit ?? DEFAULT_LIMIT,
-    verified: verifiedRaw === "1" || verifiedRaw === "true",
+    verified: parseBooleanFlag(verifiedRaw),
   };
 };
 
