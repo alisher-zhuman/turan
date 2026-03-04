@@ -10,7 +10,7 @@ interface Props {
   onDeleteSelected: () => void;
 }
 
-export const DevicesHeader = ({
+export const DevicesActions = ({
   verified,
   onChangeVerified,
   selectedCount,

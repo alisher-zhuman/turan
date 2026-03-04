@@ -21,7 +21,7 @@ import {
 } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { UsersHeader } from "./ui/users-header";
+import { UsersActions } from "./ui/users-actions";
 import { UsersModals } from "./ui/users-modals";
 
 export const UsersWidget = () => {
@@ -66,6 +66,14 @@ export const UsersWidget = () => {
     [handleToggleArchive, openEditModal, canDeleteUsers, handleDeleteUser],
   );
 
+  const toolbar = (
+    <UsersActions
+      isArchived={isArchived}
+      onChangeArchived={setIsArchived}
+      onCreate={openCreateModal}
+    />
+  );
+
   return (
     <>
       <TableSection
@@ -74,13 +82,7 @@ export const UsersWidget = () => {
         errorText={ERROR_TEXTS.users}
         hasItems={hasUsers}
         emptyText={emptyText}
-        toolbar={
-          <UsersHeader
-            isArchived={isArchived}
-            onChangeArchived={setIsArchived}
-            onCreate={openCreateModal}
-          />
-        }
+        toolbar={toolbar}
         pagination={{
           page,
           limit,

@@ -9,7 +9,7 @@ interface Props {
   onCreate: () => void;
 }
 
-export const UsersHeader = ({
+export const UsersActions = ({
   isArchived,
   onChangeArchived,
   onCreate,

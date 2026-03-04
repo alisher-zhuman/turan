@@ -15,7 +15,7 @@ import { ERROR_TEXTS } from "@/shared/constants";
 import { useEntityModal, useInitialSearchState, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { CompaniesHeader } from "./ui/companies-header";
+import { CompaniesActions } from "./ui/companies-actions";
 import { CompaniesModals } from "./ui/companies-modals";
 
 export const CompaniesWidget = () => {
@@ -56,7 +56,7 @@ export const CompaniesWidget = () => {
   );
 
   const toolbar = (
-    <CompaniesHeader
+    <CompaniesActions
       isArchived={isArchived}
       onChangeArchived={setIsArchived}
       onCreate={openCreateModal}

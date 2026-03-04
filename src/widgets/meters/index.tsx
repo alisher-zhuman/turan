@@ -1,11 +1,10 @@
 import { useMemo } from "react";
 
-import Box from "@mui/material/Box";
-
 import { useGroupActions, useGroupsQuery } from "@/features/groups";
 import {
   createMeterColumns,
   createMetersSearchString,
+  MetersActions,
   parseMeterSearchState,
   useMeters,
 } from "@/features/meters";
@@ -15,7 +14,6 @@ import { useInitialSearchState, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
 import { useMetersUiState } from "./hooks/useMetersUiState";
-import { MetersHeader } from "./ui/meters-header";
 import { MetersModals } from "./ui/meters-modals";
 
 export const MetersWidget = () => {
@@ -151,40 +149,41 @@ export const MetersWidget = () => {
     ],
   );
 
+  const toolbar = (
+    <MetersActions
+      isAdmin={isAdmin}
+      canManageMetersToGroups={canManageMetersToGroups}
+      selectedCount={selectedIds.length}
+      hasGroups={groups.length > 0}
+      onOpenFilters={() => setFiltersOpen(true)}
+      onDeleteSelected={handleDeleteSelected}
+      onAddSelectedToGroup={openAddToGroupModal}
+      onRemoveSelectedFromGroup={openRemoveFromGroupModal}
+      onResetFilters={handleResetFilters}
+    />
+  );
+
   return (
     <>
-      <Box>
-        <MetersHeader
-          isAdmin={isAdmin}
-          canManageMetersToGroups={canManageMetersToGroups}
-          selectedCount={selectedIds.length}
-          hasGroups={groups.length > 0}
-          onOpenFilters={() => setFiltersOpen(true)}
-          onDeleteSelected={handleDeleteSelected}
-          onAddSelectedToGroup={openAddToGroupModal}
-          onRemoveSelectedFromGroup={openRemoveFromGroupModal}
-          onResetFilters={handleResetFilters}
-        />
-
-        <TableSection
-          isLoading={isLoading}
-          isError={isError}
-          errorText={ERROR_TEXTS.meters}
-          hasItems={hasMeters}
-          emptyText={emptyText}
-          rows={meters}
-          columns={columns}
-          getRowId={(m) => m.id}
-          pagination={{
-            page,
-            limit,
-            total,
-            onPageChange: setPage,
-            labelRowsPerPage: ROWS_PER_PAGE_LABELS.meters,
-            onLimitChange: setLimit,
-          }}
-        />
-      </Box>
+      <TableSection
+        isLoading={isLoading}
+        isError={isError}
+        errorText={ERROR_TEXTS.meters}
+        hasItems={hasMeters}
+        emptyText={emptyText}
+        toolbar={toolbar}
+        rows={meters}
+        columns={columns}
+        getRowId={(m) => m.id}
+        pagination={{
+          page,
+          limit,
+          total,
+          onPageChange: setPage,
+          labelRowsPerPage: ROWS_PER_PAGE_LABELS.meters,
+          onLimitChange: setLimit,
+        }}
+      />
 
       <MetersModals
         editOpen={isEditModalOpen}

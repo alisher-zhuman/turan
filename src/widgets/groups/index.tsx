@@ -22,7 +22,7 @@ import {
 } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { GroupsHeader } from "./ui/groups-header";
+import { GroupsActions } from "./ui/groups-actions";
 import { GroupsModals } from "./ui/groups-modals";
 
 export const GroupsWidget = () => {
@@ -84,6 +84,8 @@ export const GroupsWidget = () => {
     [navigate, handleOpenEditModal, handleDelete, isAdmin],
   );
 
+  const toolbar = <GroupsActions isAdmin={isAdmin} onCreate={handleOpenCreateModal} />;
+
   return (
     <>
       <TableSection
@@ -92,9 +94,7 @@ export const GroupsWidget = () => {
         errorText={ERROR_TEXTS.groups}
         hasItems={hasGroups}
         emptyText={emptyText}
-        toolbar={
-          <GroupsHeader isAdmin={isAdmin} onCreate={handleOpenCreateModal} />
-        }
+        toolbar={toolbar}
         pagination={{
           page,
           limit,

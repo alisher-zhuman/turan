@@ -7,7 +7,7 @@ interface Props {
   onDeleteSelected: () => void;
 }
 
-export const ReadingsHeader = ({
+export const ReadingsActions = ({
   isAdmin,
   selectedCount,
   onDeleteSelected,

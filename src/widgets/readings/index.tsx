@@ -14,7 +14,7 @@ import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { useInitialSearchState, usePagination, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { ReadingsHeader } from "./ui/readings-header";
+import { ReadingsActions } from "./ui/readings-actions";
 
 export const ReadingsWidget = () => {
   const initialSearchState = useInitialSearchState(parseReadingsSearchState);
@@ -76,6 +76,14 @@ export const ReadingsWidget = () => {
     ],
   );
 
+  const toolbar = (
+    <ReadingsActions
+      isAdmin={isAdmin}
+      selectedCount={selectedIds.length}
+      onDeleteSelected={handleDeleteSelectedWithIds}
+    />
+  );
+
   return (
     <TableSection
       isLoading={isLoading}
@@ -83,13 +91,7 @@ export const ReadingsWidget = () => {
       errorText={ERROR_TEXTS.readings}
       hasItems={hasReadings}
       emptyText={emptyText}
-      toolbar={
-        <ReadingsHeader
-          isAdmin={isAdmin}
-          selectedCount={selectedIds.length}
-          onDeleteSelected={handleDeleteSelectedWithIds}
-        />
-      }
+      toolbar={toolbar}
       pagination={{
         page,
         limit,

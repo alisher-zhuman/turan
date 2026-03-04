@@ -5,7 +5,7 @@ interface Props {
   onCreate: () => void;
 }
 
-export const WebhooksHeader = ({ onCreate }: Props) => (
+export const WebhooksActions = ({ onCreate }: Props) => (
   <Box mb={2} display="flex" alignItems="center" justifyContent="flex-end">
     <Button onClick={onCreate} variant="contained" color="primary">
       Создать

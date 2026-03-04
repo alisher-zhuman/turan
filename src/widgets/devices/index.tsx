@@ -14,7 +14,7 @@ import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { useInitialSearchState, usePagination, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { DevicesHeader } from "./ui/devices-header";
+import { DevicesActions } from "./ui/devices-actions";
 
 export const DevicesWidget = () => {
   const initialSearchState = useInitialSearchState(parseDevicesSearchState);
@@ -78,6 +78,15 @@ export const DevicesWidget = () => {
     ],
   );
 
+  const toolbar = (
+    <DevicesActions
+      verified={verified}
+      onChangeVerified={setVerified}
+      selectedCount={selectedIds.length}
+      onDeleteSelected={handleDeleteSelectedWithIds}
+    />
+  );
+
   return (
     <TableSection
       isLoading={isLoading}
@@ -85,14 +94,7 @@ export const DevicesWidget = () => {
       errorText={ERROR_TEXTS.devices}
       hasItems={hasDevices}
       emptyText={emptyText}
-      toolbar={
-        <DevicesHeader
-          verified={verified}
-          onChangeVerified={setVerified}
-          selectedCount={selectedIds.length}
-          onDeleteSelected={handleDeleteSelectedWithIds}
-        />
-      }
+      toolbar={toolbar}
       pagination={{
         page,
         limit,
