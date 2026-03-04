@@ -6,7 +6,6 @@ import {
   createGroupColumns,
   createGroupsSearchString,
   parseGroupsSearchState,
-  useGroupAccess,
   useGroupActions,
   useGroupsQuery,
 } from "@/features/groups";
@@ -18,6 +17,7 @@ import {
   useEntityModal,
   useInitialSearchState,
   usePagination,
+  useRoleAccess,
   useSyncSearchParams,
 } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
@@ -38,7 +38,7 @@ export const GroupsWidget = () => {
 
   useSyncSearchParams({ page, limit }, createGroupsSearchString);
 
-  const { isAdmin, canManageMetersToGroups } = useGroupAccess();
+  const { isAdmin, canManageMetersToGroups } = useRoleAccess();
 
   const { groups, total, hasGroups, emptyText, isLoading, isError } =
     useGroupsQuery({

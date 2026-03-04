@@ -4,14 +4,18 @@ import {
   createReadingColumns,
   createReadingsSearchString,
   parseReadingsSearchState,
-  useReadingsAccess,
   useReadingsActions,
   useReadingsQuery,
   useReadingsSelection,
 } from "@/features/readings";
 
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
-import { useInitialSearchState, usePagination, useSyncSearchParams } from "@/shared/hooks";
+import {
+  useInitialSearchState,
+  usePagination,
+  useRoleAccess,
+  useSyncSearchParams,
+} from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
 import { ReadingsActions } from "./ui/readings-actions";
@@ -27,7 +31,7 @@ export const ReadingsWidget = () => {
 
   useSyncSearchParams({ page, limit }, createReadingsSearchString);
 
-  const { isAdmin } = useReadingsAccess();
+  const { isAdmin } = useRoleAccess();
 
   const { readings, total, hasReadings, emptyText, isLoading, isError } =
     useReadingsQuery({ page, limit });

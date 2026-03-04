@@ -1,6 +1,5 @@
-import { useDebouncedValue, usePagination } from "@/shared/hooks";
+import { useDebouncedValue, usePagination, useRoleAccess } from "@/shared/hooks";
 
-import { useMeterAccess } from "./useMeterAccess";
 import { useMeterActions } from "./useMeterActions";
 import { type MeterFilters, useMeterFilters } from "./useMeterFilters";
 import { useMeterSelection } from "./useMeterSelection";
@@ -36,7 +35,11 @@ export const useMeters = ({
     resetKey: filtersKey,
   });
 
-  const { isAdmin, canEdit, canManageMetersToGroups } = useMeterAccess();
+  const {
+    isAdmin,
+    canEditMeters: canEdit,
+    canManageMetersToGroups,
+  } = useRoleAccess();
 
   const debouncedCustomerId = useDebouncedValue(filters.customerId);
   const debouncedMeterName = useDebouncedValue(filters.meterName);
