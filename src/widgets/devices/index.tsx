@@ -12,13 +12,28 @@ import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import { usePagination } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
+import { useInitialDevicesSearchState } from "./hooks/useInitialDevicesSearchState";
+import { useSyncDevicesSearchParams } from "./hooks/useSyncDevicesSearchParams";
 import { DevicesHeader } from "./ui/devices-header";
 
 export const DevicesWidget = () => {
-  const { verified, setVerified, filtersKey } = useDeviceFilters();
+  const initialSearchState = useInitialDevicesSearchState();
+
+  const { verified, setVerified, filtersKey } = useDeviceFilters({
+    initialVerified: initialSearchState.verified,
+  });
 
   const { page, limit, setPage, setLimit } = usePagination({
+    initialPage: initialSearchState.page,
+    initialLimit: initialSearchState.limit,
+    resetPage: 0,
     resetKey: filtersKey,
+  });
+
+  useSyncDevicesSearchParams({
+    page,
+    limit,
+    verified,
   });
 
   const { devices, total, hasDevices, emptyText, isLoading, isError } =
