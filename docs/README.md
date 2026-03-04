@@ -1,15 +1,15 @@
-# Документация Turan
+# Turan Documentation
 
-Этот каталог содержит внутреннюю документацию по фронтенд-проекту.
+This directory contains internal documentation for the frontend project.
 
-## Содержание
+## Contents
 
-- [getting-started.md](getting-started.md) - как запустить проект локально и в Docker.
-- [architecture.md](architecture.md) - структура приложения, слои и основные потоки.
-- [conventions.md](conventions.md) - правила по коду и договоренности команды.
+- [getting-started.md](getting-started.md) - how to run the project locally and with Docker.
+- [architecture.md](architecture.md) - app structure, layers, and main flows.
+- [conventions.md](conventions.md) - coding rules and team conventions.
 
-## Для чего держим `docs/` отдельно
+## Why `docs/` Is Separate
 
-- Корневой `README.md` остается коротким и удобным для быстрого старта.
-- Детальные технические материалы не мешают повседневной работе.
-- Проще расширять документацию по мере роста проекта.
+- The root `README.md` stays short and focused on quick start.
+- Detailed technical materials do not clutter day-to-day development.
+- Documentation is easier to extend as the project grows.

@@ -1,6 +1,6 @@
-# Архитектура
+# Architecture
 
-## Стек
+## Stack
 
 - React 19 + TypeScript
 - Vite
@@ -10,20 +10,20 @@
 - React Hook Form + Zod
 - Zustand
 
-## Слои и структура
+## Layers and Structure
 
-Проект организован по слоям, близко к FSD:
+The project is organized in layers, inspired by FSD:
 
-- `src/app` - инициализация приложения, роутинг, глобальные конфиги.
-- `src/pages` - страничные entrypoint-компоненты.
-- `src/widgets` - сборка экранов из feature/entity/shared.
-- `src/features` - пользовательские сценарии и UI-логика.
-- `src/entities` - доменные сущности, API и контракты данных.
-- `src/shared` - общие утилиты, UI-компоненты, хуки, константы.
+- `src/app` - app bootstrap, routing, global configs.
+- `src/pages` - page entrypoint components.
+- `src/widgets` - screen composition from feature/entity/shared layers.
+- `src/features` - user scenarios and UI logic.
+- `src/entities` - domain entities, API, and data contracts.
+- `src/shared` - shared utilities, UI components, hooks, constants.
 
-## Роутинг
+## Routing
 
-Основные маршруты:
+Main routes:
 
 - `/sign-in`
 - `/forgot`
@@ -35,28 +35,28 @@
 - `/readings`
 - `/webhooks`
 
-`ProtectedRoute` ограничивает доступ к приватной части приложения по токену и роли.
+`ProtectedRoute` limits access to the private app area based on token and role.
 
-## Роли и доступ
+## Roles and Access
 
-Роли:
+Roles:
 
 - `super_admin`
 - `admin`
 - `user`
 - `controller`
 
-Навигация и доступ к разделам управляются через `SIDEBAR_LINKS` и role-check helpers.
+Navigation and section access are controlled via `SIDEBAR_LINKS` and role-check helpers.
 
-## API и авторизация
+## API and Authorization
 
-- Базовый URL API берется из `VITE_API_URL`.
-- Axios-интерсептор автоматически подставляет `Authorization: Bearer ...`.
-- При `401` выполняется logout и очистка сессии.
-- Сессия хранится в `localStorage` (ключ `turan_auth`) через Zustand.
+- The API base URL is provided via `VITE_API_URL`.
+- Axios interceptor automatically adds `Authorization: Bearer ...`.
+- On `401`, the app performs logout and clears the session.
+- Session is stored in `localStorage` (`turan_auth`) via Zustand.
 
-## Данные и валидация
+## Data and Validation
 
 - Server state: React Query.
-- Формы: React Hook Form.
-- Валидация: Zod (и для форм, и для ответов API в `entities`).
+- Forms: React Hook Form.
+- Validation: Zod (for forms and API responses in `entities`).

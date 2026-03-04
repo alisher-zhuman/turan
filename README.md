@@ -1,36 +1,36 @@
 # Turan Frontend
 
-Админ-панель Turan для управления компаниями, пользователями, устройствами, группами, счетчиками, показаниями и вебхуками.
+Turan admin panel for managing companies, users, devices, groups, meters, readings, and webhooks.
 
-## Быстрый старт
+## Quick Start
 
-1. Установить зависимости:
+1. Install dependencies:
    ```bash
    npm ci
    ```
-2. Создать `.env` из примера:
+2. Create `.env` from the example file:
    ```bash
    cp .env.example .env
    ```
-3. Заполнить `.env`:
+3. Configure `.env`:
    ```bash
    VITE_API_URL="https://your-api-host/api/"
    ```
-4. Запустить dev-сервер:
+4. Start the development server:
    ```bash
    npm run dev
    ```
 
-## Основные скрипты
+## Main Scripts
 
-- `npm run dev` - локальная разработка
-- `npm run lint` - проверка ESLint
+- `npm run dev` - local development
+- `npm run lint` - ESLint check
 - `npm run build` - TypeScript + production build
-- `npm run preview` - локальный предпросмотр production-сборки
+- `npm run preview` - local preview of the production build
 
-## Документация
+## Documentation
 
-- [Карта документации](docs/README.md)
-- [Запуск и окружение](docs/getting-started.md)
-- [Архитектура проекта](docs/architecture.md)
-- [Конвенции разработки](docs/conventions.md)
+- [Documentation Map](docs/README.md)
+- [Getting Started & Environment](docs/getting-started.md)
+- [Project Architecture](docs/architecture.md)
+- [Development Conventions](docs/conventions.md)
