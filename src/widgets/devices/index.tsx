@@ -2,6 +2,8 @@ import { useMemo } from "react";
 
 import {
   createDeviceColumns,
+  createDevicesSearchString,
+  parseDevicesSearchState,
   useDeviceActions,
   useDeviceFilters,
   useDeviceSelection,
@@ -9,17 +11,26 @@ import {
 } from "@/features/devices";
 
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
-import { usePagination } from "@/shared/hooks";
+import { useInitialSearchState, usePagination, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { DevicesHeader } from "./ui/devices-header";
+import { DevicesActions } from "./ui/devices-actions";
 
 export const DevicesWidget = () => {
-  const { verified, setVerified, filtersKey } = useDeviceFilters();
+  const initialSearchState = useInitialSearchState(parseDevicesSearchState);
+
+  const { verified, setVerified, filtersKey } = useDeviceFilters({
+    initialVerified: initialSearchState.verified,
+  });
 
   const { page, limit, setPage, setLimit } = usePagination({
+    initialPage: initialSearchState.page,
+    initialLimit: initialSearchState.limit,
+    resetPage: 0,
     resetKey: filtersKey,
   });
+
+  useSyncSearchParams({ page, limit, verified }, createDevicesSearchString);
 
   const { devices, total, hasDevices, emptyText, isLoading, isError } =
     useDevicesQuery({ page, limit, verified });
@@ -67,6 +78,15 @@ export const DevicesWidget = () => {
     ],
   );
 
+  const toolbar = (
+    <DevicesActions
+      verified={verified}
+      onChangeVerified={setVerified}
+      selectedCount={selectedIds.length}
+      onDeleteSelected={handleDeleteSelectedWithIds}
+    />
+  );
+
   return (
     <TableSection
       isLoading={isLoading}
@@ -74,14 +94,7 @@ export const DevicesWidget = () => {
       errorText={ERROR_TEXTS.devices}
       hasItems={hasDevices}
       emptyText={emptyText}
-      toolbar={
-        <DevicesHeader
-          verified={verified}
-          onChangeVerified={setVerified}
-          selectedCount={selectedIds.length}
-          onDeleteSelected={handleDeleteSelectedWithIds}
-        />
-      }
+      toolbar={toolbar}
       pagination={{
         page,
         limit,

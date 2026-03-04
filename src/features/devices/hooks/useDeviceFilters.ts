@@ -1,7 +1,11 @@
 import { useState } from "react";
 
-export const useDeviceFilters = () => {
-  const [verified, setVerified] = useState(false);
+interface Params {
+  initialVerified?: boolean;
+}
+
+export const useDeviceFilters = ({ initialVerified = false }: Params = {}) => {
+  const [verified, setVerified] = useState(initialVerified);
 
   const filtersKey = verified ? "verified" : "unverified";
 

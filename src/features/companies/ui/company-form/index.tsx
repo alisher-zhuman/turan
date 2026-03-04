@@ -20,8 +20,8 @@ import { FormActions } from "@/shared/ui/form-actions";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { FormTextField } from "@/shared/ui/form-text-field";
 
-import { CompanyFormSchema } from "../../model/schema";
-import type { CompanyFormValues } from "../../model/types";
+import { CompanyFormSchema } from "../../schemas";
+import type { CompanyFormValues } from "../../types";
 
 interface Props {
   company?: Company | null;

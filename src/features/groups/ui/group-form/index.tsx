@@ -19,8 +19,8 @@ import { FormActions } from "@/shared/ui/form-actions";
 import { FormFieldset } from "@/shared/ui/form-fieldset";
 import { FormTextField } from "@/shared/ui/form-text-field";
 
-import { GroupFormSchema } from "../../model/schema";
-import type { GroupFormValues } from "../../model/types";
+import { GroupFormSchema } from "../../schemas";
+import type { GroupFormValues } from "../../types";
 
 interface Props {
   groupToEdit: Group | null;

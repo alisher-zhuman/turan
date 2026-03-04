@@ -6,7 +6,7 @@ import type { Meter } from "@/entities/meters";
 
 import { formatDateTime } from "@/shared/helpers";
 
-import { STATUS_LABELS, VALVE_LABELS } from "../../utils/constants";
+import { STATUS_LABELS, VALVE_LABELS } from "../../constants";
 import { Field } from "../field";
 
 interface Props {

@@ -26,8 +26,8 @@ import { useFormReset, useToastMutation } from "@/shared/hooks";
 import { useAuthStore } from "@/shared/stores";
 import type { Role } from "@/shared/types";
 
-import { createUserFormSchema } from "../model/schema";
-import type { UserFormValues } from "../model/types";
+import { createUserFormSchema } from "../schemas";
+import type { UserFormValues } from "../types";
 
 const USER_FORM_COMPANIES_QUERY_OPTIONS = {
   staleTime: 120_000,

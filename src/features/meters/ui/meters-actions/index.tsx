@@ -29,9 +29,10 @@ export const MetersActions = ({
     display="flex"
     alignItems="center"
     justifyContent="space-between"
+    flexWrap="wrap"
     gap={2}
   >
-    <Box display="flex" gap={1}>
+    <Box display="flex" flexWrap="wrap" gap={1}>
       <Button size="small" variant="outlined" onClick={onOpenFilters}>
         Фильтры
       </Button>
@@ -41,7 +42,7 @@ export const MetersActions = ({
       </Button>
     </Box>
 
-    <Box display="flex" gap={1}>
+    <Box display="flex" flexWrap="wrap" gap={1}>
       {canManageMetersToGroups && (
         <>
           <Button

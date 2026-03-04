@@ -1,12 +1,21 @@
-import { useDebouncedValue, usePagination } from "@/shared/hooks";
+import { useDebouncedValue, usePagination, useRoleAccess } from "@/shared/hooks";
 
-import { useMeterAccess } from "./useMeterAccess";
 import { useMeterActions } from "./useMeterActions";
-import { useMeterFilters } from "./useMeterFilters";
+import { type MeterFilters, useMeterFilters } from "./useMeterFilters";
 import { useMeterSelection } from "./useMeterSelection";
 import { useMetersQuery } from "./useMetersQuery";
 
-export const useMeters = () => {
+interface Params {
+  initialFilters?: Partial<MeterFilters>;
+  initialPage?: number;
+  initialLimit?: number;
+}
+
+export const useMeters = ({
+  initialFilters,
+  initialPage = 0,
+  initialLimit = 10,
+}: Params = {}) => {
   const {
     filters,
     filtersKey,
@@ -17,13 +26,20 @@ export const useMeters = () => {
     setMeterName,
     setValveFilter,
     resetFilters,
-  } = useMeterFilters();
+  } = useMeterFilters({ initialFilters });
 
   const { page, limit, setPage, setLimit } = usePagination({
+    initialPage,
+    initialLimit,
+    resetPage: 0,
     resetKey: filtersKey,
   });
 
-  const { isAdmin, canEdit, canManageMetersToGroups } = useMeterAccess();
+  const {
+    isAdmin,
+    canEditMeters: canEdit,
+    canManageMetersToGroups,
+  } = useRoleAccess();
 
   const debouncedCustomerId = useDebouncedValue(filters.customerId);
   const debouncedMeterName = useDebouncedValue(filters.meterName);

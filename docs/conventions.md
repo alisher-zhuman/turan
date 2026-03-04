@@ -1,46 +1,53 @@
-# Конвенции разработки
+# Development Conventions
 
-## Куда класть код
+## Where to Place Code
 
 - `entities`:
-  - API-запросы к конкретной сущности
-  - типы и схемы ответов API
+  - API requests for a specific entity
+  - API response types and schemas
 - `features`:
-  - пользовательский сценарий (hooks/forms/actions)
-  - UI-логика конкретного use case
+  - user scenario logic (hooks/forms/actions)
+  - UI logic for a specific use case
 - `widgets`:
-  - компоновка нескольких features в экранный блок
+  - composition of multiple features into a screen block
 - `shared`:
-  - переиспользуемые универсальные вещи
+  - reusable generic building blocks
 
-Пример: `useForgotForm` остается в `features/authentication`, потому что это сценарий формы, а не доменная сущность.
+Example: `useForgotPasswordForm` stays in `features/authentication` because it is a form scenario, not a domain entity.
 
-## Импорты
+## Imports
 
-Порядок импортов зафиксирован через ESLint (`simple-import-sort`):
+Import order is enforced by ESLint (`simple-import-sort`):
 
 1. React (`react`, `react-dom`)
 2. Router (`react-router`)
-3. Прочие внешние библиотеки
-4. UI-библиотеки (`@mui`, `@emotion`)
-5. Локальные алиасы слоями:
+3. Other external libraries
+4. UI libraries (`@mui`, `@emotion`)
+5. Local aliases by layers:
    - `pages`
    - `widgets`
    - `features`
    - `entities`
    - `shared`
-6. Прочие `@/`
-7. Относительные импорты (`../`, `./`)
+6. Other `@/` imports
+7. Relative imports (`../`, `./`)
 
-## Линтинг
+## Public API
 
-- Запуск: `npm run lint`
-- Автоисправление: `npm run lint -- --fix`
-- Перед `git push` автоматически срабатывает Husky `pre-push` с `npm run lint`.
+- `index.ts` is a public API file only. It should not contain runtime logic (constants/functions/etc.).
+- If a folder has both implementation and re-exports, move implementation to `base.ts` (or another named file) and re-export it from `index.ts`.
+- In root feature barrels (`src/features/<feature>/index.ts`), use explicit exports (`export { ... }`, `export type { ... }`) to keep the external contract clear.
+- In internal subfolder barrels (`constants/index.ts`, `helpers/index.ts`, `types/index.ts`), `export * from ...` is allowed.
 
-## Алиасы
+## Linting
 
-Поддерживаемые алиасы:
+- Run: `npm run lint`
+- Auto-fix: `npm run lint -- --fix`
+- Before `git push`, Husky `pre-push` runs `npm run lint` automatically.
+
+## Aliases
+
+Supported aliases:
 
 - `@/*`
 - `@pages/*`

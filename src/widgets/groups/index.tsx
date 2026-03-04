@@ -1,25 +1,44 @@
 import { useCallback, useMemo } from "react";
 
+import { useNavigate } from "react-router";
+
 import {
   createGroupColumns,
-  useGroupAccess,
+  createGroupsSearchString,
+  parseGroupsSearchState,
   useGroupActions,
   useGroupsQuery,
 } from "@/features/groups";
 
 import type { Group } from "@/entities/groups";
 
-import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
-import { useEntityModal, usePagination } from "@/shared/hooks";
+import { ERROR_TEXTS, ROUTES, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
+import {
+  useEntityModal,
+  useInitialSearchState,
+  usePagination,
+  useRoleAccess,
+  useSyncSearchParams,
+} from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { GroupsHeader } from "./ui/groups-header";
+import { GroupsActions } from "./ui/groups-actions";
 import { GroupsModals } from "./ui/groups-modals";
 
 export const GroupsWidget = () => {
-  const { page, limit, setPage, setLimit } = usePagination({});
+  const initialSearchState = useInitialSearchState(parseGroupsSearchState);
 
-  const { isAdmin, canManageMetersToGroups } = useGroupAccess();
+  const navigate = useNavigate();
+
+  const { page, limit, setPage, setLimit } = usePagination({
+    initialPage: initialSearchState.page,
+    initialLimit: initialSearchState.limit,
+    resetPage: 0,
+  });
+
+  useSyncSearchParams({ page, limit }, createGroupsSearchString);
+
+  const { isAdmin, canManageMetersToGroups } = useRoleAccess();
 
   const { groups, total, hasGroups, emptyText, isLoading, isError } =
     useGroupsQuery({
@@ -55,9 +74,17 @@ export const GroupsWidget = () => {
   );
 
   const columns = useMemo(
-    () => createGroupColumns(handleOpenEditModal, handleDelete, isAdmin),
-    [handleOpenEditModal, handleDelete, isAdmin],
+    () =>
+      createGroupColumns(
+        (group) => navigate(`/${ROUTES.METERS}?groupId=${group.id}`),
+        handleOpenEditModal,
+        handleDelete,
+        isAdmin,
+      ),
+    [navigate, handleOpenEditModal, handleDelete, isAdmin],
   );
+
+  const toolbar = <GroupsActions isAdmin={isAdmin} onCreate={handleOpenCreateModal} />;
 
   return (
     <>
@@ -67,9 +94,7 @@ export const GroupsWidget = () => {
         errorText={ERROR_TEXTS.groups}
         hasItems={hasGroups}
         emptyText={emptyText}
-        toolbar={
-          <GroupsHeader isAdmin={isAdmin} onCreate={handleOpenCreateModal} />
-        }
+        toolbar={toolbar}
         pagination={{
           page,
           limit,

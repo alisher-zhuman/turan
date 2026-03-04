@@ -2,6 +2,8 @@ import { useMemo } from "react";
 
 import {
   createUserColumns,
+  createUsersSearchString,
+  parseUsersSearchState,
   useUserActions,
   useUserFilters,
   useUsersQuery,
@@ -10,20 +12,35 @@ import {
 import type { UserRow } from "@/entities/users";
 
 import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
-import { useEntityModal, usePagination, useRoleAccess } from "@/shared/hooks";
+import {
+  useEntityModal,
+  useInitialSearchState,
+  usePagination,
+  useRoleAccess,
+  useSyncSearchParams,
+} from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { UsersHeader } from "./ui/users-header";
+import { UsersActions } from "./ui/users-actions";
 import { UsersModals } from "./ui/users-modals";
 
 export const UsersWidget = () => {
+  const initialSearchState = useInitialSearchState(parseUsersSearchState);
+
   const { canDeleteUsers } = useRoleAccess();
 
-  const { isArchived, setIsArchived, filtersKey } = useUserFilters();
+  const { isArchived, setIsArchived, filtersKey } = useUserFilters({
+    initialIsArchived: initialSearchState.isArchived,
+  });
 
   const { page, limit, setPage, setLimit } = usePagination({
+    initialPage: initialSearchState.page,
+    initialLimit: initialSearchState.limit,
+    resetPage: 0,
     resetKey: filtersKey,
   });
+
+  useSyncSearchParams({ page, limit, isArchived }, createUsersSearchString);
 
   const { users, total, hasUsers, emptyText, isLoading, isError } =
     useUsersQuery({ page, limit, isArchived });
@@ -49,6 +66,14 @@ export const UsersWidget = () => {
     [handleToggleArchive, openEditModal, canDeleteUsers, handleDeleteUser],
   );
 
+  const toolbar = (
+    <UsersActions
+      isArchived={isArchived}
+      onChangeArchived={setIsArchived}
+      onCreate={openCreateModal}
+    />
+  );
+
   return (
     <>
       <TableSection
@@ -57,13 +82,7 @@ export const UsersWidget = () => {
         errorText={ERROR_TEXTS.users}
         hasItems={hasUsers}
         emptyText={emptyText}
-        toolbar={
-          <UsersHeader
-            isArchived={isArchived}
-            onChangeArchived={setIsArchived}
-            onCreate={openCreateModal}
-          />
-        }
+        toolbar={toolbar}
         pagination={{
           page,
           limit,

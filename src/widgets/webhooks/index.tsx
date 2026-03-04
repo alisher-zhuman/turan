@@ -10,7 +10,7 @@ import { ERROR_TEXTS } from "@/shared/constants";
 import { TableSection } from "@/shared/ui/table-section";
 
 import { useWebhooksUiState } from "./hooks/useWebhooksUiState";
-import { WebhooksHeader } from "./ui/webhooks-header";
+import { WebhooksActions } from "./ui/webhooks-actions";
 import { WebhooksModals } from "./ui/webhooks-modals";
 
 export const WebhooksWidget = () => {
@@ -26,7 +26,7 @@ export const WebhooksWidget = () => {
     [handleDelete],
   );
 
-  const toolbar = <WebhooksHeader onCreate={openModal} />;
+  const toolbar = <WebhooksActions onCreate={openModal} />;
 
   return (
     <>

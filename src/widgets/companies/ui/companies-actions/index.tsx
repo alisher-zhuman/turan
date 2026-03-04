@@ -1,0 +1,38 @@
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
+interface Props {
+  isArchived: boolean;
+  onChangeArchived: (archived: boolean) => void;
+  onCreate: () => void;
+}
+
+export const CompaniesActions = ({
+  isArchived,
+  onChangeArchived,
+  onCreate,
+}: Props) => (
+  <Box
+    mb={2}
+    display="flex"
+    alignItems="center"
+    justifyContent="flex-end"
+    flexWrap="wrap"
+    gap={2}
+  >
+    <Select
+      sx={{ maxHeight: 38 }}
+      value={isArchived ? "archived" : "active"}
+      onChange={(e) => onChangeArchived(e.target.value === "archived")}
+    >
+      <MenuItem value="active">Активные</MenuItem>
+      <MenuItem value="archived">Архивные</MenuItem>
+    </Select>
+
+    <Button onClick={onCreate} variant="contained" color="primary">
+      Создать
+    </Button>
+  </Box>
+);

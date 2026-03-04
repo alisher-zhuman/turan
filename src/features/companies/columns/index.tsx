@@ -11,7 +11,7 @@ import type { Company } from "@/entities/companies";
 import { formatDateTime } from "@/shared/helpers";
 import type { Column } from "@/shared/types";
 
-import { copyToClipboard } from "../utils/helpers";
+import { copyToClipboard } from "../helpers";
 
 export const createCompanyColumns = (
   onRefreshToken: (id: number) => void,

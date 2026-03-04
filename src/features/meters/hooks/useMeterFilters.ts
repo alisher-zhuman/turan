@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export interface MeterFilters {
   meterName: string;
@@ -9,7 +9,7 @@ export interface MeterFilters {
   valveFilter: "all" | "open" | "closed";
 }
 
-const initialFilters: MeterFilters = {
+const DEFAULT_FILTERS: MeterFilters = {
   meterName: "",
   customerId: "",
   status: "all",
@@ -18,8 +18,22 @@ const initialFilters: MeterFilters = {
   valveFilter: "all",
 };
 
-export const useMeterFilters = () => {
-  const [filters, setFilters] = useState<MeterFilters>(initialFilters);
+interface Params {
+  initialFilters?: Partial<MeterFilters>;
+}
+
+const getInitialFilters = (
+  initialFiltersPatch?: Partial<MeterFilters>,
+): MeterFilters => ({
+  ...DEFAULT_FILTERS,
+  ...initialFiltersPatch,
+  groupId: initialFiltersPatch?.groupId ?? null,
+});
+
+export const useMeterFilters = ({ initialFilters: initialFiltersPatch }: Params = {}) => {
+  const [filters, setFilters] = useState<MeterFilters>(() =>
+    getInitialFilters(initialFiltersPatch),
+  );
 
   const filtersKey = useMemo(
     () =>
@@ -34,23 +48,38 @@ export const useMeterFilters = () => {
     [filters],
   );
 
-  const updateFilters = (patch: Partial<MeterFilters>) => {
+  const updateFilters = useCallback((patch: Partial<MeterFilters>) => {
     setFilters((prev) => ({ ...prev, ...patch }));
-  };
+  }, []);
 
-  const setStatus = (value: string) => updateFilters({ status: value });
-  const setIsArchived = (value: boolean) =>
-    updateFilters({ isArchived: value });
-  const setGroupId = (value: number | null) =>
-    updateFilters({ groupId: value });
-  const setCustomerId = (value: string) => updateFilters({ customerId: value });
-  const setMeterName = (value: string) => updateFilters({ meterName: value });
-  const setValveFilter = (value: "all" | "open" | "closed") =>
-    updateFilters({ valveFilter: value });
+  const setStatus = useCallback(
+    (value: string) => updateFilters({ status: value }),
+    [updateFilters],
+  );
+  const setIsArchived = useCallback(
+    (value: boolean) => updateFilters({ isArchived: value }),
+    [updateFilters],
+  );
+  const setGroupId = useCallback(
+    (value: number | null) => updateFilters({ groupId: value }),
+    [updateFilters],
+  );
+  const setCustomerId = useCallback(
+    (value: string) => updateFilters({ customerId: value }),
+    [updateFilters],
+  );
+  const setMeterName = useCallback(
+    (value: string) => updateFilters({ meterName: value }),
+    [updateFilters],
+  );
+  const setValveFilter = useCallback(
+    (value: "all" | "open" | "closed") => updateFilters({ valveFilter: value }),
+    [updateFilters],
+  );
 
-  const resetFilters = () => {
-    setFilters(initialFilters);
-  };
+  const resetFilters = useCallback(() => {
+    setFilters(DEFAULT_FILTERS);
+  }, []);
 
   return {
     filters,

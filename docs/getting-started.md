@@ -1,62 +1,62 @@
-# Запуск и окружение
+# Getting Started and Environment
 
-## Требования
+## Requirements
 
 - Node.js 20+
 - npm 10+
 
-## Локальный запуск
+## Local Run
 
-1. Установить зависимости:
+1. Install dependencies:
    ```bash
    npm ci
    ```
-2. Создать `.env` из примера:
+2. Create `.env` from the example:
    ```bash
    cp .env.example .env
    ```
-3. Убедиться, что в `.env` задан URL API:
+3. Make sure API URL is set in `.env`:
    ```bash
    VITE_API_URL="https://your-api-host/api/"
    ```
-4. Запустить приложение:
+4. Start the app:
    ```bash
    npm run dev
    ```
 
-По умолчанию Vite поднимает фронтенд на `http://localhost:5173`.
+By default, Vite serves the frontend at `http://localhost:5173`.
 
-## Полезные команды
+## Useful Commands
 
-- Проверка линтера:
+- Run linter:
   ```bash
   npm run lint
   ```
-- Production сборка:
+- Production build:
   ```bash
   npm run build
   ```
-- Локальный просмотр production:
+- Local production preview:
   ```bash
   npm run preview
   ```
 
 ## Docker
 
-В проекте есть `Dockerfile` и `docker-compose.yml`.
+The project includes `Dockerfile` and `docker-compose.yml`.
 
-Запуск:
+Run:
 
 ```bash
 docker compose up --build
 ```
 
-По текущей конфигурации контейнер доступен на `http://localhost:80`.
+With the current configuration, the container is available at `http://localhost:80`.
 
 ## Git hooks
 
-Используется Husky:
+Husky is used:
 
-- `pre-push` запускает `npm run lint`.
+- `pre-push` runs `npm run lint`.
 
-Если линтер не проходит, push будет остановлен.
+If linting fails, push is blocked.

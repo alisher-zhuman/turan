@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 
 import {
+  createCompaniesSearchString,
   createCompanyColumns,
+  parseCompaniesSearchState,
   useCompaniesQuery,
   useCompanyActions,
   useCompanyFilters,
@@ -10,14 +12,25 @@ import {
 import type { Company } from "@/entities/companies";
 
 import { ERROR_TEXTS } from "@/shared/constants";
-import { useEntityModal } from "@/shared/hooks";
+import { useEntityModal, useInitialSearchState, useSyncSearchParams } from "@/shared/hooks";
 import { TableSection } from "@/shared/ui/table-section";
 
-import { CompaniesHeader } from "./ui/companies-header";
+import { CompaniesActions } from "./ui/companies-actions";
 import { CompaniesModals } from "./ui/companies-modals";
 
 export const CompaniesWidget = () => {
-  const { isArchived, setIsArchived } = useCompanyFilters();
+  const initialSearchState = useInitialSearchState(parseCompaniesSearchState);
+
+  const { isArchived, setIsArchived } = useCompanyFilters({
+    initialIsArchived: initialSearchState.isArchived,
+  });
+
+  useSyncSearchParams(
+    {
+      isArchived,
+    },
+    createCompaniesSearchString,
+  );
 
   const { companies, hasCompanies, emptyText, isLoading, isError } =
     useCompaniesQuery({ isArchived });
@@ -43,7 +56,7 @@ export const CompaniesWidget = () => {
   );
 
   const toolbar = (
-    <CompaniesHeader
+    <CompaniesActions
       isArchived={isArchived}
       onChangeArchived={setIsArchived}
       onCreate={openCreateModal}

@@ -1,7 +1,11 @@
 import { useState } from "react";
 
-export const useCompanyFilters = () => {
-  const [isArchived, setIsArchived] = useState(false);
+interface Params {
+  initialIsArchived?: boolean;
+}
+
+export const useCompanyFilters = ({ initialIsArchived = false }: Params = {}) => {
+  const [isArchived, setIsArchived] = useState(initialIsArchived);
 
   return {
     isArchived,

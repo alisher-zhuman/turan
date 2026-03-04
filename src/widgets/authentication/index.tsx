@@ -4,18 +4,20 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
-import { ForgotForm, SignInForm } from "@/features/authentication";
+import { ForgotPasswordForm, LogInForm } from "@/features/authentication";
+
+import { ROUTES } from "@/shared/constants";
 
 export const AuthenticationWidget = () => {
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
 
-  const isForgot = pathname.includes("forgot");
+  const isForgotPassword = pathname.includes(`/${ROUTES.FORGOT_PASSWORD}`);
 
   return (
     <Box sx={{ height: "100vh", position: "relative" }}>
-      {isForgot && (
+      {isForgotPassword && (
         <Button
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate(-1)}
@@ -25,7 +27,7 @@ export const AuthenticationWidget = () => {
         </Button>
       )}
 
-      {isForgot ? <ForgotForm /> : <SignInForm />}
+      {isForgotPassword ? <ForgotPasswordForm /> : <LogInForm />}
     </Box>
   );
 };

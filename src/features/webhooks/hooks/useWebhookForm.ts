@@ -7,8 +7,8 @@ import { createWebhook, webhooksKeys } from "@/entities/webhooks";
 import { getApiErrorMessage } from "@/shared/helpers";
 import { useToastMutation } from "@/shared/hooks";
 
-import { WebhookFormSchema } from "../model/schema";
-import type { WebhookFormValues } from "../model/types";
+import { WebhookFormSchema } from "../schemas";
+import type { WebhookFormValues } from "../types";
 
 interface Params {
   onClose: () => void;

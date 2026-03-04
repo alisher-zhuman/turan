@@ -9,8 +9,8 @@ import { type Meter,metersKeys, updateMeter } from "@/entities/meters";
 import { getApiErrorMessage } from "@/shared/helpers";
 import { useFormReset, useToastMutation } from "@/shared/hooks";
 
-import { MeterFormSchema } from "../model/schema";
-import type { MeterFormValues } from "../model/types";
+import { MeterFormSchema } from "../schemas";
+import type { MeterFormValues } from "../types";
 
 interface Params {
   meterToEdit: Meter | null;

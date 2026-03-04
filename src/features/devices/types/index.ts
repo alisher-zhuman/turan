@@ -7,3 +7,5 @@ export interface CreateDeviceColumnsParams {
   onVerify: (id: number) => void;
   onDeleteOne: (id: number) => void;
 }
+
+export type { DevicesSearchState } from "./search-params";
