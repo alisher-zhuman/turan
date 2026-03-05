@@ -1,8 +1,13 @@
 import type { AxiosError } from "axios";
 
-import { deleteMeters, metersKeys, sendMeterCommand } from "@/entities/meters";
+import {
+  deleteMeters,
+  downloadMetersTemplate,
+  metersKeys,
+  sendMeterCommand,
+} from "@/entities/meters";
 
-import { getApiErrorMessage } from "@/shared/helpers";
+import { downloadBlobFile, getApiErrorMessage } from "@/shared/helpers";
 import { useToastMutation } from "@/shared/hooks";
 
 interface Params {
@@ -47,6 +52,16 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
       getApiErrorMessage(error, "Ошибка при отправке команды клапану"),
   });
 
+  const downloadTemplateMutation = useToastMutation({
+    mutationFn: downloadMetersTemplate,
+    successMessage: "Шаблон Excel скачан",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      getApiErrorMessage(error, "Ошибка при скачивании шаблона"),
+    onSuccess: ({ blob, filename }) => {
+      downloadBlobFile(blob, filename);
+    },
+  });
+
   const handleDeleteOne = (meterId: number) => {
     if (!isAdmin) return;
     deleteMutation.mutate([meterId]);
@@ -62,9 +77,16 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
     commandMutation.mutate({ meterId, command });
   };
 
+  const handleDownloadTemplate = () => {
+    if (!isAdmin) return;
+    downloadTemplateMutation.mutate();
+  };
+
   return {
     handleDeleteOne,
     handleDeleteSelected,
     handleCommand,
+    handleDownloadTemplate,
+    isDownloadingTemplate: downloadTemplateMutation.isPending,
   };
 };

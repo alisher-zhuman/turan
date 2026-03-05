@@ -17,6 +17,7 @@ export const API_ROUTES = {
   DEVICES_REMOVE: "/devices/remove",
 
   METERS: "/meters",
+  METERS_TEMPLATE: "/meters/template",
   METERS_COMMAND: "/meters/command",
 
   GROUPS: "/group",

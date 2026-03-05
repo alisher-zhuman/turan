@@ -1,8 +1,8 @@
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import BusinessIcon from "@mui/icons-material/Business";
 import DevicesOtherIcon from "@mui/icons-material/DevicesOther";
-import GroupsIcon from "@mui/icons-material/Groups";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import PeopleIcon from "@mui/icons-material/People";
@@ -23,7 +23,7 @@ export const getSidebarIcon = (to: string) => {
     case to.startsWith(`/${ROUTES.DEVICES}`):
       return DevicesOtherIcon;
     case to.startsWith(`/${ROUTES.GROUPS}`):
-      return GroupsIcon;
+      return AccountTreeIcon;
     case to.startsWith(`/${ROUTES.COMPANIES}`):
       return BusinessIcon;
     case to.startsWith(`/${ROUTES.USERS}`):

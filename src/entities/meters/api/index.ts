@@ -1,5 +1,6 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
+import { getFilenameFromContentDisposition } from "@/shared/helpers";
 
 import { MetersResponseSchema } from "../model/schemas";
 
@@ -56,6 +57,21 @@ export const createMeter = async (params: {
   await api.post(API_ROUTES.METERS, null, {
     params,
   });
+};
+
+export const downloadMetersTemplate = async () => {
+  const response = await api.get(API_ROUTES.METERS_TEMPLATE, {
+    responseType: "blob",
+  });
+
+  const filename =
+    getFilenameFromContentDisposition(response.headers["content-disposition"]) ??
+    "meters-template.xlsx";
+
+  return {
+    blob: response.data as Blob,
+    filename,
+  };
 };
 
 export const updateMeter = async (params: {

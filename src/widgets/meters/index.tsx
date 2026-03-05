@@ -53,6 +53,8 @@ export const MetersWidget = () => {
     handleDeleteOne,
     handleDeleteSelected,
     handleCommand,
+    handleDownloadTemplate,
+    isDownloadingTemplate,
     handleResetFilters,
     clearSelection,
   } = useMeters({
@@ -171,7 +173,9 @@ export const MetersWidget = () => {
       selectedCount={selectedIds.length}
       activeFiltersCount={activeFiltersCount}
       hasGroups={groups.length > 0}
+      isDownloadingTemplate={isDownloadingTemplate}
       onCreate={handleCreate}
+      onDownloadTemplate={handleDownloadTemplate}
       onOpenFilters={() => setFiltersOpen(true)}
       onDeleteSelected={handleDeleteSelected}
       onAddSelectedToGroup={openAddToGroupModal}

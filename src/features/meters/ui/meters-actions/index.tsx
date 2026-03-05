@@ -7,7 +7,9 @@ interface Props {
   selectedCount: number;
   activeFiltersCount: number;
   hasGroups: boolean;
+  isDownloadingTemplate: boolean;
   onCreate: () => void;
+  onDownloadTemplate: () => void;
   onOpenFilters: () => void;
   onResetFilters: () => void;
   onDeleteSelected: () => void;
@@ -21,7 +23,9 @@ export const MetersActions = ({
   selectedCount,
   activeFiltersCount,
   hasGroups,
+  isDownloadingTemplate,
   onCreate,
+  onDownloadTemplate,
   onOpenFilters,
   onResetFilters,
   onDeleteSelected,
@@ -38,9 +42,20 @@ export const MetersActions = ({
   >
     <Box display="flex" flexWrap="wrap" gap={1}>
       {isAdmin && (
-        <Button size="small" variant="contained" onClick={onCreate}>
-          Создать
-        </Button>
+        <>
+          <Button size="small" variant="contained" onClick={onCreate}>
+            Создать
+          </Button>
+
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={onDownloadTemplate}
+            disabled={isDownloadingTemplate}
+          >
+            {isDownloadingTemplate ? "Скачивание..." : "Скачать шаблон"}
+          </Button>
+        </>
       )}
 
       <Button
