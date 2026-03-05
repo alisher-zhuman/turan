@@ -11,7 +11,7 @@ import {
   useReadingsSelection,
 } from "@/features/readings";
 
-import { ERROR_TEXTS, ROWS_PER_PAGE_LABELS } from "@/shared/constants";
+import { ROWS_PER_PAGE_LABELS } from "@/shared/constants";
 import {
   useDebouncedValue,
   useInitialSearchState,
@@ -70,8 +70,15 @@ export const ReadingsWidget = () => {
 
   const { isAdmin } = useRoleAccess();
 
-  const { readings, total, hasReadings, emptyText, isLoading, isError } =
-    useReadingsQuery({
+  const {
+    readings,
+    total,
+    hasReadings,
+    emptyText,
+    isLoading,
+    isError,
+    errorText,
+  } = useReadingsQuery({
       page,
       limit,
       filters: {
@@ -148,7 +155,7 @@ export const ReadingsWidget = () => {
       <TableSection
         isLoading={isLoading}
         isError={isError}
-        errorText={ERROR_TEXTS.readings}
+        errorText={errorText}
         hasItems={hasReadings}
         emptyText={emptyText}
         toolbar={toolbar}
