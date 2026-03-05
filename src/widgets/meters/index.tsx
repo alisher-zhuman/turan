@@ -151,11 +151,25 @@ export const MetersWidget = () => {
     ],
   );
 
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+
+    if (status !== "all") count += 1;
+    if (isArchived) count += 1;
+    if (valveFilter !== "all") count += 1;
+    if (groupId !== null) count += 1;
+    if (customerId.trim()) count += 1;
+    if (meterName.trim()) count += 1;
+
+    return count;
+  }, [status, isArchived, valveFilter, groupId, customerId, meterName]);
+
   const toolbar = (
     <MetersActions
       isAdmin={isAdmin}
       canManageMetersToGroups={canManageMetersToGroups}
       selectedCount={selectedIds.length}
+      activeFiltersCount={activeFiltersCount}
       hasGroups={groups.length > 0}
       onCreate={handleCreate}
       onOpenFilters={() => setFiltersOpen(true)}

@@ -5,6 +5,7 @@ interface Props {
   isAdmin: boolean;
   canManageMetersToGroups: boolean;
   selectedCount: number;
+  activeFiltersCount: number;
   hasGroups: boolean;
   onCreate: () => void;
   onOpenFilters: () => void;
@@ -18,6 +19,7 @@ export const MetersActions = ({
   isAdmin,
   canManageMetersToGroups,
   selectedCount,
+  activeFiltersCount,
   hasGroups,
   onCreate,
   onOpenFilters,
@@ -41,13 +43,19 @@ export const MetersActions = ({
         </Button>
       )}
 
-      <Button size="small" variant="outlined" onClick={onOpenFilters}>
-        Фильтры
+      <Button
+        size="small"
+        variant={activeFiltersCount > 0 ? "contained" : "outlined"}
+        onClick={onOpenFilters}
+      >
+        {activeFiltersCount > 0 ? `Фильтры (${activeFiltersCount})` : "Фильтры"}
       </Button>
 
-      <Button size="small" variant="text" onClick={onResetFilters}>
-        Очистить фильтры
-      </Button>
+      {activeFiltersCount > 0 && (
+        <Button size="small" variant="text" onClick={onResetFilters}>
+          Очистить фильтры
+        </Button>
+      )}
     </Box>
 
     <Box display="flex" flexWrap="wrap" gap={1}>

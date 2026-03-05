@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 interface Props {
   isAdmin: boolean;
   selectedCount: number;
+  activeFiltersCount: number;
   onOpenFilters: () => void;
   onResetFilters: () => void;
   onDeleteSelected: () => void;
@@ -12,6 +13,7 @@ interface Props {
 export const ReadingsActions = ({
   isAdmin,
   selectedCount,
+  activeFiltersCount,
   onOpenFilters,
   onResetFilters,
   onDeleteSelected,
@@ -25,13 +27,19 @@ export const ReadingsActions = ({
     gap={2}
   >
     <Box display="flex" flexWrap="wrap" gap={1}>
-      <Button size="small" variant="outlined" onClick={onOpenFilters}>
-        Фильтры
+      <Button
+        size="small"
+        variant={activeFiltersCount > 0 ? "contained" : "outlined"}
+        onClick={onOpenFilters}
+      >
+        {activeFiltersCount > 0 ? `Фильтры (${activeFiltersCount})` : "Фильтры"}
       </Button>
 
-      <Button size="small" variant="text" onClick={onResetFilters}>
-        Очистить фильтры
-      </Button>
+      {activeFiltersCount > 0 && (
+        <Button size="small" variant="text" onClick={onResetFilters}>
+          Очистить фильтры
+        </Button>
+      )}
     </Box>
 
     <Box display="flex" flexWrap="wrap" gap={1}>

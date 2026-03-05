@@ -118,6 +118,19 @@ export const ReadingsWidget = () => {
     setPage(0);
   };
 
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+
+    if (filters.meterId !== null) count += 1;
+    if (filters.customerId.trim()) count += 1;
+    if (filters.client.trim()) count += 1;
+    if (filters.address.trim()) count += 1;
+    if (filters.dateFrom) count += 1;
+    if (filters.dateTo) count += 1;
+
+    return count;
+  }, [filters]);
+
   const columns = useMemo(
     () =>
       createReadingColumns({
@@ -144,6 +157,7 @@ export const ReadingsWidget = () => {
     <ReadingsActions
       isAdmin={isAdmin}
       selectedCount={selectedIds.length}
+      activeFiltersCount={activeFiltersCount}
       onOpenFilters={() => setFiltersOpen(true)}
       onResetFilters={handleResetFilters}
       onDeleteSelected={handleDeleteSelectedWithIds}
