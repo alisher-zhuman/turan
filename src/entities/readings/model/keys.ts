@@ -1,5 +1,13 @@
 export const readingsKeys = {
   all: ["readings"] as const,
-  list: (page: number, limit: number) =>
-    [...readingsKeys.all, page, limit] as const,
+  list: (params: {
+    page: number;
+    limit: number;
+    meterId: number | null;
+    customerId: string;
+    client: string;
+    address: string;
+    dateFrom: string;
+    dateTo: string;
+  }) => [...readingsKeys.all, params] as const,
 };
