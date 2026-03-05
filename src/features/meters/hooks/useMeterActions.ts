@@ -5,6 +5,7 @@ import {
   downloadMetersTemplate,
   metersKeys,
   sendMeterCommand,
+  uploadMetersFromFile,
 } from "@/entities/meters";
 
 import { downloadBlobFile, getApiErrorMessage } from "@/shared/helpers";
@@ -62,6 +63,14 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
     },
   });
 
+  const uploadMetersMutation = useToastMutation({
+    mutationFn: (file: File) => uploadMetersFromFile(file),
+    invalidateKeys: [metersKeys.all],
+    successMessage: "Файл водомеров загружен",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      getApiErrorMessage(error, "Ошибка при загрузке файла водомеров"),
+  });
+
   const handleDeleteOne = (meterId: number) => {
     if (!isAdmin) return;
     deleteMutation.mutate([meterId]);
@@ -82,11 +91,18 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
     downloadTemplateMutation.mutate();
   };
 
+  const handleUploadFile = (file: File) => {
+    if (!isAdmin) return;
+    uploadMetersMutation.mutate(file);
+  };
+
   return {
     handleDeleteOne,
     handleDeleteSelected,
     handleCommand,
     handleDownloadTemplate,
+    handleUploadFile,
     isDownloadingTemplate: downloadTemplateMutation.isPending,
+    isUploadingFile: uploadMetersMutation.isPending,
   };
 };

@@ -83,7 +83,9 @@ export const useMeters = ({
     handleDeleteSelected,
     handleCommand,
     handleDownloadTemplate,
+    handleUploadFile,
     isDownloadingTemplate,
+    isUploadingFile,
   } = useMeterActions({
     isAdmin,
     onRemoved: removeSelected,
@@ -141,7 +143,9 @@ export const useMeters = ({
     handleDeleteSelected: handleDeleteSelectedWithIds,
     handleCommand,
     handleDownloadTemplate,
+    handleUploadFile,
     isDownloadingTemplate,
+    isUploadingFile,
     handleResetFilters,
     clearSelection,
   };

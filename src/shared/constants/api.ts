@@ -18,6 +18,7 @@ export const API_ROUTES = {
 
   METERS: "/meters",
   METERS_TEMPLATE: "/meters/template",
+  METERS_UPLOAD: "/meters/upload",
   METERS_COMMAND: "/meters/command",
 
   GROUPS: "/group",

@@ -1,3 +1,5 @@
+import type { ChangeEvent } from "react";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
@@ -8,8 +10,10 @@ interface Props {
   activeFiltersCount: number;
   hasGroups: boolean;
   isDownloadingTemplate: boolean;
+  isUploadingFile: boolean;
   onCreate: () => void;
   onDownloadTemplate: () => void;
+  onUploadFile: (file: File) => void;
   onOpenFilters: () => void;
   onResetFilters: () => void;
   onDeleteSelected: () => void;
@@ -24,89 +28,116 @@ export const MetersActions = ({
   activeFiltersCount,
   hasGroups,
   isDownloadingTemplate,
+  isUploadingFile,
   onCreate,
   onDownloadTemplate,
+  onUploadFile,
   onOpenFilters,
   onResetFilters,
   onDeleteSelected,
   onAddSelectedToGroup,
   onRemoveSelectedFromGroup,
-}: Props) => (
-  <Box
-    mb={2}
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    flexWrap="wrap"
-    gap={2}
-  >
-    <Box display="flex" flexWrap="wrap" gap={1}>
-      {isAdmin && (
-        <>
-          <Button size="small" variant="contained" onClick={onCreate}>
-            Создать
-          </Button>
+}: Props) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-          <Button
-            size="small"
-            variant="outlined"
-            onClick={onDownloadTemplate}
-            disabled={isDownloadingTemplate}
-          >
-            {isDownloadingTemplate ? "Скачивание..." : "Скачать шаблон"}
-          </Button>
-        </>
-      )}
+    onUploadFile(file);
+    event.target.value = "";
+  };
 
-      <Button
-        size="small"
-        variant={activeFiltersCount > 0 ? "contained" : "outlined"}
-        onClick={onOpenFilters}
-      >
-        {activeFiltersCount > 0 ? `Фильтры (${activeFiltersCount})` : "Фильтры"}
-      </Button>
+  return (
+    <Box
+      mb={2}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      flexWrap="wrap"
+      gap={2}
+    >
+      <Box display="flex" flexWrap="wrap" gap={1}>
+        {isAdmin && (
+          <>
+            <Button size="small" variant="contained" onClick={onCreate}>
+              Создать
+            </Button>
 
-      {activeFiltersCount > 0 && (
-        <Button size="small" variant="text" onClick={onResetFilters}>
-          Очистить фильтры
-        </Button>
-      )}
-    </Box>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={onDownloadTemplate}
+              disabled={isDownloadingTemplate || isUploadingFile}
+            >
+              {isDownloadingTemplate ? "Скачивание..." : "Скачать шаблон"}
+            </Button>
 
-    <Box display="flex" flexWrap="wrap" gap={1}>
-      {canManageMetersToGroups && (
-        <>
-          <Button
-            size="small"
-            variant="outlined"
-            disabled={selectedCount === 0 || !hasGroups}
-            onClick={onAddSelectedToGroup}
-          >
-            Добавить в группу
-          </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              component="label"
+              disabled={isUploadingFile || isDownloadingTemplate}
+            >
+              {isUploadingFile ? "Загрузка..." : "Загрузить файл"}
+              <input
+                hidden
+                type="file"
+                accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                onChange={handleFileChange}
+              />
+            </Button>
+          </>
+        )}
 
-          <Button
-            size="small"
-            variant="outlined"
-            disabled={selectedCount === 0 || !hasGroups}
-            onClick={onRemoveSelectedFromGroup}
-          >
-            Удалить из группы
-          </Button>
-        </>
-      )}
-
-      {isAdmin && (
         <Button
           size="small"
-          variant="outlined"
-          color="error"
-          disabled={selectedCount === 0}
-          onClick={onDeleteSelected}
+          variant={activeFiltersCount > 0 ? "contained" : "outlined"}
+          onClick={onOpenFilters}
         >
-          Удалить выбранные
+          {activeFiltersCount > 0 ? `Фильтры (${activeFiltersCount})` : "Фильтры"}
         </Button>
-      )}
+
+        {activeFiltersCount > 0 && (
+          <Button size="small" variant="text" onClick={onResetFilters}>
+            Очистить фильтры
+          </Button>
+        )}
+      </Box>
+
+      <Box display="flex" flexWrap="wrap" gap={1}>
+        {canManageMetersToGroups && (
+          <>
+            <Button
+              size="small"
+              variant="outlined"
+              disabled={selectedCount === 0 || !hasGroups}
+              onClick={onAddSelectedToGroup}
+            >
+              Добавить в группу
+            </Button>
+
+            <Button
+              size="small"
+              variant="outlined"
+              disabled={selectedCount === 0 || !hasGroups}
+              onClick={onRemoveSelectedFromGroup}
+            >
+              Удалить из группы
+            </Button>
+          </>
+        )}
+
+        {isAdmin && (
+          <Button
+            size="small"
+            variant="outlined"
+            color="error"
+            disabled={selectedCount === 0}
+            onClick={onDeleteSelected}
+          >
+            Удалить выбранные
+          </Button>
+        )}
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};

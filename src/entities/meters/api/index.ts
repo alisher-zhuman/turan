@@ -74,6 +74,13 @@ export const downloadMetersTemplate = async () => {
   };
 };
 
+export const uploadMetersFromFile = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  await api.post(API_ROUTES.METERS_UPLOAD, formData);
+};
+
 export const updateMeter = async (params: {
   id: number;
   meterId: string;
