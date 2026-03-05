@@ -1,6 +1,6 @@
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/shared/constants";
 import { parseBooleanFlag, parsePositiveInt } from "@/shared/helpers";
 
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from "../constants";
 import type { DevicesSearchState } from "../types";
 
 export const parseDevicesSearchState = (
