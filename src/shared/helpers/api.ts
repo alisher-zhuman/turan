@@ -19,6 +19,7 @@ export const getApiErrorMessage = (
   }
 
   const responseError = apiError?.response?.data?.error;
+  
   if (responseError) return responseError;
 
   if (error instanceof Error && error.message) {
