@@ -25,7 +25,7 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     roles: [ROLE.ADMIN, ROLE.USER, ROLE.CONTROLLER],
   },
   {
-    label: "Счётчики",
+    label: "Водомеры",
     to: `/${ROUTES.METERS}`,
     roles: [ROLE.ADMIN, ROLE.USER, ROLE.CONTROLLER],
   },

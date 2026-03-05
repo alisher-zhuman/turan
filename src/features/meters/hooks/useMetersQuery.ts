@@ -65,7 +65,7 @@ export const useMetersQuery = ({ page, limit, filters }: Params) => {
 
   const total = data?.total ?? 0;
   const hasMeters = meters.length > 0;
-  const emptyText = "Счётчики не найдены";
+  const emptyText = "Водомеры не найдены";
 
   return {
     meters,

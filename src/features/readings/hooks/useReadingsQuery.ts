@@ -66,11 +66,11 @@ export const useReadingsQuery = ({ page, limit, filters }: Params) => {
   const hasReadings = readings.length > 0 && !isMeterNotFoundByFilter;
   const total = data?.total ?? 0;
   const emptyText = isMeterNotFoundByFilter
-    ? getApiErrorMessage(error, "Счётчик не найден")
+    ? getApiErrorMessage(error, "Водомер не найден")
     : "Показания не найдены";
   const errorText = getApiErrorMessage(
     error,
-    "Ошибка при загрузке показаний счётчиков",
+    "Ошибка при загрузке показаний водомеров",
   );
 
   return {

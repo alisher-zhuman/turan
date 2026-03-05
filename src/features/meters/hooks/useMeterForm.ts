@@ -67,9 +67,9 @@ export const useMeterForm = ({
       password?: string | null;
     }) => createMeter(payload),
     invalidateKeys: [metersKeys.all],
-    successMessage: "Счётчик создан",
+    successMessage: "Водомер создан",
     errorMessage: (error: AxiosError<{ message?: string }>) =>
-      getApiErrorMessage(error, "Ошибка при создании счётчика"),
+      getApiErrorMessage(error, "Ошибка при создании водомера"),
     onSuccess: () => {
       onClose();
     },
@@ -86,9 +86,9 @@ export const useMeterForm = ({
       isArchived: boolean;
     }) => updateMeter(payload),
     invalidateKeys: [metersKeys.all],
-    successMessage: "Счётчик обновлён",
+    successMessage: "Водомер обновлён",
     errorMessage: (error: AxiosError<{ message?: string }>) =>
-      getApiErrorMessage(error, "Ошибка при сохранении счётчика"),
+      getApiErrorMessage(error, "Ошибка при сохранении водомера"),
     onSuccess: () => {
       onClose();
     },

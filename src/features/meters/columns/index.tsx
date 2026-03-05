@@ -57,7 +57,7 @@ export const createMeterColumns = ({
     },
     {
       id: "name",
-      header: "Название счётчика",
+      header: "Название водомера",
       cell: (m) => m.name,
     },
     {

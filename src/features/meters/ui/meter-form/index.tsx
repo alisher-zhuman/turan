@@ -33,7 +33,7 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
     >
       <FormFieldset disabled={isPending}>
         <FormTextField
-          label="Номер счётчика"
+          label="Номер водомера"
           name="meterId"
           required
           control={control}

@@ -43,7 +43,7 @@ export const createReadingColumns = ({
   columns.push(
     {
       id: "meterName",
-      header: "Счётчик",
+      header: "Водомер",
       cell: (r) => r.meter.name,
     },
     {

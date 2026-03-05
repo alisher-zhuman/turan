@@ -77,7 +77,7 @@ export const MetersModals = ({
     <Modal
       open={editOpen}
       onClose={onCloseEdit}
-      title={editingMeter ? "Редактировать счётчик" : "Создать счётчик"}
+      title={editingMeter ? "Редактировать водомер" : "Создать водомер"}
     >
       <MeterForm
         meterToEdit={editingMeter}
@@ -89,7 +89,7 @@ export const MetersModals = ({
     <Modal
       open={detailsOpen}
       onClose={onCloseDetails}
-      title="Детальная информация по счётчику"
+      title="Детальная информация по водомеру"
     >
       {detailsMeter && <MeterDetails meter={detailsMeter} />}
     </Modal>

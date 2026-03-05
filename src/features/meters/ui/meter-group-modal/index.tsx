@@ -30,8 +30,8 @@ export const MeterGroupModal = ({
 }: Props) => {
   const title =
     mode === "add"
-      ? "Добавить выбранные счётчики в группу"
-      : "Удалить выбранные счётчики из группы";
+      ? "Добавить выбранные водомеры в группу"
+      : "Удалить выбранные водомеры из группы";
 
   const handleSelectChange = (value: string | number) => {
     if (value === "") {
@@ -63,7 +63,7 @@ export const MeterGroupModal = ({
 
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box fontSize={14} color="text.secondary">
-            Выбрано счётчиков: {selectedCount}
+            Выбрано водомеров: {selectedCount}
           </Box>
 
           <Box display="flex" gap={1}>

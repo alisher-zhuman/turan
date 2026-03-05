@@ -22,14 +22,14 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
     invalidateKeys: [metersKeys.all],
     successMessage: (_, meterIds) =>
       meterIds.length === 1
-        ? "Счётчик удалён"
-        : "Выбранные счётчики удалены",
+        ? "Водомер удалён"
+        : "Выбранные водомеры удалены",
     errorMessage: (error: AxiosError<{ message?: string }>, meterIds) =>
       getApiErrorMessage(
         error,
         meterIds.length === 1
-          ? "Ошибка при удалении счётчика"
-          : "Ошибка при удалении выбранных счётчиков",
+          ? "Ошибка при удалении водомера"
+          : "Ошибка при удалении выбранных водомеров",
       ),
     onSuccess: (_, meterIds) => {
       onRemoved?.(meterIds);
@@ -70,7 +70,7 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
       message?.trim() ||
       `Загрузка завершена: добавлено ${addedCount}, пропущено ${skippedCount}`,
     errorMessage: (error: AxiosError<{ message?: string }>) =>
-      getApiErrorMessage(error, "Ошибка при загрузке файла со счётчиками"),
+      getApiErrorMessage(error, "Ошибка при загрузке файла с водомерами"),
   });
 
   const handleDeleteOne = (meterId: number) => {

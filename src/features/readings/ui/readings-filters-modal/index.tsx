@@ -43,7 +43,7 @@ export const ReadingsFiltersModal = ({
         fullWidth
         size="small"
         type="number"
-        label="Номер счётчика"
+        label="Номер водомера"
         value={meterId ?? ""}
         onChange={(event) =>
           onMeterIdChange(parsePositiveInt(event.target.value || null))

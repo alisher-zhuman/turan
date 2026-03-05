@@ -72,7 +72,7 @@ export const downloadMetersTemplate = async () => {
 
   const filename =
     getFilenameFromContentDisposition(response.headers["content-disposition"]) ??
-    "Шаблон счётчиков.xlsx";
+    "Шаблон водомеров.xlsx";
 
   return {
     blob: response.data as Blob,

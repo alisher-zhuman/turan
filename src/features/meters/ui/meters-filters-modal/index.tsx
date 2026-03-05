@@ -54,7 +54,7 @@ export const MetersFiltersModal = ({
 
       <TextField
         fullWidth
-        label="Название счётчика"
+        label="Название водомера"
         value={meterName}
         onChange={(e) => onMeterNameChange(e.target.value)}
         size="small"
