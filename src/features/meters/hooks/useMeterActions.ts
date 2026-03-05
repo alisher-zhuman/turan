@@ -66,9 +66,9 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
   const uploadMetersMutation = useToastMutation({
     mutationFn: (file: File) => uploadMetersFromFile(file),
     invalidateKeys: [metersKeys.all],
-    successMessage: "Файл водомеров загружен",
+    successMessage: "Файл со счётчиками загружен",
     errorMessage: (error: AxiosError<{ message?: string }>) =>
-      getApiErrorMessage(error, "Ошибка при загрузке файла водомеров"),
+      getApiErrorMessage(error, "Ошибка при загрузке файла со счётчиками"),
   });
 
   const handleDeleteOne = (meterId: number) => {
