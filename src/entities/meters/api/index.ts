@@ -4,6 +4,12 @@ import { getFilenameFromContentDisposition } from "@/shared/helpers";
 
 import { MetersResponseSchema } from "../model/schemas";
 
+interface UploadMetersResponse {
+  message: string;
+  addedCount: number;
+  skippedCount: number;
+}
+
 export const getMeters = async (
   page = 1,
   limit = 10,
@@ -78,7 +84,12 @@ export const uploadMetersFromFile = async (file: File) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  await api.post(API_ROUTES.METERS_UPLOAD, formData);
+  const { data } = await api.post<UploadMetersResponse>(
+    API_ROUTES.METERS_UPLOAD,
+    formData,
+  );
+
+  return data;
 };
 
 export const updateMeter = async (params: {

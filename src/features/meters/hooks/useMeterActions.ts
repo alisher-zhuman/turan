@@ -66,7 +66,9 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
   const uploadMetersMutation = useToastMutation({
     mutationFn: (file: File) => uploadMetersFromFile(file),
     invalidateKeys: [metersKeys.all],
-    successMessage: "Файл со счётчиками загружен",
+    successMessage: ({ message, addedCount, skippedCount }) =>
+      message?.trim() ||
+      `Загрузка завершена: добавлено ${addedCount}, пропущено ${skippedCount}`,
     errorMessage: (error: AxiosError<{ message?: string }>) =>
       getApiErrorMessage(error, "Ошибка при загрузке файла со счётчиками"),
   });
