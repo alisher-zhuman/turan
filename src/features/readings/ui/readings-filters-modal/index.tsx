@@ -82,7 +82,10 @@ export const ReadingsFiltersModal = ({
         label="Дата от"
         value={dateFrom}
         onChange={(event) => onDateFromChange(event.target.value)}
-        slotProps={{ inputLabel: { shrink: true } }}
+        slotProps={{
+          inputLabel: { shrink: true },
+          htmlInput: { lang: "ru-RU" },
+        }}
       />
 
       <TextField
@@ -92,7 +95,10 @@ export const ReadingsFiltersModal = ({
         label="Дата до"
         value={dateTo}
         onChange={(event) => onDateToChange(event.target.value)}
-        slotProps={{ inputLabel: { shrink: true } }}
+        slotProps={{
+          inputLabel: { shrink: true },
+          htmlInput: { lang: "ru-RU" },
+        }}
       />
     </Box>
   </Modal>
