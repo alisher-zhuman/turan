@@ -14,6 +14,22 @@ interface GetReadingsParams {
   address?: string;
 }
 
+const trimOrNull = (value?: string) => {
+  const normalized = value?.trim();
+  return normalized ? normalized : null;
+};
+
+const withTrimmedParam = (
+  params: Record<string, unknown>,
+  key: string,
+  value?: string,
+) => {
+  const normalized = trimOrNull(value);
+  if (normalized) {
+    params[key] = normalized;
+  }
+};
+
 export const getReadings = async ({
   page = 1,
   limit = 10,
@@ -26,34 +42,15 @@ export const getReadings = async ({
 }: GetReadingsParams = {}) => {
   const params: Record<string, unknown> = { page, limit };
 
-  if (
-    meterId !== null &&
-    meterId !== undefined &&
-    Number.isInteger(meterId) &&
-    meterId > 0
-  ) {
+  if (Number.isInteger(meterId) && (meterId ?? 0) > 0) {
     params.meterId = meterId;
   }
 
-  if (dateFrom?.trim()) {
-    params.dateFrom = dateFrom.trim();
-  }
-
-  if (dateTo?.trim()) {
-    params.dateTo = dateTo.trim();
-  }
-
-  if (customerID?.trim()) {
-    params.customerID = customerID.trim();
-  }
-
-  if (client?.trim()) {
-    params.client = client.trim();
-  }
-
-  if (address?.trim()) {
-    params.address = address.trim();
-  }
+  withTrimmedParam(params, "dateFrom", dateFrom);
+  withTrimmedParam(params, "dateTo", dateTo);
+  withTrimmedParam(params, "customerID", customerID);
+  withTrimmedParam(params, "client", client);
+  withTrimmedParam(params, "address", address);
 
   const { data } = await api.get(API_ROUTES.READINGS, {
     params,

@@ -1,10 +1,7 @@
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/shared/constants";
 import { parsePositiveInt } from "@/shared/helpers";
 
-import {
-  DEFAULT_LIMIT,
-  DEFAULT_PAGE,
-  DEFAULT_READINGS_FILTERS,
-} from "../constants";
+import { DEFAULT_READINGS_FILTERS } from "../constants";
 import type { ReadingsSearchState, ReadingsSearchSyncState } from "../types";
 
 const normalizeTextParam = (value: string | null) => value?.trim() ?? "";

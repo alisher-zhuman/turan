@@ -1,5 +1,3 @@
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/shared/constants";
-
 import type { ReadingsFilters } from "../types";
 
 export const DEFAULT_READINGS_FILTERS: ReadingsFilters = {
@@ -10,5 +8,3 @@ export const DEFAULT_READINGS_FILTERS: ReadingsFilters = {
   dateFrom: "",
   dateTo: "",
 };
-
-export { DEFAULT_LIMIT, DEFAULT_PAGE };
