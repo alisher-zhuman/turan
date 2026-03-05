@@ -78,11 +78,18 @@ export const useMeters = ({
     resetKey: [page, limit, filtersKey].join("|"),
   });
 
-  const { handleDeleteOne, handleDeleteSelected, handleCommand } =
-    useMeterActions({
-      isAdmin,
-      onRemoved: removeSelected,
-    });
+  const {
+    handleDeleteOne,
+    handleDeleteSelected,
+    handleCommand,
+    handleDownloadTemplate,
+    handleUploadFile,
+    isDownloadingTemplate,
+    isUploadingFile,
+  } = useMeterActions({
+    isAdmin,
+    onRemoved: removeSelected,
+  });
 
   const handleDeleteSelectedWithIds = () => {
     handleDeleteSelected(selectedIds);
@@ -135,6 +142,10 @@ export const useMeters = ({
     handleDeleteOne,
     handleDeleteSelected: handleDeleteSelectedWithIds,
     handleCommand,
+    handleDownloadTemplate,
+    handleUploadFile,
+    isDownloadingTemplate,
+    isUploadingFile,
     handleResetFilters,
     clearSelection,
   };

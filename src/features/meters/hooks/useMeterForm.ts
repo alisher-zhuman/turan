@@ -4,7 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 
-import { type Meter,metersKeys, updateMeter } from "@/entities/meters";
+import {
+  createMeter,
+  type Meter,
+  metersKeys,
+  updateMeter,
+} from "@/entities/meters";
 
 import { getApiErrorMessage } from "@/shared/helpers";
 import { useFormReset, useToastMutation } from "@/shared/hooks";
@@ -19,6 +24,8 @@ interface Params {
 }
 
 const getDefaultValues = (meterToEdit: Meter | null): MeterFormValues => ({
+  meterId: meterToEdit?.name ?? "",
+  password: "",
   customerID: meterToEdit?.customerID ?? "",
   client: meterToEdit?.client ?? "",
   address: meterToEdit?.address ?? "",
@@ -26,11 +33,18 @@ const getDefaultValues = (meterToEdit: Meter | null): MeterFormValues => ({
   isArchived: meterToEdit?.isArchived ?? false,
 });
 
+const normalizeOptionalString = (value?: string) => {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : null;
+};
+
 export const useMeterForm = ({
   meterToEdit,
   onClose,
   canArchive,
 }: Params) => {
+  const isEditing = Boolean(meterToEdit);
+
   const defaultValues = useMemo(
     () => getDefaultValues(meterToEdit),
     [meterToEdit],
@@ -43,9 +57,28 @@ export const useMeterForm = ({
 
   useFormReset(reset, defaultValues);
 
-  const mutation = useToastMutation({
+  const createMutation = useToastMutation({
     mutationFn: (payload: {
-      meterId: number;
+      meterId: string;
+      customerID?: string | null;
+      client?: string | null;
+      address?: string | null;
+      descriptions?: string | null;
+      password?: string | null;
+    }) => createMeter(payload),
+    invalidateKeys: [metersKeys.all],
+    successMessage: "Водомер создан",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      getApiErrorMessage(error, "Ошибка при создании водомера"),
+    onSuccess: () => {
+      onClose();
+    },
+  });
+
+  const updateMutation = useToastMutation({
+    mutationFn: (payload: {
+      id: number;
+      meterId: string;
       customerID: string | null;
       client: string | null;
       address: string | null;
@@ -53,28 +86,40 @@ export const useMeterForm = ({
       isArchived: boolean;
     }) => updateMeter(payload),
     invalidateKeys: [metersKeys.all],
-    successMessage: "Счётчик обновлён",
+    successMessage: "Водомер обновлён",
     errorMessage: (error: AxiosError<{ message?: string }>) =>
-      getApiErrorMessage(error, "Ошибка при сохранении счётчика"),
+      getApiErrorMessage(error, "Ошибка при сохранении водомера"),
     onSuccess: () => {
       onClose();
     },
   });
 
   const onSubmit = handleSubmit((values) => {
-    if (!meterToEdit) return;
+    const normalizedMeterId = values.meterId.trim();
+    const normalizedCustomerID = normalizeOptionalString(values.customerID);
+    const normalizedClient = normalizeOptionalString(values.client);
+    const normalizedAddress = normalizeOptionalString(values.address);
+    const normalizedDescriptions = normalizeOptionalString(values.descriptions);
 
-    const normalizedCustomerID =
-      values.customerID && values.customerID.trim().length > 0
-        ? values.customerID.trim()
-        : null;
+    if (!meterToEdit) {
+      createMutation.mutate({
+        meterId: normalizedMeterId,
+        customerID: normalizedCustomerID,
+        client: normalizedClient,
+        address: normalizedAddress,
+        descriptions: normalizedDescriptions,
+        password: normalizeOptionalString(values.password),
+      });
+      return;
+    }
 
-    mutation.mutate({
-      meterId: meterToEdit.id,
+    updateMutation.mutate({
+      id: meterToEdit.id,
+      meterId: normalizedMeterId,
       customerID: normalizedCustomerID,
-      client: values.client ?? "",
-      address: values.address ?? "",
-      descriptions: values.descriptions ?? "",
+      client: normalizedClient ?? "",
+      address: normalizedAddress ?? "",
+      descriptions: normalizedDescriptions ?? "",
       isArchived: canArchive ? values.isArchived : meterToEdit.isArchived,
     });
   });
@@ -82,6 +127,7 @@ export const useMeterForm = ({
   return {
     control,
     onSubmit,
-    isPending: mutation.isPending,
+    isPending: createMutation.isPending || updateMutation.isPending,
+    isEditing,
   };
 };

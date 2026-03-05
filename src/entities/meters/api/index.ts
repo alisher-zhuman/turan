@@ -1,7 +1,14 @@
 import { api } from "@/shared/api";
 import { API_ROUTES } from "@/shared/constants";
+import { getFilenameFromContentDisposition } from "@/shared/helpers";
 
 import { MetersResponseSchema } from "../model/schemas";
+
+interface UploadMetersResponse {
+  message: string;
+  addedCount: number;
+  skippedCount: number;
+}
 
 export const getMeters = async (
   page = 1,
@@ -45,21 +52,59 @@ export const deleteMeters = async (meterIds: number[]) => {
   });
 };
 
+export const createMeter = async (params: {
+  meterId: string;
+  customerID?: string | null;
+  client?: string | null;
+  address?: string | null;
+  descriptions?: string | null;
+  password?: string | null;
+}) => {
+  await api.post(API_ROUTES.METERS, null, {
+    params,
+  });
+};
+
+export const downloadMetersTemplate = async () => {
+  const response = await api.get(API_ROUTES.METERS_TEMPLATE, {
+    responseType: "blob",
+  });
+
+  const filename =
+    getFilenameFromContentDisposition(response.headers["content-disposition"]) ??
+    "Шаблон водомеров.xlsx";
+
+  return {
+    blob: response.data as Blob,
+    filename,
+  };
+};
+
+export const uploadMetersFromFile = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const { data } = await api.post<UploadMetersResponse>(
+    API_ROUTES.METERS_UPLOAD,
+    formData,
+  );
+
+  return data;
+};
+
 export const updateMeter = async (params: {
-  meterId: number;
+  id: number;
+  meterId: string;
   customerID?: string | null;
   client?: string | null;
   address?: string | null;
   descriptions?: string | null;
   isArchived?: boolean;
 }) => {
-  const { meterId, ...rest } = params;
+  const { id, ...rest } = params;
 
-  await api.patch(`${API_ROUTES.METERS}/${meterId}`, null, {
-    params: {
-      meterId,
-      ...rest,
-    },
+  await api.patch(`${API_ROUTES.METERS}/${id}`, null, {
+    params: rest,
   });
 };
 
@@ -71,10 +116,10 @@ export const sendMeterCommand = async (
     `${API_ROUTES.METERS_COMMAND}/${meterId}`,
     null,
     {
-    params: {
-      meterId,
-      command,
-    },
+      params: {
+        meterId,
+        command,
+      },
     },
   );
 };

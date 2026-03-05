@@ -53,6 +53,10 @@ export const MetersWidget = () => {
     handleDeleteOne,
     handleDeleteSelected,
     handleCommand,
+    handleDownloadTemplate,
+    handleUploadFile,
+    isDownloadingTemplate,
+    isUploadingFile,
     handleResetFilters,
     clearSelection,
   } = useMeters({
@@ -98,6 +102,7 @@ export const MetersWidget = () => {
     groupModalGroupId,
     setGroupModalGroupId,
     setFiltersOpen,
+    handleCreate,
     handleEdit,
     handleView,
     closeEditModal,
@@ -107,6 +112,7 @@ export const MetersWidget = () => {
     closeGroupModal,
     handleConfirmGroupModal,
   } = useMetersUiState({
+    isAdmin,
     canEdit,
     canManageMetersToGroups,
     selectedIds,
@@ -149,12 +155,31 @@ export const MetersWidget = () => {
     ],
   );
 
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+
+    if (status !== "all") count += 1;
+    if (isArchived) count += 1;
+    if (valveFilter !== "all") count += 1;
+    if (groupId !== null) count += 1;
+    if (customerId.trim()) count += 1;
+    if (meterName.trim()) count += 1;
+
+    return count;
+  }, [status, isArchived, valveFilter, groupId, customerId, meterName]);
+
   const toolbar = (
     <MetersActions
       isAdmin={isAdmin}
       canManageMetersToGroups={canManageMetersToGroups}
       selectedCount={selectedIds.length}
+      activeFiltersCount={activeFiltersCount}
       hasGroups={groups.length > 0}
+      isDownloadingTemplate={isDownloadingTemplate}
+      isUploadingFile={isUploadingFile}
+      onCreate={handleCreate}
+      onDownloadTemplate={handleDownloadTemplate}
+      onUploadFile={handleUploadFile}
       onOpenFilters={() => setFiltersOpen(true)}
       onDeleteSelected={handleDeleteSelected}
       onAddSelectedToGroup={openAddToGroupModal}

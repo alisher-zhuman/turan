@@ -4,24 +4,71 @@ import Button from "@mui/material/Button";
 interface Props {
   isAdmin: boolean;
   selectedCount: number;
+  activeFiltersCount: number;
+  isExportingReadings: boolean;
+  onOpenFilters: () => void;
+  onResetFilters: () => void;
   onDeleteSelected: () => void;
+  onExportReadings: () => void;
 }
 
 export const ReadingsActions = ({
   isAdmin,
   selectedCount,
+  activeFiltersCount,
+  isExportingReadings,
+  onOpenFilters,
+  onResetFilters,
   onDeleteSelected,
+  onExportReadings,
 }: Props) => (
-  <Box mb={2} display="flex" alignItems="center" justifyContent="flex-end">
-    {isAdmin && (
+  <Box
+    mb={2}
+    display="flex"
+    alignItems="center"
+    justifyContent="space-between"
+    flexWrap="wrap"
+    gap={2}
+  >
+    <Box display="flex" flexWrap="wrap" gap={1}>
       <Button
-        variant="outlined"
-        color="error"
-        disabled={selectedCount === 0}
-        onClick={onDeleteSelected}
+        size="small"
+        variant={activeFiltersCount > 0 ? "contained" : "outlined"}
+        onClick={onOpenFilters}
       >
-        Удалить выбранные
+        {activeFiltersCount > 0 ? `Фильтры (${activeFiltersCount})` : "Фильтры"}
       </Button>
-    )}
+
+      {activeFiltersCount > 0 && (
+        <Button size="small" variant="text" onClick={onResetFilters}>
+          Очистить фильтры
+        </Button>
+      )}
+    </Box>
+
+    <Box display="flex" flexWrap="wrap" gap={1}>
+      {isAdmin && (
+        <>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={onExportReadings}
+            disabled={isExportingReadings}
+          >
+            {isExportingReadings ? "Выгрузка..." : "Выгрузить Excel"}
+          </Button>
+
+          <Button
+            size="small"
+            variant="outlined"
+            color="error"
+            disabled={selectedCount === 0}
+            onClick={onDeleteSelected}
+          >
+            Удалить выбранные
+          </Button>
+        </>
+      )}
+    </Box>
   </Box>
 );

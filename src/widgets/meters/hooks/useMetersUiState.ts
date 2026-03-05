@@ -4,6 +4,7 @@ import type { Group } from "@/entities/groups";
 import type { Meter } from "@/entities/meters";
 
 interface Params {
+  isAdmin: boolean;
   canEdit: boolean;
   canManageMetersToGroups: boolean;
   selectedIds: number[];
@@ -15,6 +16,7 @@ interface Params {
 }
 
 export const useMetersUiState = ({
+  isAdmin,
   canEdit,
   canManageMetersToGroups,
   selectedIds,
@@ -34,6 +36,12 @@ export const useMetersUiState = ({
   const [groupModalGroupId, setGroupModalGroupId] = useState<number | null>(
     null,
   );
+
+  const handleCreate = () => {
+    if (!isAdmin) return;
+    setEditingMeter(null);
+    setEditModalOpen(true);
+  };
 
   const handleEdit = (meter: Meter) => {
     if (!canEdit) return;
@@ -113,6 +121,7 @@ export const useMetersUiState = ({
     groupModalGroupId,
     setGroupModalGroupId,
     setFiltersOpen,
+    handleCreate,
     handleEdit,
     handleView,
     closeEditModal,

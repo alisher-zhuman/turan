@@ -8,4 +8,8 @@ export interface CreateReadingColumnsParams {
   onDeleteOne: (id: string) => void;
 }
 
-export type { ReadingsSearchState } from "./search-params";
+export type {
+  ReadingsFilters,
+  ReadingsSearchState,
+  ReadingsSearchSyncState,
+} from "./search-params";

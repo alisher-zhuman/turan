@@ -1,8 +1,7 @@
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/shared/constants";
 import { parseBooleanFlag, parsePositiveInt } from "@/shared/helpers";
 
 import {
-  DEFAULT_LIMIT,
-  DEFAULT_PAGE,
   DEFAULT_STATUS,
   DEFAULT_VALVE_FILTER,
   VALID_STATUSES,

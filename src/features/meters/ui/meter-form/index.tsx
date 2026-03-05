@@ -1,7 +1,7 @@
 // src/features/meters/ui/meter-form.tsx
 import Box from "@mui/material/Box";
 
-import { type Meter } from "@/entities/meters";
+import type { Meter } from "@/entities/meters";
 
 import { FormActions } from "@/shared/ui/form-actions";
 import { FormCheckbox } from "@/shared/ui/form-checkbox";
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
-  const { control, onSubmit, isPending } = useMeterForm({
+  const { control, onSubmit, isPending, isEditing } = useMeterForm({
     meterToEdit,
     onClose,
     canArchive,
@@ -33,22 +33,25 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
     >
       <FormFieldset disabled={isPending}>
         <FormTextField
-          label="ID Клиента"
+          label="Номер водомера"
+          name="meterId"
+          required
+          control={control}
+        />
+
+        {!isEditing && (
+          <FormTextField label="Пароль" name="password" control={control} />
+        )}
+
+        <FormTextField
+          label="Лицевой счет"
           name="customerID"
           control={control}
         />
 
-        <FormTextField
-          label="Клиент"
-          name="client"
-          control={control}
-        />
+        <FormTextField label="ФИО" name="client" control={control} />
 
-        <FormTextField
-          label="Адрес"
-          name="address"
-          control={control}
-        />
+        <FormTextField label="Адрес" name="address" control={control} />
 
         <FormTextField
           label="Описание"
@@ -58,7 +61,7 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
           control={control}
         />
 
-        {canArchive && (
+        {isEditing && canArchive && (
           <FormCheckbox
             name="isArchived"
             control={control}
@@ -67,7 +70,11 @@ export const MeterForm = ({ meterToEdit, onClose, canArchive }: Props) => {
         )}
       </FormFieldset>
 
-      <FormActions isSubmitting={isPending} submitLabel="Сохранить" />
+      <FormActions
+        isSubmitting={isPending}
+        submitLabel={isEditing ? "Сохранить" : "Создать"}
+        submitLabelLoading={isEditing ? "Сохранение..." : "Создание..."}
+      />
     </Box>
   );
 };

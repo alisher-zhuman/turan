@@ -1,6 +1,5 @@
 import type { ValveFilter } from "../types";
 
-export { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/shared/constants";
 export const DEFAULT_STATUS = "all";
 export const DEFAULT_VALVE_FILTER: ValveFilter = "all";
 export const VALID_STATUSES = new Set(["all", "normal", "warning", "error"]);

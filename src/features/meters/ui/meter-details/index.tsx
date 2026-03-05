@@ -16,16 +16,16 @@ interface Props {
 export const MeterDetails = ({ meter }: Props) => (
   <Box display="flex" flexDirection="column" gap={1}>
     <Typography variant="subtitle1" fontWeight={600}>
-      Счётчик #{meter.id} — {meter.name}
+      Водомер #{meter.id} — {meter.name}
     </Typography>
 
     <Divider sx={{ my: 1 }} />
 
     <Field label="ID" value={meter.id} />
-    <Field label="Номер счётчика" value={meter.name} />
+    <Field label="Название водомера" value={meter.name} />
     <Field label="Пароль" value={meter.password} />
-    <Field label="Customer ID" value={meter.customerID} />
-    <Field label="Клиент" value={meter.client} />
+    <Field label="Лицевой счет" value={meter.customerID} />
+    <Field label="ФИО" value={meter.client} />
     <Field label="Адрес" value={meter.address} />
     <Field label="Описание" value={meter.descriptions} />
     <Field

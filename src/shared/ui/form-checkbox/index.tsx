@@ -30,12 +30,19 @@ export const FormCheckbox = <TFieldValues extends FieldValues>({
   return (
     <FormControlLabel
       {...rest}
+      sx={{ width: "fit-content" }}
       control={
         <Checkbox
           {...checkboxProps}
           checked={Boolean(field.value)}
           onChange={(event) => field.onChange(event.target.checked)}
-          inputRef={field.ref}
+          slotProps={{
+            ...checkboxProps?.slotProps,
+            input: {
+              ...(checkboxProps?.slotProps?.input as object),
+              ref: field.ref,
+            },
+          }}
         />
       }
     />

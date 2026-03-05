@@ -17,6 +17,8 @@ export const API_ROUTES = {
   DEVICES_REMOVE: "/devices/remove",
 
   METERS: "/meters",
+  METERS_TEMPLATE: "/meters/template",
+  METERS_UPLOAD: "/meters/upload",
   METERS_COMMAND: "/meters/command",
 
   GROUPS: "/group",
@@ -26,6 +28,7 @@ export const API_ROUTES = {
 
   READINGS: "/readings",
   READINGS_DELETE: "/readings/delete",
+  READINGS_EXPORT: "/readings/export",
 
   WEBHOOKS: "/webhook",
 };

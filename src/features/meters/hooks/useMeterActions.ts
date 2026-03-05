@@ -1,8 +1,14 @@
 import type { AxiosError } from "axios";
 
-import { deleteMeters, metersKeys, sendMeterCommand } from "@/entities/meters";
+import {
+  deleteMeters,
+  downloadMetersTemplate,
+  metersKeys,
+  sendMeterCommand,
+  uploadMetersFromFile,
+} from "@/entities/meters";
 
-import { getApiErrorMessage } from "@/shared/helpers";
+import { downloadBlobFile, getApiErrorMessage } from "@/shared/helpers";
 import { useToastMutation } from "@/shared/hooks";
 
 interface Params {
@@ -16,14 +22,14 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
     invalidateKeys: [metersKeys.all],
     successMessage: (_, meterIds) =>
       meterIds.length === 1
-        ? "Счётчик удалён"
-        : "Выбранные счётчики удалены",
+        ? "Водомер удалён"
+        : "Выбранные водомеры удалены",
     errorMessage: (error: AxiosError<{ message?: string }>, meterIds) =>
       getApiErrorMessage(
         error,
         meterIds.length === 1
-          ? "Ошибка при удалении счётчика"
-          : "Ошибка при удалении выбранных счётчиков",
+          ? "Ошибка при удалении водомера"
+          : "Ошибка при удалении выбранных водомеров",
       ),
     onSuccess: (_, meterIds) => {
       onRemoved?.(meterIds);
@@ -47,6 +53,26 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
       getApiErrorMessage(error, "Ошибка при отправке команды клапану"),
   });
 
+  const downloadTemplateMutation = useToastMutation({
+    mutationFn: downloadMetersTemplate,
+    successMessage: "Шаблон Excel скачан",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      getApiErrorMessage(error, "Ошибка при скачивании шаблона"),
+    onSuccess: ({ blob, filename }) => {
+      downloadBlobFile(blob, filename);
+    },
+  });
+
+  const uploadMetersMutation = useToastMutation({
+    mutationFn: (file: File) => uploadMetersFromFile(file),
+    invalidateKeys: [metersKeys.all],
+    successMessage: ({ message, addedCount, skippedCount }) =>
+      message?.trim() ||
+      `Загрузка завершена: добавлено ${addedCount}, пропущено ${skippedCount}`,
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      getApiErrorMessage(error, "Ошибка при загрузке файла с водомерами"),
+  });
+
   const handleDeleteOne = (meterId: number) => {
     if (!isAdmin) return;
     deleteMutation.mutate([meterId]);
@@ -62,9 +88,23 @@ export const useMeterActions = ({ isAdmin, onRemoved }: Params) => {
     commandMutation.mutate({ meterId, command });
   };
 
+  const handleDownloadTemplate = () => {
+    if (!isAdmin) return;
+    downloadTemplateMutation.mutate();
+  };
+
+  const handleUploadFile = (file: File) => {
+    if (!isAdmin) return;
+    uploadMetersMutation.mutate(file);
+  };
+
   return {
     handleDeleteOne,
     handleDeleteSelected,
     handleCommand,
+    handleDownloadTemplate,
+    handleUploadFile,
+    isDownloadingTemplate: downloadTemplateMutation.isPending,
+    isUploadingFile: uploadMetersMutation.isPending,
   };
 };

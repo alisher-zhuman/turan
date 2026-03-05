@@ -1,13 +1,20 @@
 import type { AxiosError } from "axios";
 
-import { deleteReadings, readingsKeys } from "@/entities/readings";
+import { deleteReadings, exportReadings, readingsKeys } from "@/entities/readings";
 
-import { getApiErrorMessage } from "@/shared/helpers";
+import { downloadBlobFile, getApiErrorMessage } from "@/shared/helpers";
 import { useToastMutation } from "@/shared/hooks";
 
 interface Params {
   isAdmin: boolean;
   onRemoved?: (ids: string[]) => void;
+}
+
+interface ExportParams {
+  meterId: number | null;
+  customerId: string;
+  dateFrom: string;
+  dateTo: string;
 }
 
 export const useReadingsActions = ({ isAdmin, onRemoved }: Params) => {
@@ -28,6 +35,22 @@ export const useReadingsActions = ({ isAdmin, onRemoved }: Params) => {
     },
   });
 
+  const exportMutation = useToastMutation({
+    mutationFn: ({ meterId, customerId, dateFrom, dateTo }: ExportParams) =>
+      exportReadings({
+        meterId,
+        customerID: customerId,
+        dateFrom,
+        dateTo,
+      }),
+    successMessage: "Excel-файл выгружен",
+    errorMessage: (error: AxiosError<{ message?: string }>) =>
+      getApiErrorMessage(error, "Ошибка при выгрузке показаний"),
+    onSuccess: ({ blob, filename }) => {
+      downloadBlobFile(blob, filename);
+    },
+  });
+
   const handleDeleteOne = (id: string) => {
     if (!isAdmin) return;
     deleteMutation.mutate([id]);
@@ -38,8 +61,15 @@ export const useReadingsActions = ({ isAdmin, onRemoved }: Params) => {
     deleteMutation.mutate(ids);
   };
 
+  const handleExportReadings = (params: ExportParams) => {
+    if (!isAdmin) return;
+    exportMutation.mutate(params);
+  };
+
   return {
     handleDeleteOne,
     handleDeleteSelected,
+    handleExportReadings,
+    isExportingReadings: exportMutation.isPending,
   };
 };
