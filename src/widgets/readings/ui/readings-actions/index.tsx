@@ -5,18 +5,22 @@ interface Props {
   isAdmin: boolean;
   selectedCount: number;
   activeFiltersCount: number;
+  isExportingReadings: boolean;
   onOpenFilters: () => void;
   onResetFilters: () => void;
   onDeleteSelected: () => void;
+  onExportReadings: () => void;
 }
 
 export const ReadingsActions = ({
   isAdmin,
   selectedCount,
   activeFiltersCount,
+  isExportingReadings,
   onOpenFilters,
   onResetFilters,
   onDeleteSelected,
+  onExportReadings,
 }: Props) => (
   <Box
     mb={2}
@@ -44,15 +48,26 @@ export const ReadingsActions = ({
 
     <Box display="flex" flexWrap="wrap" gap={1}>
       {isAdmin && (
-        <Button
-          size="small"
-          variant="outlined"
-          color="error"
-          disabled={selectedCount === 0}
-          onClick={onDeleteSelected}
-        >
-          Удалить выбранные
-        </Button>
+        <>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={onExportReadings}
+            disabled={isExportingReadings}
+          >
+            {isExportingReadings ? "Выгрузка..." : "Выгрузить Excel"}
+          </Button>
+
+          <Button
+            size="small"
+            variant="outlined"
+            color="error"
+            disabled={selectedCount === 0}
+            onClick={onDeleteSelected}
+          >
+            Удалить выбранные
+          </Button>
+        </>
       )}
     </Box>
   </Box>

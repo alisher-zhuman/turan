@@ -104,13 +104,27 @@ export const ReadingsWidget = () => {
     resetKey: [page, limit, filtersKey].join("|"),
   });
 
-  const { handleDeleteOne, handleDeleteSelected } = useReadingsActions({
-    isAdmin,
-    onRemoved: removeSelected,
-  });
+  const {
+    handleDeleteOne,
+    handleDeleteSelected,
+    handleExportReadings,
+    isExportingReadings,
+  } = useReadingsActions({
+      isAdmin,
+      onRemoved: removeSelected,
+    });
 
   const handleDeleteSelectedWithIds = () => {
     handleDeleteSelected(selectedIds);
+  };
+
+  const handleExportReadingsWithFilters = () => {
+    handleExportReadings({
+      meterId: filters.meterId,
+      customerId: filters.customerId,
+      dateFrom: filters.dateFrom,
+      dateTo: filters.dateTo,
+    });
   };
 
   const handleResetFilters = () => {
@@ -158,9 +172,11 @@ export const ReadingsWidget = () => {
       isAdmin={isAdmin}
       selectedCount={selectedIds.length}
       activeFiltersCount={activeFiltersCount}
+      isExportingReadings={isExportingReadings}
       onOpenFilters={() => setFiltersOpen(true)}
       onResetFilters={handleResetFilters}
       onDeleteSelected={handleDeleteSelectedWithIds}
+      onExportReadings={handleExportReadingsWithFilters}
     />
   );
 

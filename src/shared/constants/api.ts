@@ -28,6 +28,7 @@ export const API_ROUTES = {
 
   READINGS: "/readings",
   READINGS_DELETE: "/readings/delete",
+  READINGS_EXPORT: "/readings/export",
 
   WEBHOOKS: "/webhook",
 };
