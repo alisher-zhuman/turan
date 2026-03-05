@@ -22,7 +22,7 @@ export const MeterDetails = ({ meter }: Props) => (
     <Divider sx={{ my: 1 }} />
 
     <Field label="ID" value={meter.id} />
-    <Field label="Номер счётчика" value={meter.name} />
+    <Field label="Название счётчика" value={meter.name} />
     <Field label="Пароль" value={meter.password} />
     <Field label="Лицевой счет" value={meter.customerID} />
     <Field label="ФИО" value={meter.client} />
