@@ -26,12 +26,6 @@ export interface AuthState {
   logout: () => void;
 }
 
-export interface SidebarLink {
-  label: string;
-  to: string;
-  roles: Role[];
-}
-
 export interface Column<T> {
   id: string;
   header: ReactNode;

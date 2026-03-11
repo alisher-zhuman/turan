@@ -1,7 +1,12 @@
-import type { SidebarLink } from "@/shared/types";
+import { ROLE } from "@/shared/constants";
+import { ROUTES } from "@/shared/constants/routes";
+import type { Role } from "@/shared/types";
 
-import { ROLE } from "./roles";
-import { ROUTES } from "./routes";
+interface SidebarLink {
+  label: string;
+  to: string;
+  roles: Role[];
+}
 
 export const SIDEBAR_LINKS: SidebarLink[] = [
   {
@@ -41,4 +46,8 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
   },
 ];
 
-export const AUTH_STORAGE_KEY = "turan_auth";
+export const getAllowedPathsByRole = (role: Role): string[] => {
+  return SIDEBAR_LINKS.filter((link) => link.roles.includes(role)).map(
+    (link) => link.to,
+  );
+};

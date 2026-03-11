@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ROLE } from "@/shared/constants";
+import { ROLE } from "../constants/roles";
 
 export const RoleSchema = z.enum([
   ROLE.SUPER_ADMIN,

@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import type { Column } from "@/shared/types";
+import type { Column } from "../../types";
 
 interface Props<T> {
   rows: T[];

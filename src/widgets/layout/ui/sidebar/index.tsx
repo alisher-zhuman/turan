@@ -17,9 +17,10 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
-import { ROLE_LABELS, SIDEBAR_LINKS } from "@/shared/constants";
+import { ROLE_LABELS } from "@/shared/constants";
 import { useRoleAccess } from "@/shared/hooks";
 
+import { SIDEBAR_LINKS } from "../../config/navigation";
 import { getRoleIcon, getSidebarIcon } from "../../utils/helpers";
 
 export const Sidebar = () => {

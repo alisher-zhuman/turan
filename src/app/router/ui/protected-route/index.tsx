@@ -2,8 +2,9 @@ import { Navigate, useLocation } from "react-router";
 
 import type { ReactNode } from "react";
 
+import { getAllowedPathsByRole } from "@/widgets/layout/config/navigation";
+
 import { ROUTES } from "@/shared/constants";
-import { getAllowedPathsByRole } from "@/shared/helpers";
 import { useAuthStore } from "@/shared/stores";
 
 interface Props {

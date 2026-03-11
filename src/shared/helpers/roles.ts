@@ -1,6 +1,5 @@
-import type { Role } from "@/shared/types";
-
 import { ROLE } from "../constants";
+import type { Role } from "../types";
 
 export const hasRoleAdmin = (role: Role | undefined) => role === ROLE.ADMIN;
 
