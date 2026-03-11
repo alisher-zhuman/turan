@@ -1,6 +1,6 @@
-import { Component,type ErrorInfo, type ReactNode } from "react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
 
-import { ErrorFallback } from "../error-fallback";
+import { ErrorFallback } from "@/shared/ui/error-fallback";
 
 interface Props {
   children: ReactNode;
@@ -21,10 +21,9 @@ const INITIAL_STATE: State = {
 export class AppErrorBoundary extends Component<Props, State> {
   public override state: State = INITIAL_STATE;
 
-  public static getDerivedStateFromError(error: Error): Pick<
-    State,
-    "error" | "hasError"
-  > {
+  public static getDerivedStateFromError(
+    error: Error,
+  ): Pick<State, "error" | "hasError"> {
     return {
       error,
       hasError: true,
