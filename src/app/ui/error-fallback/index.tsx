@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 
 interface Props {
   error: Error | null;
-  componentStack: string;
+  componentStack?: string;
 }
 
 export const ErrorFallback = ({ error, componentStack }: Props) => (
