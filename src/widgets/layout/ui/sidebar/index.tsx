@@ -20,7 +20,7 @@ import Typography from "@mui/material/Typography";
 import { ROLE_LABELS, SIDEBAR_LINKS } from "@/shared/constants";
 import { useRoleAccess } from "@/shared/hooks";
 
-import { getRoleIcon, getSidebarIcon } from "../../utils/helpers";
+import { getRoleIcon, getSidebarIcon } from "../../helpers";
 
 export const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
