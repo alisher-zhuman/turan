@@ -1,6 +1,7 @@
-import { ROLE } from "@/shared/constants";
-import { ROUTES } from "@/shared/constants/routes";
-import type { Role } from "@/shared/types";
+import type { Role } from "../types";
+
+import { ROLE } from "./roles";
+import { ROUTES } from "./routes";
 
 interface SidebarLink {
   label: string;
@@ -45,9 +46,3 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     roles: [ROLE.ADMIN],
   },
 ];
-
-export const getAllowedPathsByRole = (role: Role): string[] => {
-  return SIDEBAR_LINKS.filter((link) => link.roles.includes(role)).map(
-    (link) => link.to,
-  );
-};
