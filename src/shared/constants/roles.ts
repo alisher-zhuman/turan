@@ -1,4 +1,4 @@
-import type { Role } from "@/shared/types";
+import type { Role } from "../types";
 
 export const ROLE = {
   SUPER_ADMIN: "super_admin",

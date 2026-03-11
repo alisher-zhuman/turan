@@ -4,7 +4,7 @@ import Alert, { type AlertProps } from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import type { SxProps, Theme } from "@mui/material/styles";
 
-import { Loader } from "@/shared/ui/loader";
+import { Loader } from "../loader";
 
 interface Props {
   isLoading: boolean;

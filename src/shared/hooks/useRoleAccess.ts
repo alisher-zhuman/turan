@@ -4,8 +4,8 @@ import {
   canManageMetersToGroups,
   hasRoleAdmin,
   hasRoleSuperAdmin,
-} from "@/shared/helpers";
-import { useAuthStore } from "@/shared/stores";
+} from "../helpers/roles";
+import { useAuthStore } from "../stores/auth";
 
 export const useRoleAccess = () => {
   const user = useAuthStore((state) => state.user);

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-import { ENV } from "@/shared/config/env";
-import { useAuthStore } from "@/shared/stores";
+import { ENV } from "../config/env";
+import { useAuthStore } from "../stores/auth";
 
 export const api = axios.create({
   baseURL: ENV.VITE_API_URL,

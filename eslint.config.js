@@ -5,6 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
+import { SELF_IMPORT_RULES } from "./eslint/self-import-rules.js";
 
 export default defineConfig([
   globalIgnores(["dist"]),
@@ -81,4 +82,5 @@ export default defineConfig([
       "simple-import-sort/exports": "error",
     },
   },
+  ...SELF_IMPORT_RULES,
 ]);

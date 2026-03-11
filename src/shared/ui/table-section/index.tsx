@@ -3,10 +3,10 @@ import type { ReactNode } from "react";
 import type { AlertProps } from "@mui/material/Alert";
 import type { SxProps, Theme } from "@mui/material/styles";
 
-import type { Column } from "@/shared/types";
-import { DataTable } from "@/shared/ui/data-table";
-import { ListSection } from "@/shared/ui/list-section";
-import { Pagination } from "@/shared/ui/pagination";
+import type { Column } from "../../types";
+import { DataTable } from "../data-table";
+import { ListSection } from "../list-section";
+import { Pagination } from "../pagination";
 
 interface PaginationProps {
   page: number;
