@@ -7,9 +7,9 @@ import IconButton from "@mui/material/IconButton";
 
 import type { UserRow } from "@/entities/users";
 
-import { ROLE_LABELS } from "@/shared/constants";
 import { formatDateTime } from "@/shared/helpers";
 import type { Column } from "@/shared/types";
+import { RoleBadge } from "@/shared/ui/role-badge";
 
 export const createUserColumns = (
   onToggleArchive: (userId: number, isArchived: boolean) => void,
@@ -43,7 +43,7 @@ export const createUserColumns = (
   {
     id: "role",
     header: "Роль",
-    cell: (user) => ROLE_LABELS[user.role],
+    cell: (user) => <RoleBadge role={user.role} />,
   },
   {
     id: "createdAt",
