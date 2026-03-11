@@ -9,6 +9,7 @@ import { Layout } from "@/widgets/layout";
 import { ROUTES } from "@/shared/constants";
 
 import { ProtectedRoute } from "./ui/protected-route";
+import { RouteErrorBoundary } from "./ui/route-error-boundary";
 import { WithSuspense } from "./ui/with-suspense";
 
 const NotFound = lazy(() =>
@@ -37,10 +38,19 @@ const Webhooks = lazy(() =>
 );
 
 export const ROUTER = createBrowserRouter([
-  { path: `/${ROUTES.LOG_IN}`, element: <Authentication /> },
-  { path: `/${ROUTES.FORGOT_PASSWORD}`, element: <Authentication /> },
+  {
+    path: `/${ROUTES.LOG_IN}`,
+    element: <Authentication />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: `/${ROUTES.FORGOT_PASSWORD}`,
+    element: <Authentication />,
+    errorElement: <RouteErrorBoundary />,
+  },
   {
     path: "*",
+    errorElement: <RouteErrorBoundary />,
     element: (
       <WithSuspense>
         <NotFound />
@@ -49,6 +59,7 @@ export const ROUTER = createBrowserRouter([
   },
   {
     path: "/",
+    errorElement: <RouteErrorBoundary />,
     element: (
       <ProtectedRoute>
         <Layout />
