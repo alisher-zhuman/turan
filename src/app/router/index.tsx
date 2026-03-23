@@ -2,18 +2,20 @@ import { lazy } from "react";
 
 import { createBrowserRouter } from "react-router";
 
-import { Authentication } from "@/pages/authentication";
-
-import { Layout } from "@/widgets/layout";
-
 import { ROUTES } from "@/shared/constants";
 
 import { ProtectedRoute } from "./ui/protected-route";
 import { RouteErrorBoundary } from "./ui/route-error-boundary";
 import { WithSuspense } from "./ui/with-suspense";
 
+const Authentication = lazy(() =>
+  import("@/pages/authentication").then((m) => ({ default: m.Authentication })),
+);
 const NotFound = lazy(() =>
   import("@/pages/not-found").then((m) => ({ default: m.NotFound })),
+);
+const Layout = lazy(() =>
+  import("@/widgets/layout").then((m) => ({ default: m.Layout })),
 );
 const Companies = lazy(() =>
   import("@/pages/companies").then((m) => ({ default: m.Companies })),
@@ -40,12 +42,20 @@ const Webhooks = lazy(() =>
 export const ROUTER = createBrowserRouter([
   {
     path: `/${ROUTES.LOG_IN}`,
-    element: <Authentication />,
+    element: (
+      <WithSuspense>
+        <Authentication />
+      </WithSuspense>
+    ),
     errorElement: <RouteErrorBoundary />,
   },
   {
     path: `/${ROUTES.FORGOT_PASSWORD}`,
-    element: <Authentication />,
+    element: (
+      <WithSuspense>
+        <Authentication />
+      </WithSuspense>
+    ),
     errorElement: <RouteErrorBoundary />,
   },
   {
@@ -62,7 +72,9 @@ export const ROUTER = createBrowserRouter([
     errorElement: <RouteErrorBoundary />,
     element: (
       <ProtectedRoute>
-        <Layout />
+        <WithSuspense>
+          <Layout />
+        </WithSuspense>
       </ProtectedRoute>
     ),
     children: [
