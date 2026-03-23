@@ -15,6 +15,8 @@
 
 Example: `useForgotPasswordForm` stays in `features/authentication` because it is a form scenario, not a domain entity.
 
+Do not move code into `shared` just because it is small. Move it there only if it is truly generic and reusable across domains/screens.
+
 ## Imports
 
 Import order is enforced by ESLint (`simple-import-sort`):
@@ -32,12 +34,24 @@ Import order is enforced by ESLint (`simple-import-sort`):
 6. Other `@/` imports
 7. Relative imports (`../`, `./`)
 
+Inside the same layer/module, prefer relative imports over alias self-imports.
+
+Examples:
+
+- good: `../../helpers/route-error`
+- bad: `@/app/router/helpers/route-error` from inside `src/app/...`
+
 ## Public API
 
 - `index.ts` is a public API file only. It should not contain runtime logic (constants/functions/etc.).
 - If a folder has both implementation and re-exports, move implementation to `base.ts` (or another named file) and re-export it from `index.ts`.
 - In root feature barrels (`src/features/<feature>/index.ts`), use explicit exports (`export { ... }`, `export type { ... }`) to keep the external contract clear.
 - In internal subfolder barrels (`constants/index.ts`, `helpers/index.ts`, `types/index.ts`), `export * from ...` is allowed.
+
+## Folder Naming
+
+- Prefer meaningful folders such as `helpers`, `constants`, `types`, `hooks`, `schemas`.
+- Avoid vague folders like `utils` when the intent can be named more precisely.
 
 ## Linting
 
@@ -55,3 +69,9 @@ Supported aliases:
 - `@features/*`
 - `@entities/*`
 - `@shared/*`
+
+## Error Handling
+
+- Use regular UI states or toasts for API/request errors.
+- Use error boundaries for unexpected render/lifecycle crashes.
+- If routing uses React Router data APIs, provide `errorElement` so the app does not fall back to the default router error screen.

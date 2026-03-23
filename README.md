@@ -28,6 +28,12 @@ Turan admin panel for managing companies, users, devices, groups, meters, readin
 - `npm run build` - TypeScript + production build
 - `npm run preview` - local preview of the production build
 
+## Notes
+
+- Environment variables are validated on app startup. The app will fail fast if `VITE_API_URL` is missing or empty.
+- Husky `pre-push` runs `npm run lint`, so pushes are blocked on lint errors.
+- Vendor chunk splitting in `vite.config.ts` affects the production build only (`npm run build`), not the regular Vite dev server.
+
 ## Documentation
 
 - [Documentation Map](docs/README.md)

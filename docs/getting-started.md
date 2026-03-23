@@ -25,6 +25,13 @@
    ```
 
 By default, Vite serves the frontend at `http://localhost:5173`.
+If the port is already occupied, Vite automatically picks the next available port.
+
+## Environment Validation
+
+- The app validates `import.meta.env` during startup.
+- `VITE_API_URL` is required.
+- If it is missing or empty, the app fails immediately with a configuration error instead of running in a broken state.
 
 ## Useful Commands
 
@@ -40,6 +47,12 @@ By default, Vite serves the frontend at `http://localhost:5173`.
   ```bash
   npm run preview
   ```
+
+## Dev vs Build
+
+- `npm run dev` starts the Vite development server with fast module serving and HMR.
+- `npm run build` runs TypeScript build checks and creates the production bundle.
+- Vendor chunk splitting from `vite.config.ts` is applied in the production build only.
 
 ## Docker
 
