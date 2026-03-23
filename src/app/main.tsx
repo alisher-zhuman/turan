@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { lazy, StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 
 import { RouterProvider } from "react-router";
@@ -6,7 +6,6 @@ import { RouterProvider } from "react-router";
 import "@/shared/config/env";
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "react-hot-toast";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
@@ -16,6 +15,10 @@ import { APP_THEME } from "./configs/theme";
 import { ROUTER } from "./router";
 import { AppErrorBoundary } from "./ui/error-boundary";
 
+const Toaster = lazy(() =>
+  import("react-hot-toast").then((module) => ({ default: module.Toaster })),
+);
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider theme={APP_THEME}>
@@ -23,7 +26,9 @@ createRoot(document.getElementById("root")!).render(
 
       <AppErrorBoundary>
         <QueryClientProvider client={QUERY_CLIENT}>
-          <Toaster />
+          <Suspense fallback={null}>
+            <Toaster />
+          </Suspense>
 
           <RouterProvider router={ROUTER} />
         </QueryClientProvider>
