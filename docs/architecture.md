@@ -14,16 +14,16 @@
 
 The project is organized in layers, inspired by FSD:
 
-- `src/app` - app bootstrap, routing, global configs.
-- `src/pages` - page entrypoint components.
-- `src/widgets` - screen composition from feature/entity/shared layers.
-- `src/features` - user scenarios and UI logic.
-- `src/entities` - domain entities, API, and data contracts.
-- `src/shared` - shared utilities, UI components, hooks, constants.
+- [src/app](../src/app) - app bootstrap, routing, global configs.
+- [src/pages](../src/pages) - page entrypoint components.
+- [src/widgets](../src/widgets) - screen composition from feature/entity/shared layers.
+- [src/features](../src/features) - user scenarios and UI logic.
+- [src/entities](../src/entities) - domain entities, API, and data contracts.
+- [src/shared](../src/shared) - shared utilities, UI components, hooks, constants.
 
 ## App Bootstrap
 
-The root app startup in `src/app/main.tsx` composes the main providers in this order:
+The root app startup in [src/app/main.tsx](../src/app/main.tsx) composes the main providers in this order:
 
 - `ThemeProvider`
 - `CssBaseline`
@@ -56,7 +56,7 @@ Routing uses `createBrowserRouter`, lazy page loading, and `WithSuspense` for ro
 
 The app uses two levels of UI error handling:
 
-- `AppErrorBoundary` in `src/app/main.tsx` catches render/lifecycle crashes in the app tree.
+- `AppErrorBoundary` in [src/app/main.tsx](../src/app/main.tsx) catches render/lifecycle crashes in the app tree.
 - `errorElement` via `RouteErrorBoundary` catches route-level errors from React Router and replaces the default router error screen.
 
 The shared fallback UI:
@@ -97,7 +97,7 @@ Navigation and section access are controlled via `SIDEBAR_LINKS` and role-check 
 
 ## Build and Bundling
 
-Production bundling is configured in `vite.config.ts`.
+Production bundling is configured in [vite.config.ts](../vite.config.ts).
 
 The build splits vendor code into dedicated chunks such as:
 
