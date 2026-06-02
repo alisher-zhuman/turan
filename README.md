@@ -8,11 +8,11 @@ Turan admin panel for managing companies, users, devices, groups, meters, readin
    ```bash
    npm ci
    ```
-2. Create `.env` from the example file:
+2. Create [.env](.env) from the example file:
    ```bash
    cp .env.example .env
    ```
-3. Configure `.env`:
+3. Configure [.env](.env):
    ```bash
    VITE_API_URL="https://your-api-host/api/"
    ```
@@ -32,7 +32,7 @@ Turan admin panel for managing companies, users, devices, groups, meters, readin
 
 - Environment variables are validated on app startup. The app will fail fast if `VITE_API_URL` is missing or empty.
 - Husky `pre-push` runs `npm run lint`, so pushes are blocked on lint errors.
-- Vendor chunk splitting in `vite.config.ts` affects the production build only (`npm run build`), not the regular Vite dev server.
+- Vendor chunk splitting in [vite.config.ts](vite.config.ts) affects the production build only (`npm run build`), not the regular Vite dev server.
 
 ## Documentation
 

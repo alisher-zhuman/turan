@@ -11,11 +11,11 @@
    ```bash
    npm ci
    ```
-2. Create `.env` from the example:
+2. Create [.env](../.env) from the example:
    ```bash
    cp .env.example .env
    ```
-3. Make sure API URL is set in `.env`:
+3. Make sure API URL is set in [.env](../.env):
    ```bash
    VITE_API_URL="https://your-api-host/api/"
    ```
@@ -52,11 +52,11 @@ If the port is already occupied, Vite automatically picks the next available por
 
 - `npm run dev` starts the Vite development server with fast module serving and HMR.
 - `npm run build` runs TypeScript build checks and creates the production bundle.
-- Vendor chunk splitting from `vite.config.ts` is applied in the production build only.
+- Vendor chunk splitting from [vite.config.ts](../vite.config.ts) is applied in the production build only.
 
 ## Docker
 
-The project includes `Dockerfile` and `docker-compose.yml`.
+The project includes [Dockerfile](../Dockerfile) and [docker-compose.yml](../docker-compose.yml).
 
 Run:
 
